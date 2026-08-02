@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnBreakable UnB — Grupo de Estudos em Segurança Ofensiva</title>
+<meta name="description" content="O UnBreakable é o grupo de estudos de segurança ofensiva da Universidade de Brasília. Máquinas do HackTheBox e TryHackMe, write-ups, CTFs e palestras técnicas.">
+
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============================= HEADER ============================= -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap">
+    <a href="#" class="logo">
+      <img src="assets/img/mark.svg" alt="" class="logo-mark">
+      <span>UnBreakable<em>UnB</em></span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#sobre">Sobre</a>
+      <a href="#atividades">Atividades</a>
+      <a href="#trilha">Trilha</a>
+      <a href="#comunidade">Comunidade</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Ver write-ups</a>
+      <a href="#" class="btn btn-primary">Entrar no Discord</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4H15M1 8H15M1 12H15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#sobre">Sobre</a>
+  <a href="#atividades">Atividades</a>
+  <a href="#trilha">Trilha</a>
+  <a href="#comunidade">Comunidade</a>
+  <a href="#faq">FAQ</a>
+  <a href="#" class="btn btn-primary btn-block">Entrar no Discord</a>
+</nav>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="grid-glow"></div>
+  <div class="radial-purple"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Inscrições abertas
+      <span class="chip">Turma 2026.1</span>
+    </div>
+
+    <h1>Segurança ofensiva não se aprende<br>assistindo<span class="accent">.</span></h1>
+    <p class="hero-sub">
+      O UnBreakable é o grupo de estudos de segurança ofensiva da Universidade de Brasília.
+      A gente resolve máquinas do HackTheBox e do TryHackMe em grupo, escreve write-up,
+      forma squad pra CTF e traz gente da área pra trocar ideia de verdade.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary">Entrar no Discord</a>
+      <a href="#atividades" class="btn btn-ghost">Ver nossas atividades →</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <b>Toda semana</b>
+        <span>Sessões práticas guiadas</span>
+      </div>
+      <div class="stat big">
+        <b>100+</b>
+        <span>Máquinas resolvidas em grupo</span>
+      </div>
+      <div class="stat">
+        <b>30+</b>
+        <span>Membros ativos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= LOGO STRIP ============================= -->
+<section class="strip">
+  <div class="wrap">
+    <p>Plataformas e competições onde a gente treina e disputa</p>
+    <div class="strip-logos">
+      <span>Hack The Box</span>
+      <span>TryHackMe</span>
+      <span>CTFtime</span>
+      <span>picoCTF</span>
+      <span>DEF CON CTF</span>
+      <span>Sh3llCTF</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUEM SOMOS ============================= -->
+<section id="sobre">
+  <div class="wrap about-grid">
+
+    <div class="stat-boxes reveal">
+      <div class="stat-box big">
+        <div>
+          <b>100+</b>
+          <span>Máquinas resolvidas em grupo no HTB e TryHackMe</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L20 6.5V11C20 16 16.5 19.5 12 21C7.5 19.5 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <strong>30+ membros ativos</strong>
+      </div>
+
+      <div class="stat-box">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <strong>Sessões semanais</strong>
+      </div>
+
+      <div class="stat-box big">
+        <div>
+          <b>12+</b>
+          <span>CTFs disputados em 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-copy reveal">
+      <span class="eyebrow">Quem somos</span>
+      <h2>Formação técnica pensada pra quem quer competir de verdade</h2>
+      <p>
+        Cibersegurança ofensiva não se resume a teoria. A gente integra prática guiada em
+        máquinas reais com estratégia de time pra formar gente pronta pra competir em CTFs
+        nacionais e internacionais — e pra entender de verdade como sistemas são comprometidos.
+      </p>
+
+      <div class="feature-line">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 17L10 11L14 15L20 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h4>Aprender fazendo</h4>
+          <p>Cada sessão é hands-on: reconhecimento, exploração e escalada de privilégio em máquinas do HTB e do TryHackMe, junto com quem já passou por ali.</p>
+        </div>
+      </div>
+
+      <div class="feature-line">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M3 20C3 16.5 5.5 14 8 14C10.5 14 11.7 15 12 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 16C13.3 15 14.5 14 16.7 14C19.5 14 21 16.5 21 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h4>Comunidade que compete junto</h4>
+          <p>Squads formados dentro do grupo pra CTFs nacionais e internacionais, com apoio de quem já tem experiência de campeonato.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================= ATIVIDADES ============================= -->
+<section id="atividades" class="activities">
+  <div class="wrap">
+    <div class="act-header reveal">
+      <div>
+        <span class="eyebrow">UnBreakable UnB</span>
+        <h2>Nossas frentes de <span class="pill">atuação</span></h2>
+      </div>
+      <p>Do primeiro acesso numa máquina até a palestra técnica com quem já trabalha na área.</p>
+    </div>
+
+    <div class="act-layout">
+      <div class="act-list reveal">
+        <div class="act-item">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 21H16M12 17V21" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M7 9L9.5 11L7 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Sessões práticas guiadas</h4>
+          <p>Resolução em grupo de máquinas do HackTheBox e TryHackMe, do reconhecimento à escalada de privilégios.</p>
+        </div>
+
+        <div class="act-item">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L20 6.5V11C20 16 16.5 19.5 12 21C7.5 19.5 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 12L11.2 13.7L14.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Trilhas de CTF</h4>
+          <p>Squads preparados por categoria — web, pwn, forense, cripto, reversing — para competições nacionais e internacionais.</p>
+        </div>
+
+        <div class="act-item">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 3H14L19 8V21H7V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M14 3V8H19" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9.5 12H14.5M9.5 15H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <h4>Produção de write-ups</h4>
+          <p>Documentação técnica de máquinas e desafios resolvidos, publicada para a comunidade e para o portfólio de cada membro.</p>
+        </div>
+
+        <div class="act-item">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 15V9C4 6 6.5 4 9.5 4H14.5C17.5 4 20 6 20 9V15" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="17" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+          </div>
+          <h4>Palestras técnicas</h4>
+          <p>Bate-papos e workshops com pesquisadores e profissionais de segurança ofensiva.</p>
+        </div>
+      </div>
+
+      <div class="act-visual reveal">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="node" style="top: 4%; left: 50%;"></div>
+        <div class="node" style="top: 50%; left: 96%;"></div>
+        <div class="node" style="top: 50%; left: 4%;"></div>
+        <div class="node" style="top: 96%; left: 50%;"></div>
+        <svg class="shield-core" viewBox="0 0 100 100" fill="none">
+          <path d="M50 8L88 24V50C88 72 71 88 50 96C29 88 12 72 12 50V24L50 8Z" stroke="currentColor" stroke-width="3"/>
+          <path d="M36 50L46 60L66 38" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <a href="#" class="link-more">
+      Ver todas as atividades
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============================= POR QUE ENTRAR ============================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Por que entrar</span>
+      <h2>Por que entrar pro <span style="color:var(--purple-bright)">UnBreakable</span></h2>
+      <p>Cibersegurança se aprende testando limites, errando rápido e tendo gente por perto que já passou pelo mesmo caminho.</p>
+    </div>
+
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 20C4.5 15.8 7.8 13.5 12 13.5C16.2 13.5 19.5 15.8 19.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <h4>Mentoria entre pares</h4>
+        <p>Quem já resolveu 50 máquinas senta do lado de quem tá resolvendo a primeira.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L4 6V12C4 16.5 7.4 20 12 21C16.6 20 20 16.5 20 12V6L12 3Z" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <h4>Sem pré-requisito</h4>
+        <p>Não precisa saber nada de segurança pra começar. Precisa de curiosidade e vontade de quebrar coisa.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.3" stroke="currentColor" stroke-width="1.4"/><circle cx="18" cy="6" r="2.3" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="18" r="2.3" stroke="currentColor" stroke-width="1.4"/><path d="M7.8 7.3L10.5 16M16.2 7.3L13.5 16M8.3 6H15.7" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <h4>Rede de contato real</h4>
+        <p>Acesso direto a pesquisadores e profissionais que passam pelas nossas palestras técnicas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= TRILHA ============================= -->
+<section id="trilha" class="track">
+  <div class="wrap track-layout">
+
+    <div class="track-visual reveal">
+      <svg class="hex" viewBox="0 0 200 200" fill="none">
+        <path d="M100 10L175 55V145L100 190L25 145V55L100 10Z" stroke="currentColor" stroke-width="1.6" opacity="0.7"/>
+        <path d="M100 40L148 68V124L100 152L52 124V68L100 40Z" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M88 90L98 100L118 78" stroke="var(--green)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="track-copy reveal">
+      <h3>Prepare-se pra <span class="accent">competir</span> — do primeiro flag ao CTF internacional</h3>
+
+      <div class="track-item">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12H8L10 6L14 18L16 12H20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h4>Do zero ao CTF</h4>
+          <p>Trilha que começa nas máquinas mais tranquilas do HTB/THM e evolui até desafio completo de competição.</p>
+        </div>
+      </div>
+
+      <div class="track-item">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="8" height="8" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="4" width="8" height="8" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="14" width="8" height="6" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="14" width="8" height="6" rx="1.2" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <div>
+          <h4>Categorias cobertas</h4>
+          <p>Web, Pwn, Forense, Criptografia, Reversing e OSINT — sempre com alguém do grupo que já manja da área.</p>
+        </div>
+      </div>
+
+      <a href="#" class="link-more">
+        Ver nossos write-ups
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================= TERMINAL BANNER ============================= -->
+<section>
+  <div class="wrap">
+    <div class="terminal-banner reveal">
+      <div class="term-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span>unbreakable@unb: ~/ctf/ultimo-encontro</span>
+      </div>
+      <div class="term-body">
+<div><span class="p">unbreakable@unb</span>:~$ nmap -sC -sV -oN scan.txt $TARGET</div>
+<div class="out">Starting Nmap ... scanning 4 ports</div>
+<div class="out">22/tcp   open  ssh</div>
+<div class="out">80/tcp   open  http</div>
+<div><span class="ok">[+]</span> squad formado. dividindo enumeração web e escalada de privilégio.</div>
+<div><span class="p">unbreakable@unb</span>:~$ cat flag.txt</div>
+<div class="ok">flag{proxima_reuniao_toda_quarta_20h}</div>
+      </div>
+      <div class="term-cta">
+        <span class="play">
+          <span class="circ">
+            <svg viewBox="0 0 12 12" fill="none"><path d="M2 1.5L10 6L2 10.5V1.5Z" fill="currentColor"/></svg>
+          </span>
+          Resumo do último CTF interno
+        </span>
+        <a href="#" class="btn btn-ghost">Assistir a gravação</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= NUMEROS ============================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Números</span>
+      <h2>O que a gente construiu até aqui</h2>
+      <p>Acompanhamos nosso progresso pelo que resolvemos junto — não pelo que prometemos.</p>
+    </div>
+
+    <div class="numbers-grid reveal">
+      <div class="number-box">
+        <b>30+</b>
+        <span>Membros ativos</span>
+      </div>
+      <div class="number-box">
+        <b>100+</b>
+        <span>Máquinas resolvidas</span>
+      </div>
+      <div class="number-box">
+        <b>12</b>
+        <span>CTFs disputados em 2025</span>
+      </div>
+      <div class="number-box">
+        <b>40+</b>
+        <span>Write-ups publicados</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= METODOLOGIA ============================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Metodologia</span>
+      <h2>Como você evolui aqui</h2>
+    </div>
+
+    <div class="method-steps reveal">
+      <div class="method-step">
+        <div class="num">01</div>
+        <h4>Entre</h4>
+        <p>Chega no Discord, se apresenta e escolhe uma trilha pra começar.</p>
+      </div>
+      <div class="method-step">
+        <div class="num">02</div>
+        <h4>Aprenda</h4>
+        <p>Sessões guiadas nas máquinas mais tranquilas do HTB e TryHackMe.</p>
+      </div>
+      <div class="method-step">
+        <div class="num">03</div>
+        <h4>Pratique</h4>
+        <p>CTFs internos e write-ups pra consolidar o que você aprendeu.</p>
+      </div>
+      <div class="method-step">
+        <div class="num">04</div>
+        <h4>Compita</h4>
+        <p>Squad formado pra representar o UnBreakable em CTFs externos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= COMUNIDADE ============================= -->
+<!-- Depoimentos placeholder — substituir por citações reais de membros do grupo -->
+<section id="comunidade">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Comunidade</span>
+      <h2>Quem já passou por aqui</h2>
+      <p>Espaço reservado para depoimentos reais de membros — atualize com citações e nomes de verdade antes de publicar.</p>
+    </div>
+
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <p>"[Depoimento de membro — o que mudou depois de entrar no grupo]"</p>
+        <div class="testi-who">
+          <span class="avatar">?</span>
+          <div>
+            <b>Nome do membro</b>
+            <span>Curso / semestre</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p>"[Depoimento de membro — sobre a primeira máquina ou primeiro CTF]"</p>
+        <div class="testi-who">
+          <span class="avatar">?</span>
+          <div>
+            <b>Nome do membro</b>
+            <span>Curso / semestre</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p>"[Depoimento de membro — sobre a mentoria ou comunidade]"</p>
+        <div class="testi-who">
+          <span class="avatar">?</span>
+          <div>
+            <b>Nome do membro</b>
+            <span>Curso / semestre</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p>"[Depoimento de membro — sobre uma palestra ou write-up]"</p>
+        <div class="testi-who">
+          <span class="avatar">?</span>
+          <div>
+            <b>Nome do membro</b>
+            <span>Curso / semestre</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= COMO ENTRAR ============================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Como entrar</span>
+      <h2>Escolha por onde começar</h2>
+    </div>
+
+    <div class="join-grid reveal">
+      <div class="join-card">
+        <span class="tag">Iniciante</span>
+        <h3>Nunca fiz nada de segurança</h3>
+        <p>Comece pelas trilhas guiadas, sem pré-requisito. Só precisa de vontade de aprender fazendo.</p>
+        <a href="#" class="btn btn-ghost btn-block">Entrar no Discord</a>
+      </div>
+
+      <div class="join-card highlight">
+        <span class="tag">Competidor</span>
+        <h3>Já resolvo máquina e disputo CTF</h3>
+        <p>Entra direto nos squads de competição e ajuda a levar o UnBreakable pros próximos CTFs.</p>
+        <a href="#" class="btn btn-primary btn-block">Falar com a organização</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FAQ ============================= -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Perguntas frequentes</span>
+      <h2>Perguntas frequentes</h2>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-q">
+          Preciso ser de TI ou já saber programar pra participar?
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <div class="faq-a">
+          <p>Não. Boa parte de quem entra começa sem experiência nenhuma em segurança. As sessões são guiadas justamente pra fechar essa lacuna na prática.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          O grupo é pago?
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <div class="faq-a">
+          <p>Não, o UnBreakable é um grupo de estudos gratuito. As máquinas do HackTheBox e TryHackMe usadas nas sessões geralmente têm versão gratuita.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Preciso ser aluno da UnB?
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <div class="faq-a">
+          <p>O grupo nasceu na Universidade de Brasília. Confirme com a organização no Discord os detalhes de participação para quem é de fora da UnB.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Com que frequência acontecem os encontros?
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <div class="faq-a">
+          <p>As sessões práticas acontecem semanalmente. Datas, horário e local (ou link) ficam sempre marcados no Discord do grupo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Como funcionam os squads de CTF?
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <div class="faq-a">
+          <p>Formamos times por categoria de interesse — web, pwn, forense, cripto, reversing e OSINT — pra representar o UnBreakable em competições nacionais e internacionais.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= CTA BAND ============================= -->
+<section class="cta-band">
+  <div class="globe"></div>
+  <div class="wrap cta-inner">
+    <h2>Dê o primeiro passo rumo à <span class="accent">segurança ofensiva</span></h2>
+    <p>Entra no Discord, escolhe uma máquina e começa a quebrar coisa com a gente.</p>
+    <a href="#" class="btn btn-primary">Entrar no Discord</a>
+  </div>
+</section>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img src="assets/img/mark.svg" alt="" class="logo-mark">
+          <span>UnBreakable<em>UnB</em></span>
+        </a>
+        <p>Grupo de estudos de segurança ofensiva da Universidade de Brasília. Máquinas, CTFs, write-ups e a comunidade que forma competidores.</p>
+        <div class="footer-social">
+          <a href="https://github.com/UnBreakable-Project" aria-label="GitHub" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12C2 16.4 4.9 20.1 8.8 21.4C9.3 21.5 9.5 21.2 9.5 20.9V19.2C6.8 19.8 6.2 17.9 6.2 17.9C5.8 16.8 5.2 16.5 5.2 16.5C4.3 15.9 5.3 15.9 5.3 15.9C6.3 16 6.9 17 6.9 17C7.8 18.4 9.1 18 9.6 17.8C9.7 17.1 10 16.7 10.3 16.4C8 16.2 5.7 15.3 5.7 11.5C5.7 10.4 6.1 9.5 6.9 8.8C6.8 8.5 6.5 7.5 7 6.1C7 6.1 7.8 5.9 9.5 7C10.2 6.8 11 6.7 11.8 6.7C12.6 6.7 13.4 6.8 14.1 7C15.8 5.8 16.6 6.1 16.6 6.1C17.1 7.5 16.8 8.5 16.7 8.8C17.4 9.5 17.9 10.4 17.9 11.5C17.9 15.3 15.6 16.2 13.3 16.4C13.7 16.7 14 17.4 14 18.4V20.9C14 21.2 14.2 21.5 14.7 21.4C18.6 20.1 21.5 16.4 21.5 12C21.5 6.5 17 2 12 2Z" fill="currentColor"/></svg>
+          </a>
+          <a href="https://br.linkedin.com/company/unbreakableunb" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M7 10V17M7 7V7.01M12 17V13C12 11.5 13 10.5 14.3 10.5C15.5 10.5 16.3 11.4 16.3 13V17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 10.5V17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" aria-label="Discord">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 8.5C10.5 7.7 13.5 7.7 16 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M7.5 8.5C5.5 11 5 14.5 5.3 17C7 18.2 9 18.8 9 18.8L9.8 17.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 8.5C18.5 11 19 14.5 18.7 17C17 18.2 15 18.8 15 18.8L14.2 17.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.3" cy="13.3" r="1.3" fill="currentColor"/><circle cx="14.7" cy="13.3" r="1.3" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Grupo</h5>
+        <ul>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#atividades">Atividades</a></li>
+          <li><a href="#trilha">Trilha de CTF</a></li>
+          <li><a href="#comunidade">Comunidade</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href="https://www.hackthebox.com/" target="_blank" rel="noopener">Hack The Box</a></li>
+          <li><a href="https://tryhackme.com/" target="_blank" rel="noopener">TryHackMe</a></li>
+          <li><a href="https://ctftime.org/" target="_blank" rel="noopener">CTFtime</a></li>
+          <li><a href="#">Write-ups</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contato</h5>
+        <ul>
+          <li><a href="#">Discord</a></li>
+          <li><a href="https://github.com/UnBreakable-Project" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://br.linkedin.com/company/unbreakableunb" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 UnBreakable UnB — Universidade de Brasília</span>
+      <span>Feito por quem também resolve máquina de madrugada.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
