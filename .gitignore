@@ -1,0 +1,11 @@
+# Arquivos locais e de desenvolvimento que não fazem parte do site publicado
+node_modules/
+dist/
+output/
+.impeccable/
+.playwright-cli/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
