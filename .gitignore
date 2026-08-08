@@ -9,3 +9,15 @@ output/
 !.env.example
 .DS_Store
 *.log
+
+# Configuração e documentação locais dos agentes
+.agent/
+.agents/
+DESIGN.md
+PRODUCT.md
+
+# Ambiente Docker usado apenas para inspeção local
+.dockerignore
+Dockerfile
+docker-compose.yml
+nginx.conf

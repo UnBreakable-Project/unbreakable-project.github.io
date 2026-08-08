@@ -1,0 +1,8 @@
+assets/
+equipe/
+eventos/
+dist/
+node_modules/
+output/
+.playwright-cli/
+.impeccable/
