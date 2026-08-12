@@ -1,7 +1,7 @@
 import { copyFile, mkdir } from "node:fs/promises";
 import { URL } from "node:url";
 
-const routes = ["eventos", "equipe", "contato"];
+const routes = ["eventos", "equipe", "contato", "identidade-visual"];
 
 await Promise.all(
   routes.map(async (route) => {

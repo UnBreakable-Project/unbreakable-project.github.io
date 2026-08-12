@@ -83,4 +83,16 @@ describe("UnBreakable", () => {
       screen.queryByRole("heading", { name: "Quer fazer parte?" }),
     ).not.toBeInTheDocument();
   });
+
+  it("renders the identity visual gallery page", () => {
+    window.history.replaceState({}, "", "/identidade-visual");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Identidade Visual" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Categorias de identidade visual" }),
+    ).toBeInTheDocument();
+  });
 });
