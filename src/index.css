@@ -844,13 +844,19 @@ img {
   color: var(--green);
 }
 .identity-head {
-  background: linear-gradient(118deg, #0d0717 0%, #1e1238 100%);
+  background: linear-gradient(118deg, var(--ink) 0%, var(--panel) 100%);
 }
 .identity-head > img {
-  width: min(720px, 54vw);
-  opacity: 0.48;
-  right: -5%;
-  top: -18%;
+  right: var(--edge);
+  top: 50%;
+  width: min(300px, 22vw);
+  max-height: 230px;
+  opacity: 0.7;
+  object-fit: contain;
+  transform: translateY(-50%);
+}
+.identity-head > div {
+  max-width: min(850px, calc(100% - 360px));
 }
 .identity-page {
   padding-top: 38px;
@@ -861,20 +867,62 @@ img {
   color: var(--muted);
   line-height: 1.7;
 }
+.brand-usage-essentials {
+  margin-top: 28px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.brand-usage-essentials h2 {
+  margin: 0;
+  color: var(--paper);
+  font:
+    700 22px/1.2 "Bricolage Grotesque",
+    sans-serif;
+  letter-spacing: -0.02em;
+}
+.brand-usage-essentials ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 28px;
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+.brand-usage-essentials li::marker {
+  color: var(--green);
+}
+.brand-usage-essentials a {
+  color: var(--green);
+  font-weight: 700;
+}
+.brand-status {
+  min-height: 1.7em;
+  margin: 16px 0 0;
+  color: var(--green);
+  font-size: 13px;
+}
+.brand-tabs-wrap {
+  margin: 26px 0 24px;
+}
 .brand-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 26px 0 24px;
+}
+.brand-tabs-hint {
+  display: none;
 }
 .brand-tabs button {
+  min-height: 44px;
   padding: 12px 16px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.01);
   color: var(--muted);
   cursor: pointer;
-  font: 700 12px/1.2 "IBM Plex Mono", monospace;
+  font:
+    700 12px/1.2 "IBM Plex Mono",
+    monospace;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   transition:
@@ -893,7 +941,11 @@ img {
 .brand-category-panel {
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(23, 16, 39, 0.96), rgba(15, 8, 28, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(23, 16, 39, 0.96),
+    rgba(15, 8, 28, 0.96)
+  );
   padding: clamp(22px, 3vw, 32px);
 }
 .brand-category-header {
@@ -916,34 +968,117 @@ img {
   color: var(--muted);
   line-height: 1.7;
 }
+.brand-category-header > div:last-child {
+  display: grid;
+  gap: 12px;
+}
+.brand-category-guidance {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--paper) !important;
+}
 .brand-file-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
+.brand-file-groups {
+  display: grid;
+  gap: 32px;
+}
+.brand-file-group {
+  min-width: 0;
+}
+.brand-file-group > h3 {
+  margin: 0 0 14px;
+  color: var(--paper);
+  font:
+    700 19px/1.2 "Bricolage Grotesque",
+    sans-serif;
+  letter-spacing: -0.02em;
+}
 .brand-file-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   background: rgba(8, 5, 16, 0.5);
 }
 .brand-file-preview {
+  box-sizing: border-box;
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 190px;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  overflow: hidden;
   padding: 18px;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(135deg, rgba(136, 69, 219, 0.24), rgba(113, 214, 109, 0.08));
+  background: linear-gradient(
+    135deg,
+    rgba(136, 69, 219, 0.24),
+    rgba(113, 214, 109, 0.08)
+  );
 }
 .brand-file-preview.is-image {
   background: rgba(8, 5, 16, 0.75);
 }
+.brand-file-preview.is-image.has-light-surface {
+  background: var(--paper);
+}
 .brand-file-preview.is-image img {
+  display: block;
   width: 100%;
   height: 100%;
-  max-height: 180px;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
   object-fit: contain;
+}
+.brand-file-preview.is-swatch {
+  background: var(--swatch-color);
+  color: var(--swatch-text);
+}
+.brand-color-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-color-value {
+  box-sizing: border-box;
+  width: min(11ch, 100%);
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  color: inherit;
+  font:
+    600 14px/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+.brand-color-copy {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  color: inherit;
+  cursor: pointer;
+  font:
+    600 14px/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.08em;
+}
+.brand-color-copy:hover {
+  background: color-mix(in srgb, currentColor 14%, transparent);
 }
 .brand-file-preview.is-document,
 .brand-file-preview.is-font {
@@ -976,13 +1111,13 @@ img {
 }
 .brand-file-card-body {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 10px;
   padding: 18px 18px 16px;
 }
 .brand-file-meta {
   display: flex;
-  justify-content: space-between;
   gap: 12px;
   color: var(--green);
   font:
@@ -992,6 +1127,7 @@ img {
   text-transform: uppercase;
 }
 .brand-file-card h3 {
+  min-height: 2.5em;
   margin: 0;
   font:
     700 18px/1.25 "Bricolage Grotesque",
@@ -999,17 +1135,38 @@ img {
   letter-spacing: -0.02em;
 }
 .brand-file-card p {
+  flex: 1;
   margin: 0;
   color: var(--muted);
   font-size: 12px;
   line-height: 1.6;
   word-break: break-word;
 }
+.brand-file-recommendation-slot {
+  display: flex;
+  align-items: flex-start;
+  min-height: 22px;
+}
+.brand-file-recommended {
+  padding: 5px 8px;
+  border: 1px solid color-mix(in srgb, var(--green) 46%, transparent);
+  border-radius: 999px;
+  color: var(--green);
+  font:
+    600 10px/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .brand-file-actions {
   display: flex;
   align-items: center;
   gap: 14px;
   margin-top: 8px;
+}
+.brand-file-actions.is-format-list {
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .button.small,
 .text-link.small {
@@ -1019,14 +1176,14 @@ img {
 .button.small {
   padding: 11px 13px;
 }
+.brand-file-actions .button.small,
+.brand-file-actions .text-link.small {
+  min-height: 44px;
+}
 .text-link.small {
   display: inline-flex;
   align-items: center;
   font-weight: 700;
-}
-.brand-file-card small {
-  color: var(--dim);
-  font-size: 11px;
 }
 .brand-empty-state {
   margin-top: 18px;
@@ -1037,6 +1194,12 @@ img {
   background: rgba(255, 255, 255, 0.01);
 }
 @media (max-width: 850px) {
+  .identity-head > img {
+    display: none;
+  }
+  .identity-head > div {
+    max-width: 850px;
+  }
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -1144,6 +1307,9 @@ img {
     flex-direction: column;
     align-items: flex-start;
   }
+  .brand-usage-essentials ul {
+    grid-template-columns: 1fr;
+  }
   .next-event {
     grid-template-columns: minmax(0, 1fr) 172px;
     gap: 18px 28px;
@@ -1238,11 +1404,26 @@ img {
   .brand-file-grid {
     grid-template-columns: 1fr;
   }
+  .brand-color-controls {
+    flex-direction: column;
+  }
+  .brand-color-value,
+  .brand-color-copy {
+    width: 100%;
+  }
   .brand-tabs {
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
     scrollbar-width: thin;
+  }
+  .brand-tabs-hint {
+    display: block;
+    margin: 8px 0 0;
+    color: var(--dim);
+    font:
+      500 11px/1.4 "IBM Plex Mono",
+      monospace;
   }
   .brand-tabs button {
     white-space: nowrap;

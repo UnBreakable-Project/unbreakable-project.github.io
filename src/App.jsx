@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "./assets/unbreakableLogo_9.svg";
 import mark from "./assets/unbreakable-mark.svg";
 import circuit from "./assets/circuitos_1.png";
-import pinkHat from "./assets/pinkhat.png";
+import pinkHat from "./assets/pinkhat.jpg";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 

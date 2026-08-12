@@ -8,6 +8,18 @@ export default [
   },
   js.configs.recommended,
   {
+    files: ["vite.config.js", "scripts/**/*.mjs"],
+    languageOptions: {
+      globals: {
+        clearTimeout: "readonly",
+        console: "readonly",
+        process: "readonly",
+        setInterval: "readonly",
+        setTimeout: "readonly",
+      },
+    },
+  },
+  {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: "latest",

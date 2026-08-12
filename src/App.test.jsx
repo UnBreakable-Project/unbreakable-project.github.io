@@ -5,12 +5,16 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 
 afterEach(() => {
   cleanup();
   window.history.replaceState({}, "", "/");
+  Object.defineProperty(window.navigator, "clipboard", {
+    configurable: true,
+    value: undefined,
+  });
 });
 
 function renderApp() {
@@ -92,7 +96,84 @@ describe("UnBreakable", () => {
       screen.getByRole("heading", { level: 1, name: "Identidade Visual" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("navigation", { name: "Categorias de identidade visual" }),
+      screen.getByRole("navigation", {
+        name: "Categorias de identidade visual",
+      }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Fontes" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Versão preferida")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "canais oficiais" }),
+    ).toHaveAttribute("href", "/contato");
+    expect(
+      screen
+        .getAllByRole("link", { name: /^Baixar / })
+        .every((link) => link.hasAttribute("download")),
+    ).toBe(true);
+  });
+
+  it("updates the identity category and exposes accessible action feedback", () => {
+    window.history.replaceState({}, "", "/identidade-visual");
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Ícones" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Ícones" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Exibindo a categoria Ícones.",
+    );
+    expect(screen.getAllByRole("link", { name: "Baixar SVG" })).toHaveLength(8);
+    expect(screen.getAllByRole("link", { name: "Baixar PNG" })).toHaveLength(8);
+
+    fireEvent.click(screen.getByRole("button", { name: "Cores" }));
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Copiar código #FFFFFF de Branco",
+      }),
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Não foi possível copiar automaticamente #FFFFFF. Copie o código exibido.",
+    );
+    expect(screen.getByDisplayValue("#FFFFFF")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Circuitos" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Circuitos" }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Baixar SVG" })).toHaveLength(4);
+    expect(screen.getAllByRole("link", { name: "Baixar PNG" })).toHaveLength(3);
+
+    fireEvent.click(screen.getAllByRole("link", { name: "Baixar SVG" })[0]);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Solicitação de download de Circuito colorido em SVG acionada.",
+    );
+  });
+
+  it("copies a color code when the clipboard is available", async () => {
+    const writeText = vi.fn().mockResolvedValue();
+    Object.defineProperty(window.navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+    window.history.replaceState({}, "", "/identidade-visual");
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Cores" }));
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Copiar código #FFFFFF de Branco",
+      }),
+    );
+
+    expect(writeText).toHaveBeenCalledWith("#FFFFFF");
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Código #FFFFFF de Branco copiado.",
+    );
   });
 });

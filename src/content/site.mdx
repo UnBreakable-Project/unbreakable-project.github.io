@@ -114,6 +114,248 @@ export const siteContent = {
       description: "Canal oficial do UnBreakable.",
     },
   ],
+  visualIdentity: {
+    title: "Identidade Visual",
+    description:
+      "Baixe os arquivos oficiais e consulte as orientações para aplicar a marca com consistência.",
+    introduction:
+      "Comece pela categoria de que você precisa. Cada arquivo indica sua finalidade e, quando há uma versão preferida dentro da categoria, ela vem sinalizada.",
+    essentials: {
+      title: "Regras essenciais",
+      rules: [
+        {
+          text: "Use os arquivos como estão: não estique, gire, recorte nem altere as cores da marca.",
+        },
+        {
+          text: "Mantenha espaço livre ao redor da marca e não a aplique sobre textos ou fundos concorridos.",
+        },
+        {
+          text: "Prefira SVG em materiais digitais e PNG quando a plataforma pedir uma imagem rasterizada.",
+        },
+        {
+          before:
+            "Na dúvida, use a Marca principal e envie o material para validação pelos ",
+          link: { label: "canais oficiais", href: "/contato" },
+          after: " do UnBreakable.",
+        },
+      ],
+    },
+    categories: [
+      {
+        slug: "logos",
+        label: "Logos",
+        description:
+          "Baixe a versão que corresponde ao espaço e à cor de fundo onde a marca será usada.",
+        usage:
+          "A marca principal é a opção padrão. Use versões em uma cor somente quando a peça exigir uma única cor.",
+        files: {
+          "unbreakableLogo_1.svg": {
+            label: "Símbolo em uma cor",
+            group: "Versões em uma cor",
+            usage:
+              "Use em espaços pequenos ou quadrados, como foto de perfil e ícone.",
+            previewSurface: "light",
+            order: 4,
+          },
+          "unbreakableLogo_2.svg": {
+            label: "Logo horizontal em uma cor",
+            group: "Versões em uma cor",
+            usage:
+              "Use em cabeçalhos, rodapés e outros espaços mais largos que altos.",
+            previewSurface: "light",
+            order: 5,
+          },
+          "unbreakableLogo_3.svg": {
+            label: "Símbolo em preto",
+            group: "Versões em uma cor",
+            usage:
+              "Use sobre fundo claro quando a peça precisar ser impressa ou exibida em uma única cor.",
+            previewSurface: "light",
+            order: 6,
+          },
+          "unbreakableLogo_4.svg": {
+            label: "Símbolo para fundo escuro",
+            group: "Versões para fundo escuro",
+            usage: "Use em espaços pequenos ou quadrados sobre fundos escuros.",
+            order: 7,
+          },
+          "unbreakableLogo_5.svg": {
+            label: "Logo horizontal para fundo escuro",
+            group: "Versões para fundo escuro",
+            usage:
+              "Use em cabeçalhos, rodapés e espaços largos sobre fundos escuros.",
+            order: 8,
+          },
+          "unbreakableLogo_6.svg": {
+            label: "Marca para fundo escuro",
+            group: "Versões para fundo escuro",
+            usage:
+              "Use a assinatura completa sobre fundos escuros quando houver espaço para a marca inteira.",
+            order: 9,
+          },
+          "unbreakableLogo_7.svg": {
+            label: "Símbolo colorido",
+            group: "Versões coloridas",
+            usage:
+              "Use em espaços pequenos ou quadrados quando a paleta colorida puder aparecer por completo.",
+            order: 2,
+          },
+          "unbreakableLogo_8.svg": {
+            label: "Logo horizontal colorido",
+            group: "Versões coloridas",
+            usage:
+              "Use em cabeçalhos, rodapés e espaços largos quando a paleta colorida puder aparecer por completo.",
+            order: 3,
+          },
+          "unbreakableLogo_9.svg": {
+            label: "Marca principal",
+            group: "Versões coloridas",
+            usage:
+              "Escolha padrão para peças digitais em fundo claro, sempre que houver espaço para a marca inteira.",
+            recommended: true,
+            order: 1,
+          },
+        },
+      },
+      {
+        slug: "icones",
+        label: "Ícones",
+        description:
+          "Ícones e elementos gráficos para apoiar a comunicação visual do UnBreakable.",
+        usage:
+          "Use como apoio visual. Escolha a versão com contraste adequado ao fundo; esses ícones não substituem a marca principal.",
+        files: {
+          "boneco_1.svg": {
+            label: "Ícone em contorno escuro",
+            usage:
+              "Use sobre fundos claros quando quiser um elemento de apoio mais leve.",
+            previewSurface: "light",
+          },
+          "boneco_2.svg": {
+            label: "Ícone preenchido escuro",
+            usage:
+              "Use sobre fundos claros quando precisar de maior presença visual.",
+            previewSurface: "light",
+          },
+          "boneco_3.svg": {
+            label: "Ícone em contorno claro",
+            usage:
+              "Use sobre fundos escuros quando quiser um elemento de apoio mais leve.",
+          },
+          "boneco_4.svg": {
+            label: "Ícone preenchido claro",
+            usage:
+              "Use sobre fundos escuros quando precisar de maior presença visual.",
+          },
+          "boneco_5.svg": {
+            label: "Ícone em contorno verde",
+            usage:
+              "Use como destaque pontual sobre fundos escuros; não substitui a marca principal.",
+          },
+          "boneco_6.svg": {
+            label: "Ícone preenchido verde",
+            usage:
+              "Use como destaque pontual sobre fundos escuros; não substitui a marca principal.",
+          },
+          "boneco_7.svg": {
+            label: "Ícone em contorno roxo",
+            usage:
+              "Use como apoio visual sobre fundos claros ou de alto contraste.",
+            previewSurface: "light",
+          },
+          "boneco_8.svg": {
+            label: "Ícone preenchido roxo",
+            usage:
+              "Use como apoio visual sobre fundos claros ou de alto contraste.",
+            previewSurface: "light",
+          },
+          "boneco.af": {
+            label: "Ícone — arquivo editável (.af)",
+            usage:
+              "Abra apenas em software compatível com o formato .af para editar a peça.",
+          },
+        },
+      },
+      {
+        slug: "cores",
+        label: "Cores",
+        description:
+          "Consulte os tons oficiais e seus códigos antes de criar qualquer material do UnBreakable.",
+        usage:
+          "Use os códigos exibidos nos cartões. Os PDFs trazem a referência completa de cada cor.",
+        files: {
+          "branco_FFFFFF.pdf": {
+            label: "Branco",
+            color: "#FFFFFF",
+            usage:
+              "Use para texto e detalhes que precisam de contraste sobre fundos escuros.",
+          },
+          "roxo_562197.pdf": {
+            label: "Roxo UnBreakable",
+            color: "#562197",
+            usage:
+              "Use como cor principal de fundo e para criar profundidade nas peças.",
+          },
+          "verde_69C36B.pdf": {
+            label: "Verde UnBreakable",
+            color: "#69C36B",
+            usage:
+              "Use com moderação para destacar ações, links e informações importantes.",
+          },
+        },
+      },
+      {
+        slug: "fontes",
+        label: "Fontes",
+        description:
+          "Fontes oficiais que serão disponibilizadas para a criação de materiais da marca.",
+        usage:
+          "Quando disponíveis, use as fontes desta seção para manter os materiais alinhados à identidade do UnBreakable.",
+        files: {},
+      },
+      {
+        slug: "circuitos",
+        label: "Circuitos",
+        description:
+          "Linhas e circuitos que complementam a marca e ajudam a compor o universo visual do UnBreakable.",
+        usage:
+          "Use como detalhe de fundo, afastado de textos e da marca principal. Escolha a versão com contraste adequado ao fundo.",
+        files: {
+          "circuitos_1.svg": {
+            label: "Circuito colorido",
+            usage:
+              "Prefira SVG em peças digitais que precisem ser redimensionadas sem perda de qualidade. Mantenha o circuito afastado de textos e da marca.",
+            order: 1,
+          },
+          "circuitos_2.svg": {
+            label: "Circuito preto",
+            usage:
+              "Prefira SVG em peças digitais que precisem ser redimensionadas sem perda de qualidade. Mantenha o circuito afastado de textos e da marca.",
+            previewSurface: "light",
+            order: 2,
+          },
+          "circuitos_3.svg": {
+            label: "Circuito claro",
+            usage:
+              "Prefira SVG em peças digitais que precisem ser redimensionadas sem perda de qualidade. Mantenha o circuito afastado de textos e da marca.",
+            order: 3,
+          },
+          "circuitos.svg": {
+            label: "Circuito principal em cinza",
+            usage:
+              "Use como detalhe de fundo em composições amplas, sempre afastado de textos e da marca.",
+            order: 4,
+          },
+          "circuitos.af": {
+            label: "Circuito — arquivo editável (.af)",
+            usage:
+              "Abra apenas em software compatível com o formato .af para editar a peça.",
+            order: 5,
+          },
+        },
+      },
+    ],
+  },
   founders: [
     {
       name: "Enzo Teles",

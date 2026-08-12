@@ -6,3 +6,4 @@ node_modules/
 output/
 .playwright-cli/
 .impeccable/
+src/data/visual-identity-manifest.js
