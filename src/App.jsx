@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import logo from "./assets/unbreakableLogo_9.svg";
 import mark from "./assets/unbreakable-mark.svg";
 import circuit from "./assets/circuitos_1.png";
-import pinkHat from "./assets/pinkhat.png";
+import pinkHat from "./assets/pinkhat.jpg";
 import { siteContent } from "./content/site.mdx";
+import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 
 const photoModules = import.meta.glob(
   "./assets/Fotos-gestão/*.{jpg,jpeg,png,webp,avif}",
@@ -75,6 +76,7 @@ function Header() {
   const isHome = currentPath() === "/";
   const path = currentPath();
   const isContact = path === "/contato";
+  const isIdentityVisual = path === "/identidade-visual";
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -176,6 +178,14 @@ function Header() {
             onClick={() => setOpen(false)}
           >
             Equipe
+          </a>
+          <a
+            href={routeHref("/identidade-visual")}
+            className={isIdentityVisual ? "is-active" : undefined}
+            aria-current={isIdentityVisual ? "page" : undefined}
+            onClick={() => setOpen(false)}
+          >
+            Identidade Visual
           </a>
           <a
             className={
@@ -369,6 +379,7 @@ function Footer() {
           <a href={`${siteBase}#faq`}>FAQ</a>
           <a href={routeHref("/eventos")}>Eventos</a>
           <a href={routeHref("/equipe")}>Equipe</a>
+          <a href={routeHref("/identidade-visual")}>Identidade Visual</a>
           <a href={routeHref("/contato")}>Contato</a>
         </div>
         <div className="footer-col">
@@ -617,6 +628,11 @@ function Contato() {
     </>
   );
 }
+
+function IdentidadeVisual() {
+  return <VisualIdentityPage />;
+}
+
 export default function App() {
   const path = currentPath();
   const page =
@@ -626,6 +642,8 @@ export default function App() {
       <Equipe />
     ) : path === "/contato" ? (
       <Contato />
+    ) : path === "/identidade-visual" ? (
+      <IdentidadeVisual />
     ) : (
       <Home />
     );
