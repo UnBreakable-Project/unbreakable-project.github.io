@@ -330,28 +330,6 @@ img {
   line-height: 1.75;
   margin: 0 0 25px;
 }
-.method ul {
-  padding: 0;
-  margin: 30px 0 0;
-  list-style: none;
-  color: var(--paper);
-  font-size: 14px;
-}
-.method li {
-  padding: 12px 0 12px 22px;
-  border-top: 1px solid var(--line);
-  position: relative;
-}
-.method li:before {
-  content: "";
-  position: absolute;
-  left: 1px;
-  top: 18px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-}
 .events-section {
   padding-top: 0;
 }
@@ -432,23 +410,6 @@ img {
   list-style: none;
 }
 .faq summary::-webkit-details-marker {
-  display: none;
-}
-.faq-icon {
-  display: grid;
-  place-items: center;
-  color: var(--green);
-  flex: none;
-}
-.faq-icon svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-}
-.faq details[open] .faq-icon .vertical {
   display: none;
 }
 .faq details p {

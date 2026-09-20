@@ -1,6 +1,8 @@
+import { eventIsUpcoming, formatEventDate } from "./lib/events";
+import { pageMeta, notFoundMeta } from "./data/page-meta";
 import { useEffect, useState } from "react";
 import Home from "./features/home/Home";
-import { EventList } from "./components/SiteUI";
+import { EventList, ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
 const circuit = "/identidade-visual/circuitos/circuitos_1.png";
@@ -60,7 +62,7 @@ function Header() {
   useEffect(() => {
     if (!isHome) return;
 
-    const sectionIds = ["sobre", "metodo", "faq"];
+    const sectionIds = links.map(({ target }) => target);
     let frameId = 0;
 
     const updateActiveSection = () => {
@@ -77,7 +79,7 @@ function Header() {
         documentHeight > windowHeight &&
         scrollY + windowHeight >= documentHeight - 60
       ) {
-        setActiveSection("contato");
+        setActiveSection("participar");
         return;
       }
 
@@ -317,6 +319,8 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
           className={`member-photo ${photoClass ?? ""}`}
           src={photo}
           alt={name}
+          loading="lazy"
+          decoding="async"
         />
       ) : (
         <div className="member-photo is-empty" aria-hidden="true" />
@@ -368,6 +372,7 @@ function Footer() {
           <a href={`${siteBase}#sobre`}>Sobre</a>
           <a href={`${siteBase}#metodo`}>Metodologia</a>
           <a href={`${siteBase}#faq`}>FAQ</a>
+          <a href={`${siteBase}#participar`}>Como participar</a>
           <a href={routeHref("/eventos")}>Eventos</a>
           <a href={routeHref("/equipe")}>Equipe</a>
           <a href={routeHref("/identidade-visual")}>Identidade Visual</a>
@@ -401,20 +406,26 @@ function PageHead({ title, text }) {
   );
 }
 function Eventos() {
+  const upcoming = eventIsUpcoming(nextEvent.date);
   return (
     <>
       <PageHead title={pages.events.title} text={pages.events.description} />
       <main id="conteudo-principal" className="page-content">
+        <h2 className="minor-heading">Próximos eventos</h2>
+        {!upcoming && (
+          <p className="agenda-empty">
+            Novas datas serão divulgadas nos{" "}
+            <a href={routeHref("/contato")}>canais oficiais</a>.
+          </p>
+        )}
+        {!upcoming && (
+          <h2 className="minor-heading">Histórico de atividades</h2>
+        )}
         <div className="next-event">
-          <span>PRÓXIMO EVENTO</span>
+          <span>{upcoming ? "PRÓXIMO EVENTO" : "EVENTO REALIZADO"}</span>
           <div className="next-event-details">
-            <time>
-              {nextEvent.day}{" "}
-              <b>
-                {nextEvent.month}
-                <br />
-                {nextEvent.year}
-              </b>
+            <time dateTime={nextEvent.date}>
+              {formatEventDate(nextEvent.date)}
             </time>
             <div>
               <h2>{nextEvent.title}</h2>
@@ -426,7 +437,7 @@ function Eventos() {
             <img src={pinkHat} alt={nextEvent.imageAlt} />
           </figure>
         </div>
-        <h2 className="minor-heading">Já realizamos</h2>
+        {upcoming && <h2 className="minor-heading">Histórico de atividades</h2>}
         <EventList />
       </main>
     </>
@@ -470,6 +481,9 @@ function Contato() {
                 <span className="channel-copy">
                   <strong>{name}</strong>
                   <small>{description}</small>
+                  <span className="channel-action">
+                    Acessar canal <ArrowIcon />
+                  </span>
                 </span>
               </a>
             </li>
@@ -486,6 +500,13 @@ function IdentidadeVisual() {
 
 export default function App() {
   const path = currentPath();
+  useEffect(() => {
+    const meta = pageMeta[path] ?? notFoundMeta;
+    document.title = meta.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", meta.description);
+  }, [path]);
   const page =
     path === "/eventos" ? (
       <Eventos />
@@ -495,8 +516,17 @@ export default function App() {
       <Contato />
     ) : path === "/identidade-visual" ? (
       <IdentidadeVisual />
-    ) : (
+    ) : path === "/" ? (
       <Home />
+    ) : (
+      <main id="conteudo-principal" className="page-content not-found">
+        <p className="micro">404 / UnBreakable</p>
+        <h1>Página não encontrada</h1>
+        <p>Este endereço não existe ou foi alterado.</p>
+        <a className="button primary" href={siteBase}>
+          Voltar ao início <ArrowIcon />
+        </a>
+      </main>
     );
 
   return (

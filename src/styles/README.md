@@ -18,6 +18,19 @@ Shared controls and secondary pages retain their styles in `index.css`.
 remain non-interactive because individual event destinations are not provided.
 
 Keyboard focus stays visible; reduced motion disables transitions and animation.
-The FAQ uses native details/summary. The mobile menu supports Escape and restores
+Method and FAQ share `components/Accordion.jsx`, retaining native details/summary.
+Height transitions measure content, support reversal and respect reduced motion.
+`components.css` provides shared accordion and secondary-page styling.
+The mobile menu supports Escape and restores
 focus to its toggle. Validate layout in a browser from 320px through wide desktop
 before publishing, including the four secondary routes.
+
+Route titles, descriptions, the official domain and sharing image are configured
+in `data/page-meta.js`. The build writes metadata directly into each route's HTML
+for social crawlers, including noindex on the 404 page. Review `siteUrl` when
+deploying to a different domain or fork.
+
+The featured event's `nextEvent.date` in `content/site.mdx` uses YYYY-MM-DD.
+It is displayed as upcoming through the end of that day in America/Sao_Paulo;
+afterward it appears in the history. Existing undated talks stay in the history.
+Do not invent dates, member roles or write-up destinations to fill empty fields.

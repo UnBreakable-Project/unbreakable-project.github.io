@@ -3,6 +3,7 @@ export const siteContent = {
     { label: "Sobre", target: "sobre" },
     { label: "Método", target: "metodo" },
     { label: "FAQ", target: "faq" },
+    { label: "Como participar", target: "participar" },
   ],
   home: {
     heroTitle: {
@@ -23,9 +24,21 @@ export const siteContent = {
       description:
         "As sessões usam máquinas do Hack The Box e TryHackMe. Resolver é só metade do trabalho: documentar o raciocínio, o caminho e as descobertas torna o aprendizado reproduzível.",
       points: [
-        "Prática guiada em máquinas reais",
-        "Discussão de técnicas e decisões",
-        "Documentação técnica como parte da entrega",
+        {
+          title: "Prática guiada em máquinas reais",
+          description:
+            "Nas máquinas do Hack The Box e TryHackMe, o grupo trabalha reconhecimento, exploração de vulnerabilidades e escalonamento de privilégios.",
+        },
+        {
+          title: "Discussão de técnicas e decisões",
+          description:
+            "Investigar, testar e compartilhar fazem parte do mesmo processo. A troca entre os participantes conecta as técnicas utilizadas ao raciocínio por trás de cada decisão.",
+        },
+        {
+          title: "Documentação técnica como parte da entrega",
+          description:
+            "O write-up registra o caminho percorrido e as descobertas. Documentar o raciocínio permite compartilhar o conhecimento e tornar o aprendizado reproduzível.",
+        },
       ],
     },
     events: {
@@ -56,9 +69,7 @@ export const siteContent = {
     },
   ],
   nextEvent: {
-    day: "19",
-    month: "SET",
-    year: "2026",
+    date: "2026-09-19",
     title: "CTF Pink Hat — Pwning Like a Girl",
     description:
       "O UnBreakable participa da primeira edição do CTF Pink Hat, com desafios, workshops e oficinas de segurança ofensiva.",

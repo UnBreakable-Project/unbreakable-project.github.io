@@ -1,3 +1,4 @@
+import Accordion from "../../components/Accordion";
 import logo from "../../assets/unbreakableLogo_9.svg";
 import { siteContent } from "../../content/site.mdx";
 import { ArrowIcon, EventList } from "../../components/SiteUI";
@@ -50,16 +51,19 @@ export default function Home() {
         </div>
         <div className="method-copy">
           <p>{home.method.description}</p>
-          <ul>
-            {home.method.points.map((point, index) => (
-              <li key={point}>
-                <span className="method-number" aria-hidden="true">
-                  0{index + 1}
-                </span>
-                <span>{point}</span>
-              </li>
+          <div className="method-accordions">
+            {home.method.points.map(({ title, description }, index) => (
+              <Accordion
+                className="method-step"
+                key={title}
+                title={title}
+                number={`0${index + 1}`}
+                defaultOpen={index === 0}
+              >
+                <p>{description}</p>
+              </Accordion>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
@@ -85,23 +89,18 @@ export default function Home() {
         </div>
         <div className="faq-list">
           {faqs.map(({ question, answer }, index) => (
-            <details key={question} open={index === 0}>
-              <summary>
-                <span>{question}</span>
-                <span className="faq-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14" />
-                    <path className="vertical" d="M12 5v14" />
-                  </svg>
-                </span>
-              </summary>
+            <Accordion
+              key={question}
+              title={question}
+              defaultOpen={index === 0}
+            >
               <p>{answer}</p>
-            </details>
+            </Accordion>
           ))}
         </div>
       </section>
 
-      <section className="participate">
+      <section id="participar" className="participate">
         <div>
           <h2>{home.participate.title}</h2>
           <p>{home.participate.description}</p>

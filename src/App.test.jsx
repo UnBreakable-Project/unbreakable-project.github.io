@@ -22,6 +22,18 @@ function renderApp() {
 }
 
 describe("UnBreakable", () => {
+  it("shows a recovery link for an unknown route", () => {
+    window.history.replaceState({}, "", "/nao-existe");
+    renderApp();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Página não encontrada" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Voltar ao início/ }),
+    ).toHaveAttribute("href", "/");
+    expect(document.title).toBe("Página não encontrada | UnBreakable");
+  });
+
   it("closes the mobile menu with Escape and restores focus", () => {
     renderApp();
     const toggle = screen.getByRole("button", { name: "Abrir menu" });

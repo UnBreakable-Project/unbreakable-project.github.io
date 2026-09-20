@@ -21,6 +21,15 @@
 .home .hero::after {
   height: 64px;
 }
+.home .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 45%;
+  background: url("/identidade-visual/circuitos/circuitos_3.svg") center / cover
+    no-repeat;
+  opacity: 0.045;
+  pointer-events: none;
+}
 .home .hero-copy {
   min-width: 0;
 }
@@ -121,27 +130,48 @@
 .home .prose p:last-child {
   margin-bottom: 0;
 }
-.home .method ul {
+.home .method-accordions {
   display: grid;
   gap: var(--space-3);
   margin-top: var(--space-8);
 }
-.home .method li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-6);
+.home .method-step {
   background: var(--ink-soft);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   line-height: 1.6;
+  transition: border-color var(--motion-fast);
 }
-.home .method li::before {
-  content: none;
+.home .method-step[open],
+.home .method-step:hover {
+  border-color: var(--violet-line);
 }
-.home .method-number {
-  color: var(--violet-light);
-  font: 500 12px var(--font-mono);
+.home .method-step summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  cursor: pointer;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+}
+.home .method-step summary::-webkit-details-marker {
+  display: none;
+}
+.home .method-step summary:hover,
+.home .method-step[open] summary {
+  color: var(--green);
+}
+.home .method-step p {
+  margin: 0 var(--space-6);
+  padding: var(--space-4) 0 var(--space-6);
+  border-top: 1px solid var(--violet-line);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
 }
 .home .events-section {
   display: grid;
@@ -190,9 +220,6 @@
 .home .faq summary:hover,
 .home .faq details[open] summary {
   color: var(--green);
-}
-.home .faq-icon {
-  flex-shrink: 0;
 }
 .home .participate {
   max-width: calc(var(--max) - 2 * var(--edge));
