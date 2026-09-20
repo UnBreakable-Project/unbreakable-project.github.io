@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import logo from "./assets/unbreakableLogo_9.svg";
+import Home from "./features/home/Home";
+import { EventList } from "./components/SiteUI";
+import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
 const circuit = "/identidade-visual/circuitos/circuitos_1.png";
 import pinkHat from "./assets/pinkhat.jpg";
@@ -29,15 +31,7 @@ const resolveProfiles = (profiles) =>
     photo: resolvePhoto(profile),
   }));
 
-const {
-  navigation: links,
-  events,
-  faqs,
-  home,
-  nextEvent,
-  pages,
-  socialLinks,
-} = siteContent;
+const { navigation: links, nextEvent, pages, socialLinks } = siteContent;
 const members = resolveProfiles(siteContent.members);
 
 const siteBase = import.meta.env.BASE_URL;
@@ -51,24 +45,8 @@ function currentPath() {
   return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
 }
 
-function routeHref(path) {
-  return `${siteBase}${path.replace(/^\//, "")}`;
-}
-
 function homeAnchor(id, isHome) {
   return isHome ? `#${id}` : `${siteBase}#${id}`;
-}
-
-function ArrowIcon({ direction = "right" }) {
-  const paths = {
-    right: "M3 12h17M14 5l7 7-7 7",
-    down: "M12 3v17M5 14l7 7 7-7",
-  };
-  return (
-    <svg className="action-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d={paths[direction]} />
-    </svg>
-  );
 }
 
 function Header() {
@@ -133,6 +111,18 @@ function Header() {
     };
   }, [isHome]);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        document.querySelector(".menu-button")?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   const currentActiveSection = isHome ? activeSection : "";
 
   return (
@@ -145,6 +135,7 @@ function Header() {
           </span>
         </a>
         <nav
+          id="primary-navigation"
           className={open ? "nav open" : "nav"}
           aria-label="Navegação principal"
         >
@@ -209,6 +200,7 @@ function Header() {
             className="menu-button"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
+            aria-controls="primary-navigation"
             onClick={() => setOpen(!open)}
           >
             <i />
@@ -394,118 +386,6 @@ function Footer() {
         <small>© 2026 UnBreakable · Universidade de Brasília</small>
       </div>
     </footer>
-  );
-}
-
-function EventList({ compact = false }) {
-  return (
-    <div className={compact ? "event-list compact" : "event-list"}>
-      {events.map(({ type, title, presenter }) => (
-        <article key={title} className="event-row">
-          <span>{type}</span>
-          <h3>{title}</h3>
-          <p>{presenter}</p>
-        </article>
-      ))}
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <main id="conteudo-principal">
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <h1 id="hero-title">
-            {home.heroTitle.lead} <br />
-            <em>{home.heroTitle.emphasis}</em>
-          </h1>
-          <p className="lede">{home.heroLede}</p>
-          <div className="actions">
-            <a className="button primary" href="#sobre">
-              Conheça o grupo <ArrowIcon direction="down" />
-            </a>
-            <a className="text-link" href={routeHref("/eventos")}>
-              Ver eventos <ArrowIcon />
-            </a>
-          </div>
-        </div>
-        <div className="hero-object">
-          <img src={logo} alt="UnBreakable" />
-        </div>
-      </section>
-
-      <section id="sobre" className="intro section">
-        <div className="section-title">
-          <h2>{home.intro.title}</h2>
-        </div>
-        <div className="prose">
-          {home.intro.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
-
-      <section id="metodo" className="method section">
-        <div className="method-title">
-          <h2>{home.method.title}</h2>
-        </div>
-        <div className="method-copy">
-          <p>{home.method.description}</p>
-          <ul>
-            {home.method.points.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="events-section section">
-        <div className="section-heading-row">
-          <div>
-            <h2>{home.events.title}</h2>
-            <p>{home.events.description}</p>
-          </div>
-          <a className="text-link" href={routeHref("/eventos")}>
-            Todos os eventos <ArrowIcon />
-          </a>
-        </div>
-        <EventList compact />
-      </section>
-
-      <section id="faq" className="faq section">
-        <div className="section-title">
-          <h2>{home.faq.title}</h2>
-          <p>{home.faq.description}</p>
-        </div>
-        <div className="faq-list">
-          {faqs.map(({ question, answer }, index) => (
-            <details key={question} open={index === 0}>
-              <summary>
-                <span>{question}</span>
-                <span className="faq-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14" />
-                    <path className="vertical" d="M12 5v14" />
-                  </svg>
-                </span>
-              </summary>
-              <p>{answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section className="participate">
-        <div>
-          <h2>{home.participate.title}</h2>
-          <p>{home.participate.description}</p>
-        </div>
-        <a className="button secondary" href={routeHref("/contato")}>
-          Canais oficiais <ArrowIcon />
-        </a>
-      </section>
-    </main>
   );
 }
 

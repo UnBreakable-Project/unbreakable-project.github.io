@@ -22,6 +22,17 @@ function renderApp() {
 }
 
 describe("UnBreakable", () => {
+  it("closes the mobile menu with Escape and restores focus", () => {
+    renderApp();
+    const toggle = screen.getByRole("button", { name: "Abrir menu" });
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveAttribute("aria-controls", "primary-navigation");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+  });
+
   it("renders the main content landmark and the official channels", () => {
     renderApp();
 
