@@ -29,11 +29,6 @@ function visualIdentityManifestPlugin() {
           server.ws.send({ type: "full-reload", path: "/" });
         },
       );
-
-      server.middlewares.use((_req, _res, next) => {
-        next();
-      });
-
       return () => watcher.close();
     },
   };

@@ -49,14 +49,20 @@ describe("UnBreakable", () => {
     fireEvent.scroll(window, { target: { scrollY: 300 } });
   });
 
-  it("renders the static study terminal", () => {
+  it("renders the method section without the terminal", () => {
     renderApp();
 
     expect(
-      screen.getByLabelText("Exemplo de fluxo de estudo"),
-    ).toHaveTextContent("hipótese → teste → evidência → write-up");
+      screen.getByRole("heading", {
+        level: 2,
+        name: "O ataque termina no write-up.",
+      }),
+    ).toBeInTheDocument();
     expect(
-      screen.queryByLabelText("Linha de comando do terminal"),
+      screen.getByText(/As sessões usam máquinas do Hack The Box/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Exemplo de fluxo de estudo"),
     ).not.toBeInTheDocument();
   });
 
@@ -175,5 +181,21 @@ describe("UnBreakable", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Código #FFFFFF de Branco copiado.",
     );
+  });
+
+  it("renders the team page with gestão atual and no fundação references", () => {
+    window.history.replaceState({}, "", "/equipe");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Gestão atual" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Fundação/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/fundador/i)).not.toBeInTheDocument();
+    expect(screen.getByText("Enzo Teles")).toBeInTheDocument();
+    expect(
+      screen.getByText("Prof. Roberto Rodrigues-Filho"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Luisa de Souza")).toBeInTheDocument();
   });
 });

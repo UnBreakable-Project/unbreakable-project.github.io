@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "./assets/unbreakableLogo_9.svg";
 import mark from "./assets/unbreakable-mark.svg";
-import circuit from "./assets/circuitos_1.png";
+const circuit = "/identidade-visual/circuitos/circuitos_1.png";
 import pinkHat from "./assets/pinkhat.jpg";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
@@ -38,7 +38,6 @@ const {
   pages,
   socialLinks,
 } = siteContent;
-const founders = resolveProfiles(siteContent.founders);
 const members = resolveProfiles(siteContent.members);
 
 const siteBase = import.meta.env.BASE_URL;
@@ -412,37 +411,14 @@ function EventList({ compact = false }) {
   );
 }
 
-function StudyTerminal() {
-  return (
-    <div className="terminal" aria-label="Exemplo de fluxo de estudo">
-      <div className="terminal-top">
-        <i />
-        <i />
-        <i />
-        <span>terminal</span>
-      </div>
-      <code>
-        <span>$ ls</span>
-        <br />
-        anotacoes.md
-        <br />
-        <br />
-        <span>$ cat anotacoes.md</span>
-        <br />
-        hipótese → teste → evidência → write-up
-      </code>
-    </div>
-  );
-}
-
 function Home() {
   return (
     <main id="conteudo-principal">
       <section className="hero" aria-labelledby="hero-title">
-        <img className="hero-circuit" src={circuit} alt="" />
         <div className="hero-copy">
           <h1 id="hero-title">
-            {home.heroTitle.lead} <em>{home.heroTitle.emphasis}</em>
+            {home.heroTitle.lead} <br />
+            <em>{home.heroTitle.emphasis}</em>
           </h1>
           <p className="lede">{home.heroLede}</p>
           <div className="actions">
@@ -471,8 +447,10 @@ function Home() {
       </section>
 
       <section id="metodo" className="method section">
-        <div className="method-copy">
+        <div className="method-title">
           <h2>{home.method.title}</h2>
+        </div>
+        <div className="method-copy">
           <p>{home.method.description}</p>
           <ul>
             {home.method.points.map((point) => (
@@ -480,7 +458,6 @@ function Home() {
             ))}
           </ul>
         </div>
-        <StudyTerminal />
       </section>
 
       <section className="events-section section">
@@ -580,13 +557,7 @@ function Equipe() {
     <>
       <PageHead title={pages.team.title} text={pages.team.description} />
       <main id="conteudo-principal" className="page-content">
-        <h2 className="team-heading">Fundação</h2>
-        <div className="profile-grid">
-          {founders.map((profile) => (
-            <ProfileCard key={profile.name} {...profile} />
-          ))}
-        </div>
-        <h2 className="team-heading">Gestão</h2>
+        <h2 className="team-heading">Gestão atual</h2>
         <div className="profile-grid">
           {members.map((profile) => (
             <ProfileCard key={profile.name} {...profile} />
