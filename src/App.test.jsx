@@ -206,6 +206,84 @@ describe("UnBreakable", () => {
     );
   });
 
+  it("opens the command palette with Ctrl+K, filters and restores focus", () => {
+    renderApp();
+    const trigger = screen.getByRole("button", {
+      name: "Abrir paleta de comandos",
+    });
+    trigger.focus();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const dialog = screen.getByRole("dialog", { name: "Paleta de comandos" });
+    const input = within(dialog).getByRole("combobox");
+    expect(input).toHaveFocus();
+
+    fireEvent.change(input, { target: { value: "identidade" } });
+    const options = within(dialog).getAllByRole("option");
+    expect(options).toHaveLength(1);
+    expect(options[0]).toHaveTextContent("Identidade Visual");
+    expect(input).toHaveAttribute("aria-activedescendant", options[0].id);
+
+    fireEvent.change(input, { target: { value: "zzzz" } });
+    expect(within(dialog).getByRole("status")).toHaveTextContent(
+      "command not found: zzzz",
+    );
+
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+
+  it("opens the palette with / but not while typing in a field", () => {
+    renderApp();
+    fireEvent.keyDown(window, { key: "/" });
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole("combobox"), { key: "Escape" });
+
+    window.history.replaceState({}, "", "/identidade-visual");
+    cleanup();
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Cores" }));
+    fireEvent.keyDown(screen.getByDisplayValue("#FFFFFF"), { key: "/" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("runs the easter egg from the palette", () => {
+    renderApp();
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: "sudo" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByText(/ACCESS GRANTED/)).toBeInTheDocument();
+  });
+
+  it("presents the 404 as a terminal with links back to the site", () => {
+    window.history.replaceState({}, "", "/nao-existe");
+    renderApp();
+    expect(
+      screen.getByRole("list", { name: "Diretórios do site" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "equipe/" })).toHaveAttribute(
+      "href",
+      "/equipe",
+    );
+  });
+
+  it("renders the hero prompt, config file and method pipeline", () => {
+    renderApp();
+    expect(
+      screen.getByLabelText("unbreakable@unb:~$ whoami"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Conteúdo de ~/unbreakable.conf"),
+    ).toHaveTextContent("Tópicos Avançados em Computadores");
+    const pipeline = screen.getByRole("list", {
+      name: "Fluxo de trabalho do grupo",
+    });
+    expect(within(pipeline).getAllByRole("listitem")).toHaveLength(4);
+  });
+
   it("renders the team page with gestão atual and no fundação references", () => {
     window.history.replaceState({}, "", "/equipe");
     renderApp();

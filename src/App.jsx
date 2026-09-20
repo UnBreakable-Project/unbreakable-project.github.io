@@ -1,6 +1,10 @@
 import { eventIsUpcoming, formatEventDate } from "./lib/events";
 import { pageMeta, notFoundMeta } from "./data/page-meta";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import CommandPalette from "./components/CommandPalette";
+import MatrixRain from "./components/MatrixRain";
+import { buildCommands } from "./lib/commands";
+import { useKonami } from "./lib/konami";
 import Home from "./features/home/Home";
 import { EventList, ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
@@ -51,7 +55,20 @@ function homeAnchor(id, isHome) {
   return isHome ? `#${id}` : `${siteBase}#${id}`;
 }
 
-function Header() {
+const isApple =
+  typeof navigator !== "undefined" &&
+  /Mac|iPhone|iPad/.test(
+    navigator.userAgentData?.platform ?? navigator.platform,
+  );
+
+function isEditable(target) {
+  return (
+    target instanceof HTMLElement &&
+    (target.isContentEditable || target.closest("input, textarea, select"))
+  );
+}
+
+function Header({ onOpenPalette }) {
   const isHome = currentPath() === "/";
   const path = currentPath();
   const isContact = path === "/contato";
@@ -191,6 +208,17 @@ function Header() {
           </a>
         </nav>
         <div className="header-actions">
+          <button
+            type="button"
+            className="palette-trigger"
+            aria-label="Abrir paleta de comandos"
+            aria-haspopup="dialog"
+            aria-keyshortcuts="Control+K Meta+K"
+            onClick={onOpenPalette}
+          >
+            <span aria-hidden="true">&gt;_</span>
+            <kbd aria-hidden="true">{isApple ? "⌘K" : "Ctrl K"}</kbd>
+          </button>
           <a
             className={isContact ? "header-cta is-active" : "header-cta"}
             href={routeHref("/contato")}
@@ -315,13 +343,15 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
   return (
     <article className="profile-card">
       {photo ? (
-        <img
-          className={`member-photo ${photoClass ?? ""}`}
-          src={photo}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-        />
+        <div className="member-frame">
+          <img
+            className={`member-photo ${photoClass ?? ""}`}
+            src={photo}
+            alt={name}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       ) : (
         <div className="member-photo is-empty" aria-hidden="true" />
       )}
@@ -389,16 +419,24 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <small>© 2026 UnBreakable · Universidade de Brasília</small>
+        <a className="footer-top-link" href="#conteudo-principal">
+          <span aria-hidden="true">unbreakable@unb:~$ </span>cd ~
+        </a>
       </div>
     </footer>
   );
 }
 
-function PageHead({ title, text }) {
+function PageHead({ title, text, command }) {
   return (
     <section className="page-head">
       <img src={circuit} alt="" />
       <div>
+        {command && (
+          <p className="path-prompt" aria-hidden="true">
+            <span>unbreakable@unb</span>:<span>~</span>$ {command}
+          </p>
+        )}
         <h1>{title}</h1>
         {text && <p>{text}</p>}
       </div>
@@ -409,7 +447,11 @@ function Eventos() {
   const upcoming = eventIsUpcoming(nextEvent.date);
   return (
     <>
-      <PageHead title={pages.events.title} text={pages.events.description} />
+      <PageHead
+        title={pages.events.title}
+        text={pages.events.description}
+        command="ls ./eventos"
+      />
       <main id="conteudo-principal" className="page-content">
         <h2 className="minor-heading">Próximos eventos</h2>
         {!upcoming && (
@@ -446,7 +488,11 @@ function Eventos() {
 function Equipe() {
   return (
     <>
-      <PageHead title={pages.team.title} text={pages.team.description} />
+      <PageHead
+        title={pages.team.title}
+        text={pages.team.description}
+        command="cat ./equipe"
+      />
       <main id="conteudo-principal" className="page-content">
         <h2 className="team-heading">Gestão atual</h2>
         <div className="profile-grid">
@@ -461,7 +507,11 @@ function Equipe() {
 function Contato() {
   return (
     <>
-      <PageHead title={pages.contact.title} text={pages.contact.description} />
+      <PageHead
+        title={pages.contact.title}
+        text={pages.contact.description}
+        command="cat ./contato"
+      />
       <main id="conteudo-principal" className="page-content contact-page">
         <ul
           className="channel-list"
@@ -494,12 +544,119 @@ function Contato() {
   );
 }
 
+function NotFound() {
+  const requested = window.location.pathname;
+  const directories = [
+    ["sobre", `${siteBase}#sobre`],
+    ["eventos", routeHref("/eventos")],
+    ["equipe", routeHref("/equipe")],
+    ["identidade-visual", routeHref("/identidade-visual")],
+    ["contato", routeHref("/contato")],
+  ];
+  return (
+    <main id="conteudo-principal" className="page-content not-found">
+      <figure className="terminal terminal-404" aria-hidden="true">
+        <figcaption className="terminal-bar">
+          <span className="terminal-dots">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>bash — 404</span>
+        </figcaption>
+        <pre className="terminal-body">
+          <code>
+            <span className="terminal-line" style={{ "--i": 0 }}>
+              <span className="t-key">unbreakable@unb:~$</span> cd {requested}
+            </span>
+            <span className="terminal-line t-err" style={{ "--i": 1 }}>
+              bash: cd: {requested}: No such file or directory
+            </span>
+            <span className="terminal-line" style={{ "--i": 2 }}>
+              <span className="t-key">unbreakable@unb:~$</span> ls ~
+            </span>
+            <span className="terminal-line t-val" style={{ "--i": 3 }}>
+              {directories.map(([name]) => `${name}/`).join("  ")}
+            </span>
+          </code>
+        </pre>
+      </figure>
+      <p className="micro">404 / UnBreakable</p>
+      <h1>Página não encontrada</h1>
+      <p>Este endereço não existe ou foi alterado.</p>
+      <div className="not-found-links">
+        <a className="button primary" href={siteBase}>
+          Voltar ao início <ArrowIcon />
+        </a>
+        <ul aria-label="Diretórios do site">
+          {directories.map(([name, href]) => (
+            <li key={name}>
+              <a href={href}>{name}/</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </main>
+  );
+}
+
 function IdentidadeVisual() {
   return <VisualIdentityPage />;
 }
 
 export default function App() {
   const path = currentPath();
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [matrix, setMatrix] = useState(false);
+  const commands = useMemo(
+    () =>
+      buildCommands({
+        navigation: links,
+        socialLinks,
+        siteBase,
+        isHome: path === "/",
+        routeHref,
+      }),
+    [path],
+  );
+  const openMatrix = useCallback(() => setMatrix(true), []);
+  const closeMatrix = useCallback(() => setMatrix(false), []);
+  useKonami(openMatrix);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      const chord =
+        (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k";
+      const slash =
+        event.key === "/" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey &&
+        !isEditable(event.target);
+      if (!chord && !slash) return;
+      event.preventDefault();
+      setPaletteOpen((open) => (chord ? !open : true));
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  function runCommand(command) {
+    setPaletteOpen(false);
+    if (command.action === "matrix") {
+      openMatrix();
+    } else if (command.external) {
+      window.open(command.href, "_blank", "noopener,noreferrer");
+    } else if (command.href.startsWith("#")) {
+      document
+        .getElementById(command.href.slice(1))
+        ?.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", command.href);
+    } else {
+      window.location.assign(command.href);
+    }
+  }
+
   useEffect(() => {
     const meta = pageMeta[path] ?? notFoundMeta;
     document.title = meta.title;
@@ -519,14 +676,7 @@ export default function App() {
     ) : path === "/" ? (
       <Home />
     ) : (
-      <main id="conteudo-principal" className="page-content not-found">
-        <p className="micro">404 / UnBreakable</p>
-        <h1>Página não encontrada</h1>
-        <p>Este endereço não existe ou foi alterado.</p>
-        <a className="button primary" href={siteBase}>
-          Voltar ao início <ArrowIcon />
-        </a>
-      </main>
+      <NotFound />
     );
 
   return (
@@ -534,9 +684,17 @@ export default function App() {
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo principal
       </a>
-      <Header />
+      <Header onOpenPalette={() => setPaletteOpen(true)} />
       {page}
       <Footer />
+      {paletteOpen && (
+        <CommandPalette
+          commands={commands}
+          onRun={runCommand}
+          onClose={() => setPaletteOpen(false)}
+        />
+      )}
+      {matrix && <MatrixRain onDone={closeMatrix} />}
     </>
   );
 }
