@@ -1,0 +1,279 @@
+﻿.home {
+  overflow: clip;
+}
+.home .hero {
+  min-height: 680px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: var(--space-12);
+  padding: var(--section-space)
+    max(var(--edge), calc((100vw - var(--max)) / 2 + var(--edge)));
+  background:
+    radial-gradient(ellipse at 85% 40%, var(--violet-glow), transparent 48%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px), var(--ink);
+  background-size:
+    auto,
+    48px 48px,
+    48px 48px,
+    auto;
+  border-bottom: 1px solid var(--line);
+}
+.home .hero::after {
+  height: 64px;
+}
+.home .hero-copy {
+  min-width: 0;
+}
+.home .micro,
+.home .section-index {
+  font: 500 var(--text-label)/1.6 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--green);
+}
+.home .micro {
+  margin: 0 0 var(--space-8);
+}
+.home .hero h1 {
+  font-size: var(--text-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+.home .hero h1 em {
+  color: var(--green);
+}
+.home .lede {
+  font-size: var(--text-body);
+  max-width: 52ch;
+  margin-top: var(--space-8);
+}
+.home .actions {
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.home .hero-object {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-8);
+  border: 1px solid var(--violet-line);
+  border-radius: var(--radius-card);
+  background: radial-gradient(ellipse, var(--violet-glow), transparent 70%);
+  position: relative;
+}
+.home .hero-object::before,
+.home .hero-object::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: var(--green);
+  border-style: solid;
+  pointer-events: none;
+}
+.home .hero-object::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.home .hero-object::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-color: var(--violet-light);
+}
+.home .hero-object > img {
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: none;
+}
+.home .section {
+  max-width: var(--max);
+  margin: auto;
+  padding: var(--section-space) var(--edge);
+  border-bottom: 1px solid var(--line);
+  gap: var(--space-8) var(--space-16);
+}
+.home .section-index {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--violet-light);
+}
+.home .section-title {
+  display: block;
+  margin: 0;
+}
+.home .section h2,
+.home .participate h2 {
+  font-size: var(--text-heading);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+.home .section-title p {
+  margin-top: var(--space-6);
+}
+.home .intro,
+.home .method {
+  grid-template-columns: 0.95fr 1.05fr;
+}
+.home .prose p:last-child {
+  margin-bottom: 0;
+}
+.home .method ul {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.home .method li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  line-height: 1.6;
+}
+.home .method li::before {
+  content: none;
+}
+.home .method-number {
+  color: var(--violet-light);
+  font: 500 12px var(--font-mono);
+}
+.home .events-section {
+  display: grid;
+}
+.home .section-heading-row {
+  margin-bottom: 0;
+  gap: var(--space-8);
+}
+.home .section-heading-row .text-link {
+  flex-shrink: 0;
+}
+.home .event-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  border: 0;
+}
+.home .event-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--ink-soft);
+}
+.home .event-row > span {
+  color: var(--violet-light);
+  background: var(--violet-wash);
+  border: 1px solid var(--violet-line);
+  padding: var(--space-2) var(--space-3);
+}
+.home .event-row h3 {
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+}
+.home .event-row p {
+  margin-top: auto;
+}
+.home .faq {
+  grid-template-columns: 0.8fr 1.2fr;
+}
+.home .faq summary {
+  padding: var(--space-6) 0;
+}
+.home .faq summary:hover,
+.home .faq details[open] summary {
+  color: var(--green);
+}
+.home .faq-icon {
+  flex-shrink: 0;
+}
+.home .participate {
+  max-width: calc(var(--max) - 2 * var(--edge));
+  margin: var(--section-space)
+    max(var(--edge), calc((100vw - var(--max)) / 2 + var(--edge)));
+  padding: var(--space-12);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--violet-line);
+  border-left: 3px solid var(--violet-light);
+  background:
+    linear-gradient(115deg, var(--violet-wash), transparent 75%),
+    var(--ink-soft);
+  align-items: center;
+}
+.home .participate p:not(.micro) {
+  color: var(--muted);
+}
+.home .participate .secondary {
+  background: var(--green);
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.home .participate .secondary:hover {
+  background: var(--accent-hover);
+}
+.home section[id] {
+  scroll-margin-top: 96px;
+}
+@media (max-width: 1000px) {
+  .home .hero {
+    gap: var(--space-6);
+  }
+  .home .section {
+    column-gap: var(--space-8);
+  }
+  .home .participate {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+}
+@media (max-width: 850px) {
+  .home .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: var(--space-12);
+  }
+  .home .hero-object {
+    width: min(320px, 80%);
+  }
+  .home .hero h1 {
+    font-size: clamp(3rem, 9vw, 5rem);
+  }
+  .home .intro,
+  .home .method,
+  .home .faq {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .home .hero-copy {
+    text-align: left;
+  }
+  .home .hero h1 {
+    font-size: clamp(2.65rem, 11.5vw, 4rem);
+  }
+  .home .micro {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  .home .actions {
+    justify-content: flex-start;
+  }
+  .home .event-list {
+    grid-template-columns: 1fr;
+  }
+  .home .event-row,
+  .home .participate {
+    padding: var(--space-6);
+  }
+  .home .participate .button {
+    margin-top: var(--space-6);
+  }
+}
