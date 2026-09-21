@@ -1,5 +1,12 @@
 export const siteUrl = "https://unbreakable-project.github.io";
 export const shareImage = `${siteUrl}/identidade-visual/logos/unbreakableLogo_9.png`;
+// Served from public/ so the event page can use it as its sharing image.
+export const pinkHatPoster = "/eventos/ctf-pink-hat.jpg";
+// Short aliases. The build writes a static redirect page for each one, since
+// GitHub Pages has no server-side rules.
+export const redirects = {
+  "/pinkhat": "/eventos/ctf-pink-hat",
+};
 export const pageMeta = {
   "/": {
     title: "UnBreakable — Segurança ofensiva na UnB",
@@ -10,6 +17,15 @@ export const pageMeta = {
     title: "Eventos | UnBreakable",
     description:
       "Palestras, oficinas e competições: acompanhe a agenda e o histórico de atividades do UnBreakable.",
+  },
+  "/eventos/ctf-pink-hat": {
+    title: "CTF Pink Hat — Pwning Like a Girl | UnBreakable",
+    description:
+      "Primeira edição do CTF Pink Hat, na Faculdade IDP: desafios, workshops e oficinas de segurança ofensiva com participação do UnBreakable.",
+    image: `${siteUrl}${pinkHatPoster}`,
+    imageAlt: "Arte do CTF Pink Hat — Pwning Like a Girl",
+    imageWidth: 1080,
+    imageHeight: 1350,
   },
   "/equipe": {
     title: "Equipe | UnBreakable",

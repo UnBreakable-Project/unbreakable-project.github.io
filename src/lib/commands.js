@@ -41,6 +41,14 @@ export function buildCommands({
       href: routeHref("/eventos"),
     },
     {
+      id: "pinkhat",
+      group: "Páginas",
+      label: "CTF Pink Hat",
+      hint: "cd ./eventos/ctf-pink-hat",
+      keywords: "pwning like a girl evento ctf",
+      href: routeHref("/eventos/ctf-pink-hat"),
+    },
+    {
       id: "team",
       group: "Páginas",
       label: "Equipe",

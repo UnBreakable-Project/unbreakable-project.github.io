@@ -284,6 +284,65 @@ describe("UnBreakable", () => {
     expect(within(pipeline).getAllByRole("listitem")).toHaveLength(4);
   });
 
+  it("renders the CTF Pink Hat event page from the site content", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: /CTF\s+Pink\s+Hat/ }),
+    ).toBeInTheDocument();
+    expect(document.title).toMatch(/^CTF Pink Hat/);
+    expect(screen.getByText("Evento realizado")).toBeInTheDocument();
+    expect(screen.getByText("Desafios")).toBeInTheDocument();
+    const panel = screen.getByRole("region", { name: "Realização e apoio" });
+    expect(within(panel).getByText("UnBreakable")).toBeInTheDocument();
+    expect(within(panel).getByText("Neospace")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Todos os eventos/ }),
+    ).toHaveAttribute("href", "/eventos");
+    expect(screen.queryByText(/inscrições|inscreva/i)).not.toBeInTheDocument();
+  });
+
+  it("links the events page to the Pink Hat page and keeps the menu active", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+    expect(
+      screen.getByRole("link", { name: /Ver página do evento/ }),
+    ).toHaveAttribute("href", "/eventos/ctf-pink-hat");
+
+    cleanup();
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const nav = screen.getByRole("navigation", {
+      name: "Navegação principal",
+    });
+    expect(within(nav).getByRole("link", { name: "Eventos" })).toHaveClass(
+      "is-active",
+    );
+  });
+
+  it("redirects the /pinkhat alias to the event page", () => {
+    const replace = vi.fn();
+    const original = window.location;
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: { ...original, pathname: "/pinkhat", replace },
+    });
+    try {
+      renderApp();
+      expect(replace).toHaveBeenCalledWith("/eventos/ctf-pink-hat");
+      expect(screen.getByRole("link", { name: "siga o link" })).toHaveAttribute(
+        "href",
+        "/eventos/ctf-pink-hat",
+      );
+    } finally {
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: original,
+      });
+    }
+  });
+
   it("renders the team page with gestão atual and no fundação references", () => {
     window.history.replaceState({}, "", "/equipe");
     renderApp();

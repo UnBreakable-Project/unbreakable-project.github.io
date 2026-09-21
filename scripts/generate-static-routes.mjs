@@ -3,6 +3,7 @@ import { URL } from "node:url";
 import {
   pageMeta,
   notFoundMeta,
+  redirects,
   siteUrl,
   shareImage,
 } from "../src/data/page-meta.js";
@@ -44,6 +45,8 @@ const flag = "UNB{recon_comeca_na_frente}";
 function render(meta, path) {
   const title = escape(meta.title);
   const description = escape(meta.description);
+  const image = meta.image ?? shareImage;
+  const imageAlt = escape(meta.imageAlt ?? "Marca oficial do UnBreakable");
   return template
     .replace(/<title>.*?<\/title>/s, `<title>${title}</title>`)
     .replace(
@@ -60,12 +63,13 @@ function render(meta, path) {
       <meta property="og:site_name" content="UnBreakable" />
       <meta property="og:title" content="${title}" />
       <meta property="og:description" content="${description}" />
-      <meta property="og:image" content="${shareImage}" />
-      <meta property="og:image:alt" content="Marca oficial do UnBreakable" />
+      <meta property="og:image" content="${image}" />
+      <meta property="og:image:alt" content="${imageAlt}" />
+      ${meta.imageWidth ? `<meta property="og:image:width" content="${meta.imageWidth}" /><meta property="og:image:height" content="${meta.imageHeight}" />` : ""}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content="${title}" />
       <meta name="twitter:description" content="${description}" />
-      <meta name="twitter:image" content="${shareImage}" />
+      <meta name="twitter:image" content="${image}" />
       ${path ? `<link rel="canonical" href="${siteUrl}${path}" /><meta property="og:url" content="${siteUrl}${path}" />` : '<meta name="robots" content="noindex" />'}
       ${path === "/" ? `<script type="application/ld+json">${organization}</script>` : ""}
     </head>`,
@@ -83,6 +87,33 @@ await writeFile(
   new URL("../dist/404.html", import.meta.url),
   render(notFoundMeta, null),
 );
+
+// Static redirects: a meta refresh needs no JavaScript, so it also passes the
+// CSP above. The relative target keeps working whatever the site's base is.
+for (const [from, to] of Object.entries(redirects)) {
+  const depth = from.split("/").filter(Boolean).length;
+  const target = `${"../".repeat(depth)}${to.slice(1)}/`;
+  const directory = new URL(`../dist${from}/`, import.meta.url);
+  await mkdir(directory, { recursive: true });
+  await writeFile(
+    new URL("index.html", directory),
+    `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecionando… | UnBreakable</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="${siteUrl}${to}" />
+    <meta http-equiv="refresh" content="0; url=${target}" />
+  </head>
+  <body>
+    <p>Redirecionando para <a href="${target}">${siteUrl}${to}</a>.</p>
+  </body>
+</html>
+`,
+  );
+}
 
 const dist = (file) => new URL(`../dist/${file}`, import.meta.url);
 await writeFile(

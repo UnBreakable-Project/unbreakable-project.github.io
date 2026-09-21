@@ -1,5 +1,10 @@
 import { eventIsUpcoming, formatEventDate } from "./lib/events";
-import { pageMeta, notFoundMeta } from "./data/page-meta";
+import {
+  pageMeta,
+  notFoundMeta,
+  pinkHatPoster,
+  redirects,
+} from "./data/page-meta";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CommandPalette from "./components/CommandPalette";
 import MatrixRain from "./components/MatrixRain";
@@ -10,7 +15,7 @@ import { EventList, ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
 const circuit = "/identidade-visual/circuitos/circuitos_1.png";
-import pinkHat from "./assets/pinkhat.jpg";
+import PinkHatPage from "./features/pink-hat/PinkHatPage";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 
@@ -174,7 +179,7 @@ function Header({ onOpenPalette }) {
           })}
           <a
             href={routeHref("/eventos")}
-            className={path === "/eventos" ? "is-active" : undefined}
+            className={path.startsWith("/eventos") ? "is-active" : undefined}
             aria-current={path === "/eventos" ? "page" : undefined}
             onClick={() => setOpen(false)}
           >
@@ -473,10 +478,15 @@ function Eventos() {
               <h2>{nextEvent.title}</h2>
               <p>{nextEvent.description}</p>
               <small>{nextEvent.location}</small>
+              {nextEvent.href && (
+                <a className="text-link" href={routeHref(nextEvent.href)}>
+                  Ver página do evento <ArrowIcon />
+                </a>
+              )}
             </div>
           </div>
           <figure className="next-event-image">
-            <img src={pinkHat} alt={nextEvent.imageAlt} />
+            <img src={pinkHatPoster} alt={nextEvent.imageAlt} />
           </figure>
         </div>
         {upcoming && <h2 className="minor-heading">Histórico de atividades</h2>}
@@ -657,27 +667,41 @@ export default function App() {
     }
   }
 
+  const redirectTarget = redirects[path];
   useEffect(() => {
+    if (redirectTarget) {
+      window.location.replace(routeHref(redirectTarget));
+      return;
+    }
     const meta = pageMeta[path] ?? notFoundMeta;
     document.title = meta.title;
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", meta.description);
-  }, [path]);
-  const page =
-    path === "/eventos" ? (
-      <Eventos />
-    ) : path === "/equipe" ? (
-      <Equipe />
-    ) : path === "/contato" ? (
-      <Contato />
-    ) : path === "/identidade-visual" ? (
-      <IdentidadeVisual />
-    ) : path === "/" ? (
-      <Home />
-    ) : (
-      <NotFound />
-    );
+  }, [path, redirectTarget]);
+  const page = redirectTarget ? (
+    <main id="conteudo-principal" className="page-content not-found">
+      <p className="micro">302 / UnBreakable</p>
+      <h1>Redirecionando…</h1>
+      <p>
+        Se nada acontecer, <a href={routeHref(redirectTarget)}>siga o link</a>.
+      </p>
+    </main>
+  ) : path === "/eventos" ? (
+    <Eventos />
+  ) : path === "/eventos/ctf-pink-hat" ? (
+    <PinkHatPage />
+  ) : path === "/equipe" ? (
+    <Equipe />
+  ) : path === "/contato" ? (
+    <Contato />
+  ) : path === "/identidade-visual" ? (
+    <IdentidadeVisual />
+  ) : path === "/" ? (
+    <Home />
+  ) : (
+    <NotFound />
+  );
 
   return (
     <>

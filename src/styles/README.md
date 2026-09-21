@@ -55,3 +55,21 @@ meta tag (build only; the dev server needs inline scripts), Organization JSON-LD
 on `/`, `sitemap.xml`, `robots.txt` and `humans.txt`. `humans.txt` carries a
 base64 CTF flag hinted at by the console banner; change `flag` there to rotate it.
 If a new external origin (fonts, analytics, embeds) is added, extend the policy.
+
+## CTF Pink Hat page and redirects
+
+`/eventos/ctf-pink-hat` (`features/pink-hat/`) has its own palette, scoped to
+`.pinkhat` with `--ph-*` tokens measured from the event art: black, hot pink
+`#e92974`, soft pink `#ff8fbe` for small text, dark magenta `#761639` for rules
+and chevrons. The team's `pinkhat.css` uses `#ff0a78`; the JPG measures darker,
+so swap `--ph-pink` if you want the two sites to match exactly.
+
+Content lives in `content/site.mdx` under `pinkHat`. The date and place come
+from the poster; do not add schedule, prizes or a registration link until the
+organizers publish them. The poster itself sits in `public/eventos/` and is
+also the page's `og:image`.
+
+Short aliases live in `redirects` in `data/page-meta.js` (`/pinkhat` today).
+The build writes a static `meta refresh` page for each one (no JavaScript, so it
+passes the CSP), and the app redirects client-side in dev. Aliases are kept out
+of the sitemap.
