@@ -37,8 +37,6 @@ function Prompt({ command, children }) {
   );
 }
 
-
-
 export default function Home() {
   return (
     <main id="conteudo-principal" className="home">

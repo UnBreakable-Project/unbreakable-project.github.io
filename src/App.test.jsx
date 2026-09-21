@@ -270,18 +270,17 @@ describe("UnBreakable", () => {
     );
   });
 
-  it("renders the hero prompt, config file and method pipeline", () => {
+  it("renders the hero prompt without the config window or the pipeline", () => {
     renderApp();
     expect(
       screen.getByLabelText("unbreakable@unb:~$ whoami"),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText("Conteúdo de ~/unbreakable.conf"),
-    ).toHaveTextContent("Tópicos Avançados em Computadores");
-    const pipeline = screen.getByRole("list", {
-      name: "Fluxo de trabalho do grupo",
-    });
-    expect(within(pipeline).getAllByRole("listitem")).toHaveLength(4);
+      screen.queryByLabelText("Conteúdo de ~/unbreakable.conf"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("list", { name: "Fluxo de trabalho do grupo" }),
+    ).not.toBeInTheDocument();
   });
 
   it("renders the CTF Pink Hat event page from the site content", () => {

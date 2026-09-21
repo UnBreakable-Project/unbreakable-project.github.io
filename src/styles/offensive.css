@@ -241,7 +241,7 @@ body::after {
       transparent 0 2px,
       rgba(8, 11, 9, 0.22) 2px 3px
     ),
-    linear-gradient(180deg, rgba(136, 69, 219, 0.2), rgba(163, 255, 18, 0.07));
+    linear-gradient(180deg, rgba(136, 69, 219, 0.2), rgba(104, 195, 104, 0.07));
   transition: opacity 0.35s;
 }
 .profile-card::before {
@@ -378,7 +378,7 @@ kbd {
   background: var(--ink-soft);
   box-shadow:
     0 30px 80px -20px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(163, 255, 18, 0.06);
+    0 0 0 1px rgba(104, 195, 104, 0.06);
 }
 .palette-input {
   display: flex;
@@ -490,7 +490,7 @@ kbd {
   color: var(--green);
   font: 600 clamp(14px, 3vw, 22px) / 1 var(--font-mono);
   letter-spacing: 0.08em;
-  box-shadow: 0 0 40px rgba(163, 255, 18, 0.25);
+  box-shadow: 0 0 40px rgba(104, 195, 104, 0.25);
 }
 .matrix-badge span {
   color: var(--dim);

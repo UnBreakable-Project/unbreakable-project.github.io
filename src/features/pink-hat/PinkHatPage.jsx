@@ -269,7 +269,7 @@ export default function PinkHatPage() {
 
       <section className="ph-section" aria-labelledby="ph-activities">
         <p className="ph-eyebrow">Sobre o evento</p>
-        <h2 id="ph-activities">Desafios, workshops e oficinas.</h2>
+        <h2 id="ph-activities">Coloque em prática suas habilidades de segurança</h2>
         <ul className="ph-cards">
           {pinkHat.activities.map(({ tag, title, description }, index) => (
             <li key={tag} className="ph-card">

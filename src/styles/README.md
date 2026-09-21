@@ -1,8 +1,8 @@
 # Design system
 
 `tokens.css` defines the shared palette, spacing, typography and motion tokens.
-The electric green is an interface accent; official brand files and the brand
-colors in the visual identity gallery remain unchanged.
+The green accent is `#68c368` (`--green`, hover `--accent-hover`); official brand
+files and the brand colors in the visual identity gallery remain unchanged.
 
 - Use `--ink` for the canvas, `--ink-soft` for cards, and `--panel` for elevation.
 - Use `--paper` for primary text and `--muted` for supporting text.
