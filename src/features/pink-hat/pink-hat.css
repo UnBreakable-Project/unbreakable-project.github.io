@@ -9,7 +9,7 @@
   --ph-surface: #120a10;
   --ph-pink: #e92974; /* measured from the JPG; the team's pinkhat.css uses #ff0a78 */
   --ph-pink-soft: #ff8fbe; /* pink for small text on black */
-  --ph-magenta: #761639; /* rules, chevrons, dotted grid */
+  --ph-magenta: #761639; /* rules and chevrons */
   --ph-white: #f8f8f8;
   --ph-muted: #cbb7c1;
   --ph-line: rgba(233, 41, 116, 0.55);
@@ -48,8 +48,6 @@
       rgba(233, 41, 116, 0.2),
       transparent 55%
     ),
-    radial-gradient(circle, rgba(233, 41, 116, 0.22) 1px, transparent 1.5px) 0
-      0 / 24px 24px,
     var(--ph-bg);
 }
 .ph-hero-copy {

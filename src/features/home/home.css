@@ -9,26 +9,11 @@
     max(var(--edge), calc((100vw - var(--max)) / 2 + var(--edge)));
   background:
     radial-gradient(ellipse at 85% 40%, var(--violet-glow), transparent 48%),
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px), var(--ink);
-  background-size:
-    auto,
-    48px 48px,
-    48px 48px,
-    auto;
+    var(--ink);
   border-bottom: 1px solid var(--line);
 }
 .home .hero::after {
   height: 64px;
-}
-.home .hero::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 45%;
-  background: url("/identidade-visual/circuitos/circuitos_3.svg") center / cover
-    no-repeat;
-  opacity: 0.045;
-  pointer-events: none;
 }
 .home .hero-copy {
   min-width: 0;

@@ -86,18 +86,6 @@ body::after {
 .path-prompt span:last-child {
   color: var(--violet-light);
 }
-.page-head {
-  background:
-    radial-gradient(ellipse at 90% 40%, var(--violet-glow), transparent 65%),
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    var(--ink-soft);
-  background-size:
-    auto,
-    48px 48px,
-    48px 48px,
-    auto;
-}
 
 /* Comment-style headings and status marks */
 .minor-heading::before,

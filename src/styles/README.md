@@ -10,7 +10,7 @@ files and the brand colors in the visual identity gallery remain unchanged.
 - Use the display family for headings, the body family for prose, and mono for
   short labels and numbering.
 - Use the spacing scale and responsive `--section-space` for layout rhythm.
-- Keep decorative grids low contrast and official logos unmodified.
+- Keep decorative backgrounds low contrast (no grid patterns) and official logos unmodified.
 
 Home composition lives in `features/home/home.css`, scoped under `.home`.
 Shared controls and secondary pages retain their styles in `index.css`.
