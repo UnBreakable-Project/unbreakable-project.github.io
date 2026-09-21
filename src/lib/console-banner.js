@@ -1,5 +1,4 @@
-// Recon starts at the front end. Nothing here is secret; it is a nod to
-// whoever opens devtools. The flag is base64 in /humans.txt on purpose.
+// Brand mark for whoever opens devtools. Nothing here is a puzzle or a secret.
 export function printConsoleBanner() {
   const art = String.raw`
  _   _       ____                       _         _     _
@@ -11,10 +10,5 @@ export function printConsoleBanner() {
   console.log(
     `%c${art}`,
     "color:#a3ff12;font-family:monospace;font-weight:700",
-  );
-  console.log(
-    "%cCurioso? Recon começa no front-end.%c\nProcure em /humans.txt — tem um flag esperando (UNB{...}).",
-    "color:#b27cff;font:600 13px monospace",
-    "color:#aab7ad;font:12px monospace",
   );
 }

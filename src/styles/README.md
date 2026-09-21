@@ -51,10 +51,7 @@ The command palette opens with Ctrl/Cmd+K or `/`; its catalogue is built by
 The Konami code and the `sudo su` palette command trigger a short Matrix rain.
 
 `scripts/generate-static-routes.mjs` also writes a strict Content-Security-Policy
-meta tag (build only; the dev server needs inline scripts), Organization JSON-LD
-on `/`, `sitemap.xml`, `robots.txt` and `humans.txt`. `humans.txt` carries a
-base64 CTF flag hinted at by the console banner; change `flag` there to rotate it.
-If a new external origin (fonts, analytics, embeds) is added, extend the policy.
+meta tag (build only; the dev server needs inline scripts)
 
 ## CTF Pink Hat page and redirects
 
@@ -73,3 +70,23 @@ Short aliases live in `redirects` in `data/page-meta.js` (`/pinkhat` today).
 The build writes a static `meta refresh` page for each one (no JavaScript, so it
 passes the CSP), and the app redirects client-side in dev. Aliases are kept out
 of the sitemap.
+
+### Pink Hat gallery, podium and photos
+
+`PhotoCarousel.jsx` is a native scroll-snap carousel (swipe, arrow keys, buttons,
+pixel dots). Photos show whole over a blurred copy of themselves, so portrait
+and landscape mix freely. Rotation is automatic, pauses on hover/focus and after
+any manual navigation, has a Pausar/Retomar button, and is off under reduced
+motion. Its styles, the podium, the pink ticker and the hero extras live in
+`features/pink-hat/gallery.css`.
+
+Photos are optimized WebP (max 1600 px, quality 80, no metadata) in
+`src/assets/eventos/pink_hat_ctf/`, listed with captions and alt text in
+`pinkHat.gallery` in `content/site.mdx`. To add one, convert it the same way
+(the untouched originals sit beside them as `.jpg`, unused by the build), give
+it a descriptive name and add an entry. Alt text describes the scene and never
+names people.
+
+The photo of the on-screen TOP 10 ranking is deliberately not published: it
+shows participants' usernames and scores. Add it only with their consent.
+The podium names no winners for the same reason.

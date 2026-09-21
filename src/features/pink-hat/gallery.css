@@ -1,0 +1,472 @@
+/*
+ * CTF Pink Hat page: photo carousel, podium, ticker and extra decoration.
+ * Uses the --ph-* tokens defined on .pinkhat in pink-hat.css.
+ */
+.ph-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ph-lede {
+  max-width: 52ch;
+  margin-top: var(--space-4);
+  color: var(--ph-muted);
+  line-height: 1.75;
+}
+
+/* ---------- Hero decoration: drifting pixels and a glitch on "CTF" ---------- */
+.ph-floaters {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ph-floaters span {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  background: var(--ph-pink);
+  opacity: 0.3;
+}
+.ph-hero-copy {
+  position: relative;
+  z-index: 1;
+}
+.ph-poster {
+  z-index: 1;
+}
+.ph-ctf {
+  position: relative;
+  display: inline-block;
+}
+.ph-ctf::before,
+.ph-ctf::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.ph-ctf::before {
+  color: var(--ph-pink-soft);
+  clip-path: inset(0 0 58% 0);
+}
+.ph-ctf::after {
+  color: var(--ph-white);
+  clip-path: inset(56% 0 0 0);
+}
+
+/* ---------- Section divider in the poster's rule + chevrons style ---------- */
+.ph-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--edge);
+}
+.ph-divider::before,
+.ph-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ph-magenta);
+}
+.ph-chevrons-sm {
+  width: 84px;
+  height: 12px;
+  margin: 0;
+}
+
+/* ---------- Pixel accent on the activity cards ---------- */
+.ph-card {
+  position: relative;
+}
+.ph-card::after {
+  content: "";
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 8px;
+  height: 8px;
+  background: var(--ph-pink);
+  box-shadow:
+    -12px 0 0 var(--ph-magenta),
+    0 12px 0 var(--ph-magenta);
+  opacity: 0.7;
+  transition: opacity var(--motion-fast);
+}
+.ph-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Photo carousel ---------- */
+.ph-gallery {
+  margin-top: var(--space-12);
+}
+.ph-gallery-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--ph-line);
+  border-radius: 16px;
+  background: #000;
+  box-shadow:
+    0 0 0 6px rgba(233, 41, 116, 0.08),
+    0 30px 80px -40px rgba(233, 41, 116, 0.5);
+}
+.ph-gallery-frame::before,
+.ph-gallery-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--ph-pink);
+  pointer-events: none;
+}
+.ph-gallery-frame::before {
+  top: 10px;
+  left: 10px;
+  border-width: 2px 0 0 2px;
+}
+.ph-gallery-frame::after {
+  right: 10px;
+  bottom: 10px;
+  border-width: 0 2px 2px 0;
+}
+.ph-track {
+  display: flex;
+  aspect-ratio: 16 / 10;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.ph-track::-webkit-scrollbar {
+  display: none;
+}
+.ph-track:focus-visible {
+  outline-offset: -4px;
+}
+.ph-slide {
+  position: relative;
+  flex: 0 0 100%;
+  overflow: hidden;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+/* A blurred copy fills the frame so portrait and landscape photos both show whole. */
+.ph-slide::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: var(--photo) center / cover;
+  filter: blur(28px) brightness(0.5) saturate(1.3);
+}
+.ph-slide img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ph-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid var(--ph-line);
+  border-radius: 50%;
+  background: rgba(5, 2, 5, 0.72);
+  color: var(--ph-white);
+  cursor: pointer;
+  transform: translateY(-50%);
+  backdrop-filter: blur(6px);
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast),
+    border-color var(--motion-fast);
+}
+.ph-nav svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ph-nav:hover {
+  border-color: var(--ph-pink);
+  background: var(--ph-pink);
+  color: #050205;
+}
+.ph-nav-prev {
+  left: var(--space-4);
+}
+.ph-nav-next {
+  right: var(--space-4);
+}
+.ph-gallery-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-4);
+}
+.ph-caption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  font: 700 15px/1.4 var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ph-caption span {
+  flex: none;
+  white-space: nowrap;
+  color: var(--ph-pink-soft);
+  font: 500 12px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.ph-dots {
+  display: flex;
+}
+.ph-dots button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ph-dots button::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--ph-magenta);
+  transition:
+    background-color var(--motion-fast),
+    transform var(--motion-fast);
+}
+.ph-dots button:hover::before {
+  background: var(--ph-pink-soft);
+}
+.ph-dots button[aria-current="true"]::before {
+  background: var(--ph-pink);
+  transform: scale(1.3);
+}
+.ph-play {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--ph-line);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ph-white);
+  font: 500 12px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--motion-fast),
+    color var(--motion-fast);
+}
+.ph-play:hover {
+  border-color: var(--ph-pink);
+  color: var(--ph-pink-soft);
+}
+
+/* ---------- Podium ---------- */
+.ph-podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-12) 0 0;
+  padding: 0 var(--space-6);
+  border-bottom: 2px solid var(--ph-pink);
+  list-style: none;
+}
+.ph-place {
+  display: flex;
+  flex: 0 1 220px;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.ph-place-1 {
+  order: 2;
+}
+.ph-place-2 {
+  order: 1;
+}
+.ph-place-3 {
+  order: 3;
+}
+.ph-trophy {
+  width: 100%;
+  height: auto;
+  fill: var(--ph-pink);
+}
+.ph-trophy text {
+  fill: #050205;
+  font: 800 34px var(--font-display);
+}
+.ph-place-1 .ph-trophy {
+  max-width: 190px;
+}
+.ph-place-2 .ph-trophy {
+  max-width: 150px;
+}
+.ph-place-3 .ph-trophy {
+  max-width: 130px;
+}
+.ph-step {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-4) var(--space-2);
+  border: 1px solid var(--ph-line);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(233, 41, 116, 0.28),
+    rgba(233, 41, 116, 0.04)
+  );
+}
+.ph-place-1 .ph-step {
+  min-height: 170px;
+}
+.ph-place-2 .ph-step {
+  min-height: 120px;
+}
+.ph-place-3 .ph-step {
+  min-height: 90px;
+}
+.ph-plate {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--plate, #ccc);
+  color: #1a1208;
+  font: 800 12px/1.2 var(--font-display);
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.ph-place[data-medal="gold"] {
+  --plate: #d9b451;
+}
+.ph-place[data-medal="silver"] {
+  --plate: #c9ccd2;
+}
+.ph-place[data-medal="bronze"] {
+  --plate: #b9743f;
+}
+
+@media (max-width: 700px) {
+  .ph-track {
+    aspect-ratio: 4 / 3;
+  }
+  .ph-nav {
+    width: 44px;
+    height: 44px;
+  }
+  .ph-nav-prev {
+    left: var(--space-2);
+  }
+  .ph-nav-next {
+    right: var(--space-2);
+  }
+  .ph-gallery-bar {
+    justify-content: center;
+  }
+  .ph-caption {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .ph-podium {
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+  .ph-plate {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (max-width: 700px) {
+  .ph-panel > div {
+    min-width: 0;
+    padding-inline: 0;
+  }
+  .ph-panel h2 {
+    letter-spacing: 0.28em;
+  }
+}
+
+/* ---------- Motion (opt-in) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .ph-floaters span {
+    animation: ph-float 7s ease-in-out var(--d) infinite alternate;
+  }
+  .ph-ctf::before,
+  .ph-ctf::after {
+    animation: ph-glitch 0.5s steps(2) 1.2s 1 both;
+  }
+  .ph-ctf:hover::before,
+  .ph-ctf:hover::after {
+    animation-delay: 0s;
+    animation-duration: 0.7s;
+    animation-iteration-count: infinite;
+  }
+  .ph-ctf::after {
+    animation-direction: reverse;
+  }
+  @keyframes ph-float {
+    to {
+      opacity: 0.6;
+      transform: translate(10px, -18px);
+    }
+  }
+  @keyframes ph-glitch {
+    0% {
+      opacity: 0;
+      transform: translate(0);
+    }
+    20% {
+      opacity: 0.9;
+      transform: translate(-3px, 1px);
+    }
+    40% {
+      opacity: 0.9;
+      transform: translate(3px, -1px);
+    }
+    60% {
+      opacity: 0.9;
+      transform: translate(-2px, 0);
+    }
+    80% {
+      opacity: 0.9;
+      transform: translate(2px, 1px);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(0);
+    }
+  }
+}

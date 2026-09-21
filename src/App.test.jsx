@@ -343,6 +343,103 @@ describe("UnBreakable", () => {
     }
   });
 
+  it("shows every event photo in an accessible carousel", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    expect(carousel).toHaveAttribute("aria-roledescription", "carousel");
+    const slides = within(carousel).getAllByRole("group", {
+      name: /^\d+ de 6$/,
+    });
+    expect(slides).toHaveLength(6);
+    const images = within(carousel).getAllByRole("img");
+    expect(images).toHaveLength(6);
+    // Every photo resolved to a bundled file and carries a real description.
+    images.forEach((image) => {
+      expect(image.getAttribute("src")).toMatch(/\.webp$/);
+      expect(image.getAttribute("alt").length).toBeGreaterThan(30);
+    });
+    // The on-screen ranking lists participants by name; it is kept out.
+    expect(
+      images.some((image) => /top 10|ranking|placar/i.test(image.alt)),
+    ).toBe(false);
+  });
+
+  it("navigates the carousel by buttons, dots and arrow keys", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    const status = () =>
+      within(carousel).getByText(/^Foto \d+ de 6:/, { selector: "p" });
+
+    expect(status()).toHaveTextContent("Foto 1 de 6: Equipe do UnBreakable");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Próxima foto" }),
+    );
+    expect(status()).toHaveTextContent("Foto 2 de 6: Plateia no auditório");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Foto anterior" }),
+    );
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Foto anterior" }),
+    );
+    // Wraps around to the last photo.
+    expect(status()).toHaveTextContent("Foto 6 de 6: Troféus do pódio");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: /^Ir para a foto 3/ }),
+    );
+    expect(status()).toHaveTextContent("Foto 3 de 6: Conversa no palco");
+    expect(
+      within(carousel).getByRole("button", { name: /^Ir para a foto 3/ }),
+    ).toHaveAttribute("aria-current", "true");
+
+    fireEvent.keyDown(
+      within(carousel).getByRole("group", {
+        name: /Use as setas do teclado/,
+      }),
+      { key: "ArrowRight" },
+    );
+    expect(status()).toHaveTextContent("Foto 4 de 6: Dinâmica do CTF");
+  });
+
+  it("lets people stop and resume the automatic rotation", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    const toggle = within(carousel).getByRole("button", {
+      name: /Pausar/,
+    });
+    fireEvent.click(toggle);
+    expect(
+      within(carousel).getByRole("button", { name: /Retomar/ }),
+    ).toBeInTheDocument();
+    // Announcements switch on once the rotation is no longer automatic.
+    expect(
+      within(carousel).getByText(/^Foto 1 de 6:/, { selector: "p" }),
+    ).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("renders the podium and the extra sections without naming winners", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    const podium = screen.getByRole("list", { name: "Pódio" });
+    const places = within(podium).getAllByRole("listitem");
+    expect(places).toHaveLength(3);
+    expect(places[0]).toHaveTextContent("Primeiro lugar");
+    expect(places[1]).toHaveTextContent("Segundo lugar");
+    expect(places[2]).toHaveTextContent("Terceiro lugar");
+    expect(
+      screen.getByRole("heading", { level: 2, name: "O evento em fotos." }),
+    ).toBeInTheDocument();
+    const panel = screen.getByRole("region", { name: "Realização e apoio" });
+    expect(within(panel).getByText("IDEA LAB")).toBeInTheDocument();
+  });
+
   it("renders the team page with gestão atual and no fundação references", () => {
     window.history.replaceState({}, "", "/equipe");
     renderApp();

@@ -3,10 +3,27 @@ import { ArrowIcon } from "../../components/SiteUI";
 import { pinkHatPoster } from "../../data/page-meta";
 import { eventIsUpcoming, formatEventDate } from "../../lib/events";
 import { routeHref } from "../../lib/routes";
+import PhotoCarousel from "./PhotoCarousel";
 import "./pink-hat.css";
+import "./gallery.css";
 
 const { pinkHat, nextEvent, socialLinks } = siteContent;
 const instagram = socialLinks.find(({ name }) => name === "Instagram");
+
+const photoModules = import.meta.glob(
+  "../../assets/eventos/pink_hat_ctf/*.webp",
+  { eager: true, import: "default" },
+);
+const photoByFileName = Object.fromEntries(
+  Object.entries(photoModules).map(([path, url]) => [
+    path.split("/").pop(),
+    url,
+  ]),
+);
+const photos = pinkHat.gallery.photos.map((photo) => ({
+  ...photo,
+  src: photoByFileName[photo.file],
+}));
 
 // Pixel dissolve echoing the "C" of the event logo. "#" = filled square.
 const pixelRows = [
@@ -20,6 +37,50 @@ const pixelRows = [
   ".#.###",
 ];
 
+// Hooded pixel figure, after the trophies in the photos. "#" = filled square.
+const trophyRows = [
+  "....######....",
+  "...########...",
+  "..##########..",
+  "..###....###..",
+  "..##......##..",
+  "..###....###..",
+  "...########...",
+  "..##########..",
+  ".############.",
+  "##############",
+  "##############",
+  "##############",
+  "##############",
+];
+
+// Slow-drifting squares behind the hero: [left %, top %, size px, delay s].
+const floaters = [
+  [6, 18, 10, 0],
+  [14, 72, 14, 1.4],
+  [38, 8, 8, 0.7],
+  [52, 84, 12, 2.1],
+  [61, 26, 8, 3.2],
+  [90, 12, 12, 1.1],
+  [94, 78, 8, 2.6],
+];
+
+function renderPixels(rows, size = 10, gap = 1) {
+  return rows.flatMap((row, y) =>
+    [...row].map((cell, x) =>
+      cell === "#" ? (
+        <rect
+          key={`${x}-${y}`}
+          x={x * size}
+          y={y * size}
+          width={size - gap}
+          height={size - gap}
+        />
+      ) : null,
+    ),
+  );
+}
+
 function Pixels() {
   return (
     <svg
@@ -28,27 +89,15 @@ function Pixels() {
       aria-hidden="true"
       focusable="false"
     >
-      {pixelRows.flatMap((row, y) =>
-        [...row].map((cell, x) =>
-          cell === "#" ? (
-            <rect
-              key={`${x}-${y}`}
-              x={x * 10}
-              y={y * 10}
-              width="8"
-              height="8"
-            />
-          ) : null,
-        ),
-      )}
+      {renderPixels(pixelRows, 10, 2)}
     </svg>
   );
 }
 
-function Chevrons() {
+function Chevrons({ className = "ph-chevrons" }) {
   return (
     <svg
-      className="ph-chevrons"
+      className={className}
       viewBox="0 0 140 20"
       aria-hidden="true"
       focusable="false"
@@ -61,6 +110,14 @@ function Chevrons() {
         />
       ))}
     </svg>
+  );
+}
+
+function Divider() {
+  return (
+    <div className="ph-divider" aria-hidden="true">
+      <Chevrons className="ph-chevrons ph-chevrons-sm" />
+    </div>
   );
 }
 
@@ -82,6 +139,47 @@ function PinIcon() {
   );
 }
 
+function Trophy({ place }) {
+  return (
+    <svg
+      className="ph-trophy"
+      viewBox="0 0 140 130"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {renderPixels(trophyRows, 10, 1)}
+      <text x="70" y="122" textAnchor="middle">
+        {place}
+      </text>
+    </svg>
+  );
+}
+
+function Podium({ eyebrow, title, description, places }) {
+  return (
+    <section className="ph-section" aria-labelledby="ph-podium">
+      <p className="ph-eyebrow">{eyebrow}</p>
+      <h2 id="ph-podium">{title}</h2>
+      <p className="ph-lede">{description}</p>
+      {/* DOM order is 1, 2, 3 for reading; CSS lays it out as 2-1-3. */}
+      <ol className="ph-podium" aria-label="Pódio">
+        {places.map(({ place, label, medal }) => (
+          <li
+            key={place}
+            className={`ph-place ph-place-${place}`}
+            data-medal={medal}
+          >
+            <Trophy place={place} />
+            <div className="ph-step">
+              <span className="ph-plate">{label}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 export default function PinkHatPage() {
   const upcoming = eventIsUpcoming(pinkHat.date);
   const [, month, day] = pinkHat.date.split("-");
@@ -89,6 +187,19 @@ export default function PinkHatPage() {
   return (
     <main id="conteudo-principal" className="pinkhat">
       <section className="ph-hero" aria-labelledby="ph-title">
+        <div className="ph-floaters" aria-hidden="true">
+          {floaters.map(([left, top, size, delay]) => (
+            <span
+              key={`${left}-${top}`}
+              style={{
+                "--x": `${left}%`,
+                "--y": `${top}%`,
+                "--s": `${size}px`,
+                "--d": `${delay}s`,
+              }}
+            />
+          ))}
+        </div>
         <div className="ph-hero-copy">
           <p className="ph-status">
             <span className="ph-dot" aria-hidden="true" />
@@ -98,7 +209,9 @@ export default function PinkHatPage() {
           <h1 id="ph-title">
             <span className="ph-ctf-row">
               <Pixels />
-              <span className="ph-ctf">CTF</span>
+              <span className="ph-ctf" data-text="CTF">
+                CTF
+              </span>
             </span>{" "}
             <span className="ph-name">
               <span className="ph-pink">Pink</span> <span>Hat</span>
@@ -169,6 +282,18 @@ export default function PinkHatPage() {
           ))}
         </ul>
       </section>
+
+      <Divider />
+
+      <section className="ph-section" aria-labelledby="ph-gallery-title">
+        <p className="ph-eyebrow">Galeria</p>
+        <h2 id="ph-gallery-title">O evento em fotos.</h2>
+        <PhotoCarousel label={pinkHat.gallery.label} photos={photos} />
+      </section>
+
+      <Divider />
+
+      <Podium {...pinkHat.podium} />
 
       <section className="ph-panel" aria-label="Realização e apoio">
         <div>

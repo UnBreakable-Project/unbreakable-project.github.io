@@ -109,8 +109,6 @@ export const siteContent = {
     imageAlt: "Arte do CTF Pink Hat — Pwning Like a Girl",
     href: "/eventos/ctf-pink-hat",
   },
-  // Everything below comes from the event art and the copy above. Do not add
-  // schedule, prizes or registration links until the organizers publish them.
   pinkHat: {
     date: "2026-09-19",
     place: "IDP",
@@ -143,7 +141,62 @@ export const siteContent = {
       "meninas.comp — Projeto Meninas na Computação",
       "ACM-W UnB",
     ],
-    supporters: ["Neospace", "Grupo Mulheres do Brasil — Brasília"],
+    // "IDEA LAB" and "LESIS" are read from the on-stage screen in the photos.
+    supporters: [
+      "Neospace",
+      "Grupo Mulheres do Brasil — Brasília",
+      "IDEA LAB",
+      "LESIS",
+    ],
+    // Files live in src/assets/eventos/pink_hat_ctf/ as optimized WebP (see
+    // styles/README.md). Alt text describes the scene and never names people.
+    gallery: {
+      label: "Fotos do evento",
+      photos: [
+        {
+          file: "equipe.webp",
+          caption: "Equipe do UnBreakable",
+          alt: "Integrantes do UnBreakable com a camiseta do grupo posando juntos, sob a vegetação suspensa de um saguão.",
+        },
+        {
+          file: "plateia.webp",
+          caption: "Plateia no auditório",
+          alt: "Selfie de um integrante da organização, de boné do CTF Pink Hat, com a plateia sorrindo nas poltronas vermelhas do auditório ao fundo.",
+        },
+        {
+          file: "palco.webp",
+          caption: "Conversa no palco",
+          alt: "Três convidadas sentadas no palco, uma delas falando ao microfone, ao lado do telão do CTF Pink Hat.",
+        },
+        {
+          file: "dinamica.webp",
+          caption: "Dinâmica do CTF",
+          alt: "Laboratório de informática com participantes diante dos computadores; ao fundo, a equipe explica a dinâmica do CTF em um telão.",
+        },
+        {
+          file: "sala.webp",
+          caption: "Apresentação em sala",
+          alt: "Sala de aula com participantes sentadas de frente para um telão, onde três pessoas apresentam.",
+        },
+        {
+          file: "podio.webp",
+          caption: "Troféus do pódio",
+          alt: "Os três troféus do pódio do CTF Pink Hat 2026, de primeiro, segundo e terceiro lugar, diante do telão do evento.",
+        },
+      ],
+    },
+    // Trophies seen in the photos ("CTF PINK HAT 2026 — Primeiro/Segundo/Terceiro
+    // Lugar"). No winners are named on purpose.
+    podium: {
+      eyebrow: "Premiação",
+      title: "Pódio do CTF.",
+      description: "Troféus para o primeiro, segundo e terceiro lugar.",
+      places: [
+        { place: 1, label: "Primeiro lugar", medal: "gold" },
+        { place: 2, label: "Segundo lugar", medal: "silver" },
+        { place: 3, label: "Terceiro lugar", medal: "bronze" },
+      ],
+    },
     closing: {
       title: "Acompanhe as próximas atividades.",
       description:

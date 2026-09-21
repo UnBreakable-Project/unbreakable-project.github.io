@@ -39,8 +39,6 @@ const organization = JSON.stringify({
   logo: shareImage,
   description: pageMeta["/"].description,
 }).replaceAll("<", "\\u003c");
-// Recon starts at the front end: the console banner points here.
-const flag = "UNB{recon_comeca_na_frente}";
 
 function render(meta, path) {
   const title = escape(meta.title);
@@ -129,19 +127,4 @@ ${Object.keys(pageMeta)
 await writeFile(
   dist("robots.txt"),
   `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
-);
-await writeFile(
-  dist("humans.txt"),
-  `/* GRUPO */
-UnBreakable — grupo de estudos de segurança ofensiva da Universidade de Brasília
-Site: ${siteUrl}
-
-/* SITE */
-Stack: React, Vite, MDX, GitHub Pages
-Standards: HTML5, CSS3
-
-/* CTF */
-Recon é a primeira fase. Você chegou aqui, então decodifique:
-${Buffer.from(flag).toString("base64")}
-`,
 );
