@@ -1,8 +1,21 @@
-import { useEffect, useState } from "react";
-import logo from "./assets/unbreakableLogo_9.svg";
+import { eventIsUpcoming, formatEventDate } from "./lib/events";
+import {
+  pageMeta,
+  notFoundMeta,
+  pinkHatPoster,
+  redirects,
+} from "./data/page-meta";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import CommandPalette from "./components/CommandPalette";
+import MatrixRain from "./components/MatrixRain";
+import { buildCommands } from "./lib/commands";
+import { useKonami } from "./lib/konami";
+import Home from "./features/home/Home";
+import { EventList, ArrowIcon } from "./components/SiteUI";
+import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
 const circuit = "/identidade-visual/circuitos/circuitos_1.png";
-import pinkHat from "./assets/pinkhat.jpg";
+import PinkHatPage from "./features/pink-hat/PinkHatPage";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 
@@ -29,15 +42,7 @@ const resolveProfiles = (profiles) =>
     photo: resolvePhoto(profile),
   }));
 
-const {
-  navigation: links,
-  events,
-  faqs,
-  home,
-  nextEvent,
-  pages,
-  socialLinks,
-} = siteContent;
+const { navigation: links, nextEvent, pages, socialLinks } = siteContent;
 const members = resolveProfiles(siteContent.members);
 
 const siteBase = import.meta.env.BASE_URL;
@@ -51,27 +56,24 @@ function currentPath() {
   return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
 }
 
-function routeHref(path) {
-  return `${siteBase}${path.replace(/^\//, "")}`;
-}
-
 function homeAnchor(id, isHome) {
   return isHome ? `#${id}` : `${siteBase}#${id}`;
 }
 
-function ArrowIcon({ direction = "right" }) {
-  const paths = {
-    right: "M3 12h17M14 5l7 7-7 7",
-    down: "M12 3v17M5 14l7 7 7-7",
-  };
+const isApple =
+  typeof navigator !== "undefined" &&
+  /Mac|iPhone|iPad/.test(
+    navigator.userAgentData?.platform ?? navigator.platform,
+  );
+
+function isEditable(target) {
   return (
-    <svg className="action-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d={paths[direction]} />
-    </svg>
+    target instanceof HTMLElement &&
+    (target.isContentEditable || target.closest("input, textarea, select"))
   );
 }
 
-function Header() {
+function Header({ onOpenPalette }) {
   const isHome = currentPath() === "/";
   const path = currentPath();
   const isContact = path === "/contato";
@@ -82,7 +84,7 @@ function Header() {
   useEffect(() => {
     if (!isHome) return;
 
-    const sectionIds = ["sobre", "metodo", "faq"];
+    const sectionIds = links.map(({ target }) => target);
     let frameId = 0;
 
     const updateActiveSection = () => {
@@ -99,7 +101,7 @@ function Header() {
         documentHeight > windowHeight &&
         scrollY + windowHeight >= documentHeight - 60
       ) {
-        setActiveSection("contato");
+        setActiveSection("participar");
         return;
       }
 
@@ -133,6 +135,18 @@ function Header() {
     };
   }, [isHome]);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        document.querySelector(".menu-button")?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   const currentActiveSection = isHome ? activeSection : "";
 
   return (
@@ -145,6 +159,7 @@ function Header() {
           </span>
         </a>
         <nav
+          id="primary-navigation"
           className={open ? "nav open" : "nav"}
           aria-label="Navegação principal"
         >
@@ -164,7 +179,7 @@ function Header() {
           })}
           <a
             href={routeHref("/eventos")}
-            className={path === "/eventos" ? "is-active" : undefined}
+            className={path.startsWith("/eventos") ? "is-active" : undefined}
             aria-current={path === "/eventos" ? "page" : undefined}
             onClick={() => setOpen(false)}
           >
@@ -198,6 +213,17 @@ function Header() {
           </a>
         </nav>
         <div className="header-actions">
+          <button
+            type="button"
+            className="palette-trigger"
+            aria-label="Abrir paleta de comandos"
+            aria-haspopup="dialog"
+            aria-keyshortcuts="Control+K Meta+K"
+            onClick={onOpenPalette}
+          >
+            <span aria-hidden="true">&gt;_</span>
+            <kbd aria-hidden="true">{isApple ? "⌘K" : "Ctrl K"}</kbd>
+          </button>
           <a
             className={isContact ? "header-cta is-active" : "header-cta"}
             href={routeHref("/contato")}
@@ -209,6 +235,7 @@ function Header() {
             className="menu-button"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
+            aria-controls="primary-navigation"
             onClick={() => setOpen(!open)}
           >
             <i />
@@ -321,11 +348,15 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
   return (
     <article className="profile-card">
       {photo ? (
-        <img
-          className={`member-photo ${photoClass ?? ""}`}
-          src={photo}
-          alt={name}
-        />
+        <div className="member-frame">
+          <img
+            className={`member-photo ${photoClass ?? ""}`}
+            src={photo}
+            alt={name}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       ) : (
         <div className="member-photo is-empty" aria-hidden="true" />
       )}
@@ -376,6 +407,7 @@ function Footer() {
           <a href={`${siteBase}#sobre`}>Sobre</a>
           <a href={`${siteBase}#metodo`}>Metodologia</a>
           <a href={`${siteBase}#faq`}>FAQ</a>
+          <a href={`${siteBase}#participar`}>Como participar</a>
           <a href={routeHref("/eventos")}>Eventos</a>
           <a href={routeHref("/equipe")}>Equipe</a>
           <a href={routeHref("/identidade-visual")}>Identidade Visual</a>
@@ -392,128 +424,24 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <small>© 2026 UnBreakable · Universidade de Brasília</small>
+        <a className="footer-top-link" href="#conteudo-principal">
+          <span aria-hidden="true">unbreakable@unb:~$ </span>cd ~
+        </a>
       </div>
     </footer>
   );
 }
 
-function EventList({ compact = false }) {
-  return (
-    <div className={compact ? "event-list compact" : "event-list"}>
-      {events.map(({ type, title, presenter }) => (
-        <article key={title} className="event-row">
-          <span>{type}</span>
-          <h3>{title}</h3>
-          <p>{presenter}</p>
-        </article>
-      ))}
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <main id="conteudo-principal">
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <h1 id="hero-title">
-            {home.heroTitle.lead} <br />
-            <em>{home.heroTitle.emphasis}</em>
-          </h1>
-          <p className="lede">{home.heroLede}</p>
-          <div className="actions">
-            <a className="button primary" href="#sobre">
-              Conheça o grupo <ArrowIcon direction="down" />
-            </a>
-            <a className="text-link" href={routeHref("/eventos")}>
-              Ver eventos <ArrowIcon />
-            </a>
-          </div>
-        </div>
-        <div className="hero-object">
-          <img src={logo} alt="UnBreakable" />
-        </div>
-      </section>
-
-      <section id="sobre" className="intro section">
-        <div className="section-title">
-          <h2>{home.intro.title}</h2>
-        </div>
-        <div className="prose">
-          {home.intro.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
-
-      <section id="metodo" className="method section">
-        <div className="method-title">
-          <h2>{home.method.title}</h2>
-        </div>
-        <div className="method-copy">
-          <p>{home.method.description}</p>
-          <ul>
-            {home.method.points.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="events-section section">
-        <div className="section-heading-row">
-          <div>
-            <h2>{home.events.title}</h2>
-            <p>{home.events.description}</p>
-          </div>
-          <a className="text-link" href={routeHref("/eventos")}>
-            Todos os eventos <ArrowIcon />
-          </a>
-        </div>
-        <EventList compact />
-      </section>
-
-      <section id="faq" className="faq section">
-        <div className="section-title">
-          <h2>{home.faq.title}</h2>
-          <p>{home.faq.description}</p>
-        </div>
-        <div className="faq-list">
-          {faqs.map(({ question, answer }, index) => (
-            <details key={question} open={index === 0}>
-              <summary>
-                <span>{question}</span>
-                <span className="faq-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14" />
-                    <path className="vertical" d="M12 5v14" />
-                  </svg>
-                </span>
-              </summary>
-              <p>{answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section className="participate">
-        <div>
-          <h2>{home.participate.title}</h2>
-          <p>{home.participate.description}</p>
-        </div>
-        <a className="button secondary" href={routeHref("/contato")}>
-          Canais oficiais <ArrowIcon />
-        </a>
-      </section>
-    </main>
-  );
-}
-
-function PageHead({ title, text }) {
+function PageHead({ title, text, command }) {
   return (
     <section className="page-head">
       <img src={circuit} alt="" />
       <div>
+        {command && (
+          <p className="path-prompt" aria-hidden="true">
+            <span>unbreakable@unb</span>:<span>~</span>$ {command}
+          </p>
+        )}
         <h1>{title}</h1>
         {text && <p>{text}</p>}
       </div>
@@ -521,32 +449,47 @@ function PageHead({ title, text }) {
   );
 }
 function Eventos() {
+  const upcoming = eventIsUpcoming(nextEvent.date);
   return (
     <>
-      <PageHead title={pages.events.title} text={pages.events.description} />
+      <PageHead
+        title={pages.events.title}
+        text={pages.events.description}
+        command="ls ./eventos"
+      />
       <main id="conteudo-principal" className="page-content">
+        <h2 className="minor-heading">Próximos eventos</h2>
+        {!upcoming && (
+          <p className="agenda-empty">
+            Novas datas serão divulgadas nos{" "}
+            <a href={routeHref("/contato")}>canais oficiais</a>.
+          </p>
+        )}
+        {!upcoming && (
+          <h2 className="minor-heading">Histórico de atividades</h2>
+        )}
         <div className="next-event">
-          <span>PRÓXIMO EVENTO</span>
+          <span>{upcoming ? "PRÓXIMO EVENTO" : "EVENTO REALIZADO"}</span>
           <div className="next-event-details">
-            <time>
-              {nextEvent.day}{" "}
-              <b>
-                {nextEvent.month}
-                <br />
-                {nextEvent.year}
-              </b>
+            <time dateTime={nextEvent.date}>
+              {formatEventDate(nextEvent.date)}
             </time>
             <div>
               <h2>{nextEvent.title}</h2>
               <p>{nextEvent.description}</p>
               <small>{nextEvent.location}</small>
+              {nextEvent.href && (
+                <a className="text-link" href={routeHref(nextEvent.href)}>
+                  Ver página do evento <ArrowIcon />
+                </a>
+              )}
             </div>
           </div>
           <figure className="next-event-image">
-            <img src={pinkHat} alt={nextEvent.imageAlt} />
+            <img src={pinkHatPoster} alt={nextEvent.imageAlt} />
           </figure>
         </div>
-        <h2 className="minor-heading">Já realizamos</h2>
+        {upcoming && <h2 className="minor-heading">Histórico de atividades</h2>}
         <EventList />
       </main>
     </>
@@ -555,7 +498,11 @@ function Eventos() {
 function Equipe() {
   return (
     <>
-      <PageHead title={pages.team.title} text={pages.team.description} />
+      <PageHead
+        title={pages.team.title}
+        text={pages.team.description}
+        command="cat ./equipe"
+      />
       <main id="conteudo-principal" className="page-content">
         <h2 className="team-heading">Gestão atual</h2>
         <div className="profile-grid">
@@ -570,7 +517,11 @@ function Equipe() {
 function Contato() {
   return (
     <>
-      <PageHead title={pages.contact.title} text={pages.contact.description} />
+      <PageHead
+        title={pages.contact.title}
+        text={pages.contact.description}
+        command="cat ./contato"
+      />
       <main id="conteudo-principal" className="page-content contact-page">
         <ul
           className="channel-list"
@@ -590,6 +541,9 @@ function Contato() {
                 <span className="channel-copy">
                   <strong>{name}</strong>
                   <small>{description}</small>
+                  <span className="channel-action">
+                    Acessar canal <ArrowIcon />
+                  </span>
                 </span>
               </a>
             </li>
@@ -600,33 +554,171 @@ function Contato() {
   );
 }
 
+function NotFound() {
+  const requested = window.location.pathname;
+  const directories = [
+    ["sobre", `${siteBase}#sobre`],
+    ["eventos", routeHref("/eventos")],
+    ["equipe", routeHref("/equipe")],
+    ["identidade-visual", routeHref("/identidade-visual")],
+    ["contato", routeHref("/contato")],
+  ];
+  return (
+    <main id="conteudo-principal" className="page-content not-found">
+      <figure className="terminal terminal-404" aria-hidden="true">
+        <figcaption className="terminal-bar">
+          <span className="terminal-dots">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>bash — 404</span>
+        </figcaption>
+        <pre className="terminal-body">
+          <code>
+            <span className="terminal-line" style={{ "--i": 0 }}>
+              <span className="t-key">unbreakable@unb:~$</span> cd {requested}
+            </span>
+            <span className="terminal-line t-err" style={{ "--i": 1 }}>
+              bash: cd: {requested}: No such file or directory
+            </span>
+            <span className="terminal-line" style={{ "--i": 2 }}>
+              <span className="t-key">unbreakable@unb:~$</span> ls ~
+            </span>
+            <span className="terminal-line t-val" style={{ "--i": 3 }}>
+              {directories.map(([name]) => `${name}/`).join("  ")}
+            </span>
+          </code>
+        </pre>
+      </figure>
+      <p className="micro">404 / UnBreakable</p>
+      <h1>Página não encontrada</h1>
+      <p>Este endereço não existe ou foi alterado.</p>
+      <div className="not-found-links">
+        <a className="button primary" href={siteBase}>
+          Voltar ao início <ArrowIcon />
+        </a>
+        <ul aria-label="Diretórios do site">
+          {directories.map(([name, href]) => (
+            <li key={name}>
+              <a href={href}>{name}/</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </main>
+  );
+}
+
 function IdentidadeVisual() {
   return <VisualIdentityPage />;
 }
 
 export default function App() {
   const path = currentPath();
-  const page =
-    path === "/eventos" ? (
-      <Eventos />
-    ) : path === "/equipe" ? (
-      <Equipe />
-    ) : path === "/contato" ? (
-      <Contato />
-    ) : path === "/identidade-visual" ? (
-      <IdentidadeVisual />
-    ) : (
-      <Home />
-    );
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [matrix, setMatrix] = useState(false);
+  const commands = useMemo(
+    () =>
+      buildCommands({
+        navigation: links,
+        socialLinks,
+        siteBase,
+        isHome: path === "/",
+        routeHref,
+      }),
+    [path],
+  );
+  const openMatrix = useCallback(() => setMatrix(true), []);
+  const closeMatrix = useCallback(() => setMatrix(false), []);
+  useKonami(openMatrix);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      const chord =
+        (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k";
+      const slash =
+        event.key === "/" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey &&
+        !isEditable(event.target);
+      if (!chord && !slash) return;
+      event.preventDefault();
+      setPaletteOpen((open) => (chord ? !open : true));
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  function runCommand(command) {
+    setPaletteOpen(false);
+    if (command.action === "matrix") {
+      openMatrix();
+    } else if (command.external) {
+      window.open(command.href, "_blank", "noopener,noreferrer");
+    } else if (command.href.startsWith("#")) {
+      document
+        .getElementById(command.href.slice(1))
+        ?.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", command.href);
+    } else {
+      window.location.assign(command.href);
+    }
+  }
+
+  const redirectTarget = redirects[path];
+  useEffect(() => {
+    if (redirectTarget) {
+      window.location.replace(routeHref(redirectTarget));
+      return;
+    }
+    const meta = pageMeta[path] ?? notFoundMeta;
+    document.title = meta.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", meta.description);
+  }, [path, redirectTarget]);
+  const page = redirectTarget ? (
+    <main id="conteudo-principal" className="page-content not-found">
+      <p className="micro">302 / UnBreakable</p>
+      <h1>Redirecionando…</h1>
+      <p>
+        Se nada acontecer, <a href={routeHref(redirectTarget)}>siga o link</a>.
+      </p>
+    </main>
+  ) : path === "/eventos" ? (
+    <Eventos />
+  ) : path === "/eventos/ctf-pink-hat" ? (
+    <PinkHatPage />
+  ) : path === "/equipe" ? (
+    <Equipe />
+  ) : path === "/contato" ? (
+    <Contato />
+  ) : path === "/identidade-visual" ? (
+    <IdentidadeVisual />
+  ) : path === "/" ? (
+    <Home />
+  ) : (
+    <NotFound />
+  );
 
   return (
     <>
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo principal
       </a>
-      <Header />
+      <Header onOpenPalette={() => setPaletteOpen(true)} />
       {page}
       <Footer />
+      {paletteOpen && (
+        <CommandPalette
+          commands={commands}
+          onRun={runCommand}
+          onClose={() => setPaletteOpen(false)}
+        />
+      )}
+      {matrix && <MatrixRain onDone={closeMatrix} />}
     </>
   );
 }

@@ -1,20 +1,130 @@
-import { copyFile, mkdir } from "node:fs/promises";
+﻿import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { URL } from "node:url";
+import {
+  pageMeta,
+  notFoundMeta,
+  redirects,
+  siteUrl,
+  shareImage,
+} from "../src/data/page-meta.js";
 
-const routes = ["eventos", "equipe", "contato", "identidade-visual"];
+const template = await readFile(
+  new URL("../dist/index.html", import.meta.url),
+  "utf8",
+);
+const escape = (value) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+// Injected at build time only: the dev server needs inline scripts for HMR.
+// React writes style props through the CSSOM, so no 'unsafe-inline' is needed.
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+].join("; ");
+const organization = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "UnBreakable",
+  url: siteUrl,
+  logo: shareImage,
+  description: pageMeta["/"].description,
+}).replaceAll("<", "\\u003c");
 
-await Promise.all(
-  routes.map(async (route) => {
-    const directory = new URL(`../dist/${route}/`, import.meta.url);
-    await mkdir(directory, { recursive: true });
-    await copyFile(
-      new URL("../dist/index.html", import.meta.url),
-      new URL("index.html", directory),
+function render(meta, path) {
+  const title = escape(meta.title);
+  const description = escape(meta.description);
+  const image = meta.image ?? shareImage;
+  const imageAlt = escape(meta.imageAlt ?? "Marca oficial do UnBreakable");
+  return template
+    .replace(/<title>.*?<\/title>/s, `<title>${title}</title>`)
+    .replace(
+      /<meta\s+name="description"\s+content="[^"]*"\s*\/?\s*>/s,
+      `<meta name="description" content="${description}" />`,
+    )
+    .replace(
+      "</head>",
+      `
+      <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />
+      <meta name="referrer" content="strict-origin-when-cross-origin" />
+      <meta property="og:type" content="website" />
+      <meta property="og:locale" content="pt_BR" />
+      <meta property="og:site_name" content="UnBreakable" />
+      <meta property="og:title" content="${title}" />
+      <meta property="og:description" content="${description}" />
+      <meta property="og:image" content="${image}" />
+      <meta property="og:image:alt" content="${imageAlt}" />
+      ${meta.imageWidth ? `<meta property="og:image:width" content="${meta.imageWidth}" /><meta property="og:image:height" content="${meta.imageHeight}" />` : ""}
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="${title}" />
+      <meta name="twitter:description" content="${description}" />
+      <meta name="twitter:image" content="${image}" />
+      ${path ? `<link rel="canonical" href="${siteUrl}${path}" /><meta property="og:url" content="${siteUrl}${path}" />` : '<meta name="robots" content="noindex" />'}
+      ${path === "/" ? `<script type="application/ld+json">${organization}</script>` : ""}
+    </head>`,
     );
-  }),
+}
+for (const [path, meta] of Object.entries(pageMeta)) {
+  const directory = new URL(
+    `../dist${path === "/" ? "/" : `${path}/`}`,
+    import.meta.url,
+  );
+  await mkdir(directory, { recursive: true });
+  await writeFile(new URL("index.html", directory), render(meta, path));
+}
+await writeFile(
+  new URL("../dist/404.html", import.meta.url),
+  render(notFoundMeta, null),
 );
 
-await copyFile(
-  new URL("../dist/index.html", import.meta.url),
-  new URL("../dist/404.html", import.meta.url),
+// Static redirects: a meta refresh needs no JavaScript, so it also passes the
+// CSP above. The relative target keeps working whatever the site's base is.
+for (const [from, to] of Object.entries(redirects)) {
+  const depth = from.split("/").filter(Boolean).length;
+  const target = `${"../".repeat(depth)}${to.slice(1)}/`;
+  const directory = new URL(`../dist${from}/`, import.meta.url);
+  await mkdir(directory, { recursive: true });
+  await writeFile(
+    new URL("index.html", directory),
+    `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecionando… | UnBreakable</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="${siteUrl}${to}" />
+    <meta http-equiv="refresh" content="0; url=${target}" />
+  </head>
+  <body>
+    <p>Redirecionando para <a href="${target}">${siteUrl}${to}</a>.</p>
+  </body>
+</html>
+`,
+  );
+}
+
+const dist = (file) => new URL(`../dist/${file}`, import.meta.url);
+await writeFile(
+  dist("sitemap.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${Object.keys(pageMeta)
+  .map((path) => `  <url><loc>${siteUrl}${path}</loc></url>`)
+  .join("\n")}
+</urlset>
+`,
+);
+await writeFile(
+  dist("robots.txt"),
+  `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
 );

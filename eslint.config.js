@@ -11,6 +11,7 @@ export default [
     files: ["vite.config.js", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {
+        Buffer: "readonly",
         clearTimeout: "readonly",
         console: "readonly",
         process: "readonly",
@@ -25,7 +26,13 @@ export default [
       ecmaVersion: "latest",
       sourceType: "module",
       parserOptions: { ecmaFeatures: { jsx: true } },
-      globals: { document: "readonly", window: "readonly" },
+      globals: {
+        HTMLElement: "readonly",
+        console: "readonly",
+        document: "readonly",
+        navigator: "readonly",
+        window: "readonly",
+      },
     },
     plugins: {
       "react-hooks": reactHooks,

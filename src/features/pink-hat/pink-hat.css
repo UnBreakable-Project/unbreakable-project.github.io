@@ -1,0 +1,406 @@
+/*
+ * CTF Pink Hat event page. Palette measured from the official event art
+ * (public/eventos/ctf-pink-hat.jpg): black, hot pink, white and a dark magenta
+ * for rules and chevrons. Scoped to .pinkhat so the site's green/violet
+ * interface stays untouched everywhere else.
+ */
+.pinkhat {
+  --ph-bg: #050205;
+  --ph-surface: #120a10;
+  --ph-pink: #e92974; /* measured from the JPG; the team's pinkhat.css uses #ff0a78 */
+  --ph-pink-soft: #ff8fbe; /* pink for small text on black */
+  --ph-magenta: #761639; /* rules, chevrons, dotted grid */
+  --ph-white: #f8f8f8;
+  --ph-muted: #cbb7c1;
+  --ph-line: rgba(233, 41, 116, 0.55);
+  overflow: clip;
+  background: var(--ph-bg);
+  color: var(--ph-white);
+}
+.pinkhat :focus-visible {
+  outline-color: var(--ph-pink-soft);
+}
+/* :where() keeps the reset at zero specificity so component margins win. */
+.pinkhat :where(h1, h2, h3, p) {
+  margin: 0;
+}
+.pinkhat :where(h1, h2, h3) {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+.ph-pink {
+  color: var(--ph-pink);
+}
+
+/* ---------- Hero ---------- */
+.ph-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--space-12);
+  align-items: center;
+  padding: var(--section-space)
+    max(var(--edge), calc((100vw - var(--max)) / 2 + var(--edge)));
+  border-bottom: 1px solid var(--ph-magenta);
+  background:
+    radial-gradient(
+      ellipse at 82% 45%,
+      rgba(233, 41, 116, 0.2),
+      transparent 55%
+    ),
+    radial-gradient(circle, rgba(233, 41, 116, 0.22) 1px, transparent 1.5px) 0
+      0 / 24px 24px,
+    var(--ph-bg);
+}
+.ph-hero-copy {
+  min-width: 0;
+}
+.ph-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--ph-line);
+  border-radius: 999px;
+  color: var(--ph-pink-soft);
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.ph-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ph-pink);
+}
+.ph-chevrons {
+  display: block;
+  width: 140px;
+  height: 20px;
+  margin: var(--space-6) 0;
+  fill: none;
+  stroke: var(--ph-magenta);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pinkhat h1 {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.9;
+}
+.ph-ctf-row {
+  display: flex;
+  align-items: center;
+  gap: 0.06em;
+  font-size: clamp(5.5rem, 15vw, 11rem);
+}
+.ph-pixels {
+  height: 0.62em;
+  width: auto;
+  fill: var(--ph-pink);
+}
+.ph-ctf {
+  color: var(--ph-pink);
+  letter-spacing: -0.02em;
+}
+.ph-name {
+  font-size: clamp(2.5rem, 6.5vw, 5rem);
+  letter-spacing: 0.08em;
+}
+.ph-name .ph-pink {
+  color: var(--ph-pink);
+}
+.ph-tagline {
+  margin-top: var(--space-6);
+  color: var(--ph-white);
+  font: 700 clamp(0.85rem, 1.6vw, 1.15rem) / 1 var(--font-display);
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+}
+.ph-tagline em {
+  font-style: normal;
+  color: var(--ph-pink);
+}
+.ph-intro {
+  max-width: 52ch;
+  margin-top: var(--space-8);
+  color: var(--ph-muted);
+  line-height: 1.75;
+}
+.ph-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.ph-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 44px;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--ph-pink);
+  color: #050205;
+  font-size: 13px;
+  font-weight: 800;
+  transition:
+    background-color var(--motion-fast),
+    transform var(--motion-fast);
+}
+.ph-button:hover {
+  background: var(--ph-pink-soft);
+  transform: translateY(-2px);
+}
+.ph-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ph-white);
+  font-size: 13px;
+  font-weight: 800;
+  transition: color var(--motion-fast);
+}
+.ph-link:hover {
+  color: var(--ph-pink-soft);
+}
+.ph-poster {
+  position: relative;
+  justify-self: center;
+  width: min(400px, 100%);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--ph-line);
+  border-radius: 16px;
+  aspect-ratio: 1080 / 1350;
+  background: #000;
+  box-shadow:
+    0 0 0 6px rgba(233, 41, 116, 0.08),
+    0 30px 80px -30px rgba(233, 41, 116, 0.55);
+}
+.ph-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Date and place ---------- */
+.ph-when {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-12) var(--edge);
+  border-bottom: 1px solid var(--ph-magenta);
+}
+.ph-when-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1 1 260px;
+  max-width: 360px;
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--ph-line);
+  border-radius: 16px;
+  background: var(--ph-surface);
+}
+.ph-when-item svg {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: var(--ph-pink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ph-big {
+  font: 800 clamp(2.25rem, 5vw, 3.25rem) / 1 var(--font-display);
+  font-stretch: 75%;
+  letter-spacing: 0.02em;
+}
+.ph-when-item p:not(.ph-big) {
+  margin-top: var(--space-2);
+  color: var(--ph-muted);
+  font-size: 13px;
+}
+
+/* ---------- Sections ---------- */
+.ph-section,
+.ph-closing {
+  max-width: var(--max);
+  margin: auto;
+  padding: var(--section-space) var(--edge);
+}
+.ph-eyebrow {
+  color: var(--ph-pink-soft);
+  font: 500 11px/1.6 var(--font-mono);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+.ph-section h2,
+.ph-closing h2 {
+  margin-top: var(--space-4);
+  max-width: 18ch;
+  font-size: var(--text-heading);
+  font-weight: 800;
+  font-stretch: 85%;
+  line-height: 1.02;
+}
+.ph-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-12) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ph-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  border: 1px solid var(--ph-line);
+  border-radius: 16px;
+  background: var(--ph-surface);
+  transition:
+    border-color var(--motion-fast),
+    transform var(--motion-fast);
+}
+.ph-card:hover {
+  border-color: var(--ph-pink);
+  transform: translateY(-3px);
+}
+.ph-card-tag {
+  color: var(--ph-pink-soft);
+  font: 500 12px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.ph-card h3 {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 800;
+  font-stretch: 85%;
+}
+.ph-card p {
+  color: var(--ph-muted);
+  line-height: 1.7;
+}
+
+/* ---------- Realização e apoio: the poster's pink panel ---------- */
+.ph-panel {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  max-width: calc(var(--max) - 2 * var(--edge));
+  margin: 0 auto;
+  padding: var(--space-12);
+  border-radius: 28px;
+  background: var(--ph-pink);
+  color: #050205;
+}
+.ph-panel > div {
+  padding-inline: var(--space-6);
+}
+.ph-panel > div + div {
+  border-left: 2px solid rgba(248, 248, 248, 0.85);
+}
+.ph-panel h2 {
+  margin-bottom: var(--space-6);
+  color: var(--ph-white);
+  /* 19px bold counts as large text: white on this pink is 4.2:1, above the 3:1 bar */
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+.ph-panel ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ph-panel li {
+  font: 800 clamp(1rem, 1.8vw, 1.35rem) / 1.2 var(--font-display);
+  font-stretch: 85%;
+  text-align: center;
+}
+
+/* ---------- Closing ---------- */
+.ph-closing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.ph-closing p {
+  max-width: 52ch;
+  margin-top: var(--space-4);
+  color: var(--ph-muted);
+  line-height: 1.75;
+}
+
+@media (max-width: 900px) {
+  .ph-hero {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+  .ph-poster {
+    justify-self: start;
+    width: min(340px, 100%);
+  }
+  .ph-cards {
+    grid-template-columns: 1fr;
+  }
+  .ph-panel {
+    grid-template-columns: 1fr;
+    margin-inline: var(--edge);
+    padding: var(--space-8) var(--space-4);
+  }
+  .ph-panel > div + div {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 2px solid rgba(248, 248, 248, 0.85);
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ph-dot {
+    animation: ph-pulse 1.8s ease-in-out infinite;
+  }
+  .ph-chevrons polyline {
+    animation: ph-march 1.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 120ms);
+  }
+  .ph-poster {
+    animation: ph-arrive 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes ph-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes ph-march {
+    0%,
+    100% {
+      stroke: var(--ph-magenta);
+    }
+    40% {
+      stroke: var(--ph-pink);
+    }
+  }
+  @keyframes ph-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+}

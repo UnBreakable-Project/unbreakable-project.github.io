@@ -3,6 +3,7 @@ export const siteContent = {
     { label: "Sobre", target: "sobre" },
     { label: "Método", target: "metodo" },
     { label: "FAQ", target: "faq" },
+    { label: "Como participar", target: "participar" },
   ],
   home: {
     heroTitle: {
@@ -11,6 +12,29 @@ export const siteContent = {
     },
     heroLede:
       "Máquina por máquina, write-up por write-up: o UnBreakable reúne alunos da UnB para investigar, explorar e competir com método.",
+    terminal: {
+      file: "~/unbreakable.conf",
+      lines: [
+        { key: "grupo", value: '"estudos de segurança ofensiva"' },
+        { key: "universidade", value: '"Universidade de Brasília"' },
+        {
+          key: "disciplina",
+          value: '"Tópicos Avançados em Computadores"',
+        },
+        { key: "plataformas", value: '["Hack The Box", "TryHackMe"]' },
+        { key: "entrega", value: '"write-up"' },
+      ],
+    },
+    ticker: [
+      "Hack The Box",
+      "TryHackMe",
+      "CTF",
+      "Reconhecimento",
+      "Exploração",
+      "Escalonamento de privilégios",
+      "Write-ups",
+      "Tópicos Avançados em Computadores",
+    ],
     intro: {
       title: "Uma matilha para quem quer ir além da teoria.",
       paragraphs: [
@@ -22,10 +46,31 @@ export const siteContent = {
       title: "O ataque termina no write-up.",
       description:
         "As sessões usam máquinas do Hack The Box e TryHackMe. Resolver é só metade do trabalho: documentar o raciocínio, o caminho e as descobertas torna o aprendizado reproduzível.",
+      pipeline: {
+        label: "Fluxo de trabalho do grupo",
+        steps: [
+          { tag: "recon", label: "Reconhecimento" },
+          { tag: "exploit", label: "Exploração" },
+          { tag: "privesc", label: "Escalonamento de privilégios" },
+          { tag: "write-up", label: "Documentação" },
+        ],
+      },
       points: [
-        "Prática guiada em máquinas reais",
-        "Discussão de técnicas e decisões",
-        "Documentação técnica como parte da entrega",
+        {
+          title: "Prática guiada em máquinas reais",
+          description:
+            "Nas máquinas do Hack The Box e TryHackMe, o grupo trabalha reconhecimento, exploração de vulnerabilidades e escalonamento de privilégios.",
+        },
+        {
+          title: "Discussão de técnicas e decisões",
+          description:
+            "Investigar, testar e compartilhar fazem parte do mesmo processo. A troca entre os participantes conecta as técnicas utilizadas ao raciocínio por trás de cada decisão.",
+        },
+        {
+          title: "Documentação técnica como parte da entrega",
+          description:
+            "O write-up registra o caminho percorrido e as descobertas. Documentar o raciocínio permite compartilhar o conhecimento e tornar o aprendizado reproduzível.",
+        },
       ],
     },
     events: {
@@ -56,14 +101,107 @@ export const siteContent = {
     },
   ],
   nextEvent: {
-    day: "19",
-    month: "SET",
-    year: "2026",
+    date: "2026-09-19",
     title: "CTF Pink Hat — Pwning Like a Girl",
     description:
       "O UnBreakable participa da primeira edição do CTF Pink Hat, com desafios, workshops e oficinas de segurança ofensiva.",
     location: "Faculdade IDP · Campus Asa Norte",
     imageAlt: "Arte do CTF Pink Hat — Pwning Like a Girl",
+    href: "/eventos/ctf-pink-hat",
+  },
+  pinkHat: {
+    date: "2026-09-19",
+    place: "IDP",
+    location: "Faculdade IDP · Campus Asa Norte",
+    intro:
+      "O UnBreakable participa da primeira edição do CTF Pink Hat, com desafios, workshops e oficinas de segurança ofensiva.",
+    activities: [
+      {
+        tag: "ctf",
+        title: "Desafios",
+        description:
+          "Desafios de segurança ofensiva no formato Capture the Flag.",
+      },
+      {
+        tag: "workshop",
+        title: "Workshops",
+        description: "Workshops de segurança ofensiva ao longo do evento.",
+      },
+      {
+        tag: "oficina",
+        title: "Oficinas",
+        description: "Oficinas de segurança ofensiva durante o evento.",
+      },
+    ],
+    organizers: [
+      "IDP",
+      "UnBreakable",
+      "CtrlAlt DELas",
+      "UnB",
+      "meninas.comp — Projeto Meninas na Computação",
+      "ACM-W UnB",
+    ],
+    // "IDEA LAB" and "LESIS" are read from the on-stage screen in the photos.
+    supporters: [
+      "Neospace",
+      "Grupo Mulheres do Brasil — Brasília",
+      "IDEA LAB",
+      "LESIS",
+    ],
+    // Files live in src/assets/eventos/pink_hat_ctf/ as optimized WebP (see
+    // styles/README.md). Alt text describes the scene and never names people.
+    gallery: {
+      label: "Fotos do evento",
+      photos: [
+        {
+          file: "equipe.webp",
+          caption: "Equipe do UnBreakable",
+          alt: "Integrantes do UnBreakable com a camiseta do grupo posando juntos, sob a vegetação suspensa de um saguão.",
+        },
+        {
+          file: "plateia.webp",
+          caption: "Plateia no auditório",
+          alt: "Selfie de um integrante da organização, de boné do CTF Pink Hat, com a plateia sorrindo nas poltronas vermelhas do auditório ao fundo.",
+        },
+        {
+          file: "palco.webp",
+          caption: "Conversa no palco",
+          alt: "Três convidadas sentadas no palco, uma delas falando ao microfone, ao lado do telão do CTF Pink Hat.",
+        },
+        {
+          file: "dinamica.webp",
+          caption: "Dinâmica do CTF",
+          alt: "Laboratório de informática com participantes diante dos computadores; ao fundo, a equipe explica a dinâmica do CTF em um telão.",
+        },
+        {
+          file: "sala.webp",
+          caption: "Apresentação em sala",
+          alt: "Sala de aula com participantes sentadas de frente para um telão, onde três pessoas apresentam.",
+        },
+        {
+          file: "podio.webp",
+          caption: "Troféus do pódio",
+          alt: "Os três troféus do pódio do CTF Pink Hat 2026, de primeiro, segundo e terceiro lugar, diante do telão do evento.",
+        },
+      ],
+    },
+    // Trophies seen in the photos ("CTF PINK HAT 2026 — Primeiro/Segundo/Terceiro
+    // Lugar"). No winners are named on purpose.
+    podium: {
+      eyebrow: "Premiação",
+      title: "Pódio do CTF.",
+      description: "Troféus para o primeiro, segundo e terceiro lugar.",
+      places: [
+        { place: 1, label: "Primeiro lugar", medal: "gold" },
+        { place: 2, label: "Segundo lugar", medal: "silver" },
+        { place: 3, label: "Terceiro lugar", medal: "bronze" },
+      ],
+    },
+    closing: {
+      title: "Acompanhe as próximas atividades.",
+      description:
+        "Siga os canais oficiais do UnBreakable para ficar por dentro das próximas atividades.",
+    },
   },
   faqs: [
     {

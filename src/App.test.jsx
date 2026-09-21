@@ -22,6 +22,29 @@ function renderApp() {
 }
 
 describe("UnBreakable", () => {
+  it("shows a recovery link for an unknown route", () => {
+    window.history.replaceState({}, "", "/nao-existe");
+    renderApp();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Página não encontrada" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Voltar ao início/ }),
+    ).toHaveAttribute("href", "/");
+    expect(document.title).toBe("Página não encontrada | UnBreakable");
+  });
+
+  it("closes the mobile menu with Escape and restores focus", () => {
+    renderApp();
+    const toggle = screen.getByRole("button", { name: "Abrir menu" });
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveAttribute("aria-controls", "primary-navigation");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+  });
+
   it("renders the main content landmark and the official channels", () => {
     renderApp();
 
@@ -181,6 +204,240 @@ describe("UnBreakable", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Código #FFFFFF de Branco copiado.",
     );
+  });
+
+  it("opens the command palette with Ctrl+K, filters and restores focus", () => {
+    renderApp();
+    const trigger = screen.getByRole("button", {
+      name: "Abrir paleta de comandos",
+    });
+    trigger.focus();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const dialog = screen.getByRole("dialog", { name: "Paleta de comandos" });
+    const input = within(dialog).getByRole("combobox");
+    expect(input).toHaveFocus();
+
+    fireEvent.change(input, { target: { value: "identidade" } });
+    const options = within(dialog).getAllByRole("option");
+    expect(options).toHaveLength(1);
+    expect(options[0]).toHaveTextContent("Identidade Visual");
+    expect(input).toHaveAttribute("aria-activedescendant", options[0].id);
+
+    fireEvent.change(input, { target: { value: "zzzz" } });
+    expect(within(dialog).getByRole("status")).toHaveTextContent(
+      "command not found: zzzz",
+    );
+
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+
+  it("opens the palette with / but not while typing in a field", () => {
+    renderApp();
+    fireEvent.keyDown(window, { key: "/" });
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole("combobox"), { key: "Escape" });
+
+    window.history.replaceState({}, "", "/identidade-visual");
+    cleanup();
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Cores" }));
+    fireEvent.keyDown(screen.getByDisplayValue("#FFFFFF"), { key: "/" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("runs the easter egg from the palette", () => {
+    renderApp();
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: "sudo" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByText(/ACCESS GRANTED/)).toBeInTheDocument();
+  });
+
+  it("presents the 404 as a terminal with links back to the site", () => {
+    window.history.replaceState({}, "", "/nao-existe");
+    renderApp();
+    expect(
+      screen.getByRole("list", { name: "Diretórios do site" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "equipe/" })).toHaveAttribute(
+      "href",
+      "/equipe",
+    );
+  });
+
+  it("renders the hero prompt, config file and method pipeline", () => {
+    renderApp();
+    expect(
+      screen.getByLabelText("unbreakable@unb:~$ whoami"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Conteúdo de ~/unbreakable.conf"),
+    ).toHaveTextContent("Tópicos Avançados em Computadores");
+    const pipeline = screen.getByRole("list", {
+      name: "Fluxo de trabalho do grupo",
+    });
+    expect(within(pipeline).getAllByRole("listitem")).toHaveLength(4);
+  });
+
+  it("renders the CTF Pink Hat event page from the site content", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: /CTF\s+Pink\s+Hat/ }),
+    ).toBeInTheDocument();
+    expect(document.title).toMatch(/^CTF Pink Hat/);
+    expect(screen.getByText("Evento realizado")).toBeInTheDocument();
+    expect(screen.getByText("Desafios")).toBeInTheDocument();
+    const panel = screen.getByRole("region", { name: "Realização e apoio" });
+    expect(within(panel).getByText("UnBreakable")).toBeInTheDocument();
+    expect(within(panel).getByText("Neospace")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Todos os eventos/ }),
+    ).toHaveAttribute("href", "/eventos");
+    expect(screen.queryByText(/inscrições|inscreva/i)).not.toBeInTheDocument();
+  });
+
+  it("links the events page to the Pink Hat page and keeps the menu active", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+    expect(
+      screen.getByRole("link", { name: /Ver página do evento/ }),
+    ).toHaveAttribute("href", "/eventos/ctf-pink-hat");
+
+    cleanup();
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const nav = screen.getByRole("navigation", {
+      name: "Navegação principal",
+    });
+    expect(within(nav).getByRole("link", { name: "Eventos" })).toHaveClass(
+      "is-active",
+    );
+  });
+
+  it("redirects the /pinkhat alias to the event page", () => {
+    const replace = vi.fn();
+    const original = window.location;
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: { ...original, pathname: "/pinkhat", replace },
+    });
+    try {
+      renderApp();
+      expect(replace).toHaveBeenCalledWith("/eventos/ctf-pink-hat");
+      expect(screen.getByRole("link", { name: "siga o link" })).toHaveAttribute(
+        "href",
+        "/eventos/ctf-pink-hat",
+      );
+    } finally {
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: original,
+      });
+    }
+  });
+
+  it("shows every event photo in an accessible carousel", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    expect(carousel).toHaveAttribute("aria-roledescription", "carousel");
+    const slides = within(carousel).getAllByRole("group", {
+      name: /^\d+ de 6$/,
+    });
+    expect(slides).toHaveLength(6);
+    const images = within(carousel).getAllByRole("img");
+    expect(images).toHaveLength(6);
+    // Every photo resolved to a bundled file and carries a real description.
+    images.forEach((image) => {
+      expect(image.getAttribute("src")).toMatch(/\.webp$/);
+      expect(image.getAttribute("alt").length).toBeGreaterThan(30);
+    });
+    // The on-screen ranking lists participants by name; it is kept out.
+    expect(
+      images.some((image) => /top 10|ranking|placar/i.test(image.alt)),
+    ).toBe(false);
+  });
+
+  it("navigates the carousel by buttons, dots and arrow keys", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    const status = () =>
+      within(carousel).getByText(/^Foto \d+ de 6:/, { selector: "p" });
+
+    expect(status()).toHaveTextContent("Foto 1 de 6: Equipe do UnBreakable");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Próxima foto" }),
+    );
+    expect(status()).toHaveTextContent("Foto 2 de 6: Plateia no auditório");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Foto anterior" }),
+    );
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: "Foto anterior" }),
+    );
+    // Wraps around to the last photo.
+    expect(status()).toHaveTextContent("Foto 6 de 6: Troféus do pódio");
+
+    fireEvent.click(
+      within(carousel).getByRole("button", { name: /^Ir para a foto 3/ }),
+    );
+    expect(status()).toHaveTextContent("Foto 3 de 6: Conversa no palco");
+    expect(
+      within(carousel).getByRole("button", { name: /^Ir para a foto 3/ }),
+    ).toHaveAttribute("aria-current", "true");
+
+    fireEvent.keyDown(
+      within(carousel).getByRole("group", {
+        name: /Use as setas do teclado/,
+      }),
+      { key: "ArrowRight" },
+    );
+    expect(status()).toHaveTextContent("Foto 4 de 6: Dinâmica do CTF");
+  });
+
+  it("lets people stop and resume the automatic rotation", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+    const carousel = screen.getByRole("region", { name: "Fotos do evento" });
+    const toggle = within(carousel).getByRole("button", {
+      name: /Pausar/,
+    });
+    fireEvent.click(toggle);
+    expect(
+      within(carousel).getByRole("button", { name: /Retomar/ }),
+    ).toBeInTheDocument();
+    // Announcements switch on once the rotation is no longer automatic.
+    expect(
+      within(carousel).getByText(/^Foto 1 de 6:/, { selector: "p" }),
+    ).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("renders the podium and the extra sections without naming winners", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
+    renderApp();
+
+    const podium = screen.getByRole("list", { name: "Pódio" });
+    const places = within(podium).getAllByRole("listitem");
+    expect(places).toHaveLength(3);
+    expect(places[0]).toHaveTextContent("Primeiro lugar");
+    expect(places[1]).toHaveTextContent("Segundo lugar");
+    expect(places[2]).toHaveTextContent("Terceiro lugar");
+    expect(
+      screen.getByRole("heading", { level: 2, name: "O evento em fotos." }),
+    ).toBeInTheDocument();
+    const panel = screen.getByRole("region", { name: "Realização e apoio" });
+    expect(within(panel).getByText("IDEA LAB")).toBeInTheDocument();
   });
 
   it("renders the team page with gestão atual and no fundação references", () => {
