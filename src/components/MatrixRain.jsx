@@ -39,7 +39,7 @@ export default function MatrixRain({ onDone }) {
         context.font = `${size}px "IBM Plex Mono", monospace`;
         drops.forEach((row, column) => {
           const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-          context.fillStyle = row % 9 < 1 ? "#f3f7f1" : "#a3ff12";
+          context.fillStyle = row % 9 < 1 ? "#f3f7f1" : "#68c368";
           context.fillText(glyph, column * size, row * size);
           drops[column] =
             row * size > element.height && Math.random() > 0.975 ? 0 : row + 1;

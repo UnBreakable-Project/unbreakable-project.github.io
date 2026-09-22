@@ -348,15 +348,13 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
   return (
     <article className="profile-card">
       {photo ? (
-        <div className="member-frame">
-          <img
-            className={`member-photo ${photoClass ?? ""}`}
-            src={photo}
-            alt={name}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        <img
+          className={`member-photo ${photoClass ?? ""}`}
+          src={photo}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
       ) : (
         <div className="member-photo is-empty" aria-hidden="true" />
       )}
@@ -555,7 +553,6 @@ function Contato() {
 }
 
 function NotFound() {
-  const requested = window.location.pathname;
   const directories = [
     ["sobre", `${siteBase}#sobre`],
     ["eventos", routeHref("/eventos")],
@@ -565,32 +562,6 @@ function NotFound() {
   ];
   return (
     <main id="conteudo-principal" className="page-content not-found">
-      <figure className="terminal terminal-404" aria-hidden="true">
-        <figcaption className="terminal-bar">
-          <span className="terminal-dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>bash — 404</span>
-        </figcaption>
-        <pre className="terminal-body">
-          <code>
-            <span className="terminal-line" style={{ "--i": 0 }}>
-              <span className="t-key">unbreakable@unb:~$</span> cd {requested}
-            </span>
-            <span className="terminal-line t-err" style={{ "--i": 1 }}>
-              bash: cd: {requested}: No such file or directory
-            </span>
-            <span className="terminal-line" style={{ "--i": 2 }}>
-              <span className="t-key">unbreakable@unb:~$</span> ls ~
-            </span>
-            <span className="terminal-line t-val" style={{ "--i": 3 }}>
-              {directories.map(([name]) => `${name}/`).join("  ")}
-            </span>
-          </code>
-        </pre>
-      </figure>
       <p className="micro">404 / UnBreakable</p>
       <h1>Página não encontrada</h1>
       <p>Este endereço não existe ou foi alterado.</p>

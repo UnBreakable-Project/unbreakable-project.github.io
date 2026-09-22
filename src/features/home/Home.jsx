@@ -37,69 +37,9 @@ function Prompt({ command, children }) {
   );
 }
 
-function ConfigFile({ file, lines }) {
-  return (
-    <figure className="terminal" aria-label={`Conteúdo de ${file}`}>
-      <figcaption className="terminal-bar">
-        <span className="terminal-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span>{file}</span>
-      </figcaption>
-      <pre className="terminal-body">
-        <code>
-          {lines.map(({ key, value }, index) => (
-            <span className="terminal-line" style={{ "--i": index }} key={key}>
-              <span className="t-key">{key}</span>
-              <span className="t-op"> = </span>
-              <span className="t-val">{value}</span>
-            </span>
-          ))}
-        </code>
-      </pre>
-    </figure>
-  );
-}
-
-function Ticker({ items }) {
-  return (
-    <div className="ticker" aria-label="Temas e plataformas do grupo">
-      <div className="ticker-track">
-        <ul>
-          {items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-        <ul aria-hidden="true">
-          {items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-function Pipeline({ label, steps }) {
-  return (
-    <ol className="pipeline" aria-label={label}>
-      {steps.map(({ tag, label: step }, index) => (
-        <li key={tag} style={{ "--i": index }}>
-          <span className="pipeline-tag">{tag}</span>
-          <span className="pipeline-label">{step}</span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 export default function Home() {
   return (
     <main id="conteudo-principal" className="home">
-      <Ticker items={home.ticker} />
-
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <Prompt command="whoami">
@@ -125,7 +65,6 @@ export default function Home() {
           <div className="hero-object">
             <img src={logo} alt="UnBreakable" />
           </div>
-          <ConfigFile {...home.terminal} />
         </div>
       </section>
 
@@ -162,7 +101,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <Pipeline {...home.method.pipeline} />
       </section>
 
       <section className="events-section section">

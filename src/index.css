@@ -153,7 +153,7 @@ img {
   right: 0;
   height: 2px;
   background: var(--green);
-  box-shadow: 0 0 8px rgba(113, 214, 109, 0.45);
+  box-shadow: 0 0 8px rgba(104, 195, 104, 0.45);
 }
 .menu-button {
   display: none;
@@ -494,7 +494,7 @@ img {
   gap: 18px 46px;
   align-items: start;
   padding: 36px;
-  border: 1px solid rgba(113, 214, 109, 0.47);
+  border: 1px solid rgba(104, 195, 104, 0.47);
   border-radius: 14px;
   background: var(--panel);
 }
@@ -821,7 +821,7 @@ img {
 .brand-tabs button.is-active {
   border-color: var(--green);
   color: var(--green);
-  background: rgba(113, 214, 109, 0.08);
+  background: rgba(104, 195, 104, 0.08);
   transform: translateY(-1px);
 }
 .brand-category-panel {
@@ -905,7 +905,7 @@ img {
   background: linear-gradient(
     135deg,
     rgba(136, 69, 219, 0.24),
-    rgba(113, 214, 109, 0.08)
+    rgba(104, 195, 104, 0.08)
   );
 }
 .brand-file-preview.is-image {
@@ -1411,7 +1411,7 @@ img {
 }
 .footer-social a:hover {
   color: var(--green);
-  border-color: rgba(113, 214, 109, 0.7);
+  border-color: rgba(104, 195, 104, 0.7);
   transform: translateY(-2px);
 }
 .footer-social svg {

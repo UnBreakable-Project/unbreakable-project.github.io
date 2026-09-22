@@ -57,7 +57,7 @@ const trophyRows = [
 // Slow-drifting squares behind the hero: [left %, top %, size px, delay s].
 const floaters = [
   [6, 18, 10, 0],
-  [14, 72, 14, 1.4],
+  [3, 80, 14, 1.4],
   [38, 8, 8, 0.7],
   [52, 84, 12, 2.1],
   [61, 26, 8, 3.2],
@@ -269,7 +269,9 @@ export default function PinkHatPage() {
 
       <section className="ph-section" aria-labelledby="ph-activities">
         <p className="ph-eyebrow">Sobre o evento</p>
-        <h2 id="ph-activities">Desafios, workshops e oficinas.</h2>
+        <h2 id="ph-activities">
+          Coloque em prática suas habilidades de segurança
+        </h2>
         <ul className="ph-cards">
           {pinkHat.activities.map(({ tag, title, description }, index) => (
             <li key={tag} className="ph-card">

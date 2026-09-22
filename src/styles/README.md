@@ -1,8 +1,8 @@
 # Design system
 
 `tokens.css` defines the shared palette, spacing, typography and motion tokens.
-The electric green is an interface accent; official brand files and the brand
-colors in the visual identity gallery remain unchanged.
+The green accent is `#68c368` (`--green`, hover `--accent-hover`); official brand
+files and the brand colors in the visual identity gallery remain unchanged.
 
 - Use `--ink` for the canvas, `--ink-soft` for cards, and `--panel` for elevation.
 - Use `--paper` for primary text and `--muted` for supporting text.
@@ -10,7 +10,7 @@ colors in the visual identity gallery remain unchanged.
 - Use the display family for headings, the body family for prose, and mono for
   short labels and numbering.
 - Use the spacing scale and responsive `--section-space` for layout rhythm.
-- Keep decorative grids low contrast and official logos unmodified.
+- Keep decorative backgrounds low contrast (no grid patterns) and official logos unmodified.
 
 Home composition lives in `features/home/home.css`, scoped under `.home`.
 Shared controls and secondary pages retain their styles in `index.css`.

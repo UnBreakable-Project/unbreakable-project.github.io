@@ -9,6 +9,6 @@ export function printConsoleBanner() {
 `;
   console.log(
     `%c${art}`,
-    "color:#a3ff12;font-family:monospace;font-weight:700",
+    "color:#68c368;font-family:monospace;font-weight:700",
   );
 }

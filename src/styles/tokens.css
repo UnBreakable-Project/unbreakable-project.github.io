@@ -6,8 +6,8 @@
   --paper: #f3f7f1;
   --muted: #aab7ad;
   --dim: #91a295;
-  --green: #a3ff12;
-  --accent-hover: #baff52;
+  --green: #68c368;
+  --accent-hover: #86cf86;
   --violet: #8845db;
   --violet-light: #b27cff;
   --violet-line: rgba(178, 124, 255, 0.32);
@@ -16,7 +16,6 @@
   --brand-green: #69c36b;
   --brand-violet: #562197;
   --line: rgba(170, 183, 173, 0.2);
-  --grid-line: rgba(170, 183, 173, 0.055);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
