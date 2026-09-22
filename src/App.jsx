@@ -348,15 +348,13 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
   return (
     <article className="profile-card">
       {photo ? (
-        <div className="member-frame">
-          <img
-            className={`member-photo ${photoClass ?? ""}`}
-            src={photo}
-            alt={name}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        <img
+          className={`member-photo ${photoClass ?? ""}`}
+          src={photo}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
       ) : (
         <div className="member-photo is-empty" aria-hidden="true" />
       )}

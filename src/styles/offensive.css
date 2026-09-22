@@ -210,28 +210,6 @@ body::after {
 .profile-card {
   position: relative;
 }
-.member-frame {
-  position: relative;
-  overflow: hidden;
-}
-.member-frame .member-photo {
-  filter: grayscale(1) contrast(1.05) brightness(0.92);
-  transition: filter 0.35s;
-}
-.member-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 2px,
-      rgba(8, 11, 9, 0.22) 2px 3px
-    ),
-    linear-gradient(180deg, rgba(136, 69, 219, 0.2), rgba(104, 195, 104, 0.07));
-  transition: opacity 0.35s;
-}
 .profile-card::before {
   content: "";
   position: absolute;
@@ -249,22 +227,6 @@ body::after {
 .profile-card:hover::before,
 .profile-card:focus-within::before {
   opacity: 1;
-}
-.profile-card:hover .member-photo,
-.profile-card:focus-within .member-photo {
-  filter: none;
-}
-.profile-card:hover .member-frame::after,
-.profile-card:focus-within .member-frame::after {
-  opacity: 0;
-}
-@media (hover: none) {
-  .member-frame .member-photo {
-    filter: none;
-  }
-  .member-frame::after {
-    opacity: 0.35;
-  }
 }
 
 /* ---------- 404 ---------- */
