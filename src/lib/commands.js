@@ -61,7 +61,7 @@ export function buildCommands({
       group: "Páginas",
       label: "Identidade Visual",
       hint: "ls ./identidade-visual",
-      keywords: "logos cores ícones circuitos marca brand",
+      keywords: "logos cores circuitos marca brand",
       href: routeHref("/identidade-visual"),
     },
     {

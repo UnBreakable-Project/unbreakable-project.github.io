@@ -10,7 +10,6 @@
   background:
     radial-gradient(ellipse at 85% 40%, var(--violet-glow), transparent 48%),
     var(--ink);
-  border-bottom: 1px solid var(--line);
 }
 .home .hero::after {
   height: 64px;
@@ -51,31 +50,8 @@
   width: 100%;
   max-width: 420px;
   padding: var(--space-8);
-  border: 1px solid var(--violet-line);
-  border-radius: var(--radius-card);
   background: radial-gradient(ellipse, var(--violet-glow), transparent 70%);
   position: relative;
-}
-.home .hero-object::before,
-.home .hero-object::after {
-  content: "";
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-color: var(--green);
-  border-style: solid;
-  pointer-events: none;
-}
-.home .hero-object::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-.home .hero-object::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
-  border-color: var(--violet-light);
 }
 .home .hero-object > img {
   aspect-ratio: 1;
@@ -86,7 +62,6 @@
   max-width: var(--max);
   margin: auto;
   padding: var(--section-space) var(--edge);
-  border-bottom: 1px solid var(--line);
   gap: var(--space-8) var(--space-16);
 }
 .home .section-index {

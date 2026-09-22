@@ -124,21 +124,12 @@ export const siteContent = {
         description: "Oficinas de segurança ofensiva durante o evento.",
       },
     ],
-    organizers: [
-      "IDP",
-      "UnBreakable",
-      "CtrlAlt DELas",
-      "UnB",
-      "meninas.comp — Projeto Meninas na Computação",
-      "ACM-W UnB",
-    ],
-    // "IDEA LAB" and "LESIS" are read from the on-stage screen in the photos.
-    supporters: [
-      "Neospace",
-      "Grupo Mulheres do Brasil — Brasília",
-      "IDEA LAB",
-      "LESIS",
-    ],
+    // Official "Realização / Apoio" strip from the organizers; keep the alt
+    // text in sync with the logos in the image.
+    partners: {
+      image: "/eventos/realizacao_apoio.png",
+      alt: "Realização: IDP, CtrlAlt DELas, Pink Hat, UnBreakable, UnB, meninas.comp — Projeto Meninas na Computação e ACM-W UnB. Apoio: Neospace, Grupo Mulheres do Brasil — Brasília, LESIS e Conectadas.",
+    },
     // Files live in src/assets/eventos/pink_hat_ctf/ as optimized WebP (see
     // styles/README.md). Alt text describes the scene and never names people.
     gallery: {
@@ -347,65 +338,6 @@ export const siteContent = {
         },
       },
       {
-        slug: "icones",
-        label: "Ícones",
-        description:
-          "Ícones e elementos gráficos para apoiar a comunicação visual do UnBreakable.",
-        usage:
-          "Use como apoio visual. Escolha a versão com contraste adequado ao fundo; esses ícones não substituem a marca principal.",
-        files: {
-          "boneco_1.svg": {
-            label: "Ícone em contorno escuro",
-            usage:
-              "Use sobre fundos claros quando quiser um elemento de apoio mais leve.",
-            previewSurface: "light",
-          },
-          "boneco_2.svg": {
-            label: "Ícone preenchido escuro",
-            usage:
-              "Use sobre fundos claros quando precisar de maior presença visual.",
-            previewSurface: "light",
-          },
-          "boneco_3.svg": {
-            label: "Ícone em contorno claro",
-            usage:
-              "Use sobre fundos escuros quando quiser um elemento de apoio mais leve.",
-          },
-          "boneco_4.svg": {
-            label: "Ícone preenchido claro",
-            usage:
-              "Use sobre fundos escuros quando precisar de maior presença visual.",
-          },
-          "boneco_5.svg": {
-            label: "Ícone em contorno verde",
-            usage:
-              "Use como destaque pontual sobre fundos escuros; não substitui a marca principal.",
-          },
-          "boneco_6.svg": {
-            label: "Ícone preenchido verde",
-            usage:
-              "Use como destaque pontual sobre fundos escuros; não substitui a marca principal.",
-          },
-          "boneco_7.svg": {
-            label: "Ícone em contorno roxo",
-            usage:
-              "Use como apoio visual sobre fundos claros ou de alto contraste.",
-            previewSurface: "light",
-          },
-          "boneco_8.svg": {
-            label: "Ícone preenchido roxo",
-            usage:
-              "Use como apoio visual sobre fundos claros ou de alto contraste.",
-            previewSurface: "light",
-          },
-          "boneco.af": {
-            label: "Ícone — arquivo editável (.af)",
-            usage:
-              "Abra apenas em software compatível com o formato .af para editar a peça.",
-          },
-        },
-      },
-      {
         slug: "cores",
         label: "Cores",
         description:
@@ -543,7 +475,8 @@ export const siteContent = {
     {
       name: "Luisa de Souza",
       photo: "LuisadeSouza.jpg",
-      linkedin: "",
+      linkedin:
+        "https://www.linkedin.com/in/luisa-de-souza-ferreira-a21a001a4/",
     },
     {
       name: "Mateus Reis Bastos",

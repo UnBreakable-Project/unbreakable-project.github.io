@@ -1,7 +1,7 @@
 export const siteUrl = "https://unbreakable-project.github.io";
 export const shareImage = `${siteUrl}/identidade-visual/logos/unbreakableLogo_9.png`;
 // Served from public/ so the event page can use it as its sharing image.
-export const pinkHatPoster = "/eventos/ctf-pink-hat.jpg";
+export const pinkHatPoster = "/eventos/banner_pink_hat.png";
 // Short aliases. The build writes a static redirect page for each one, since
 // GitHub Pages has no server-side rules.
 export const redirects = {
@@ -11,7 +11,7 @@ export const pageMeta = {
   "/": {
     title: "UnBreakable — Segurança ofensiva na UnB",
     description:
-      "Uma matilha para ir além da teoria: conheça o grupo de estudos de segurança ofensiva da Universidade de Brasília.",
+      "Uma matliha para ir além da teoria: conheça o grupo de estudos de segurança ofensiva da Universidade de Brasília.",
   },
   "/eventos": {
     title: "Eventos | UnBreakable",
@@ -40,7 +40,7 @@ export const pageMeta = {
   "/identidade-visual": {
     title: "Identidade Visual | UnBreakable",
     description:
-      "Consulte as orientações da marca e baixe logos, ícones, circuitos e referências de cores oficiais do UnBreakable.",
+      "Consulte as orientações da marca e baixe logos, circuitos e referências de cores oficiais do UnBreakable.",
   },
 };
 export const notFoundMeta = {
