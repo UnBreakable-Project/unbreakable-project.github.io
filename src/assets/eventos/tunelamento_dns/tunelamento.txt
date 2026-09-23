@@ -1,0 +1,8 @@
+Ontem, tivemos o privilégio de receber a Profa. Lorena Borges em nossa palestra online, para um debate essencial sobre segurança e proteção de dados em infraestruturas de nuvem.
+
+🔐 Com uma abordagem clara e profundamente qualificada, a Profa. Lorena apresentou o “Método de Detecção de Exfiltração por Tunelamento DNS”, uma ameaça silenciosa e altamente perigosa, capaz de comprometer dados sensíveis.
+
+🌎 Além de contextualizar os riscos envolvidos, ela compartilhou sua pesquisa premiada internacionalmente, que inclui publicações relevantes como “A security model for DNS tunnel detection on cloud platform” (WCNPS/IEEE Xplore) e o artigo sobre a metodologia de detecção em nuvem (ICITs/RISTI), trabalho que recebeu Menção Honrosa na Conferência Ibero-Americana de Computação Aplicada.
+
+🚀 Segurança de alto nível exige esse olhar atento à pesquisa acadêmica e à inovação.
+💜 Agradecemos à Lorena Borges pela generosidade em compartilhar tanto conhecimento com a comunidade UnBreakable | UnB. 🐺💜

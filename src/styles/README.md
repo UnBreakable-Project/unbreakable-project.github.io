@@ -58,7 +58,7 @@ meta tag (build only; the dev server needs inline scripts)
 `/eventos/ctf-pink-hat` (`features/pink-hat/`) has its own palette, scoped to
 `.pinkhat` with `--ph-*` tokens measured from the event art: black, hot pink
 `#e92974`, soft pink `#ff8fbe` for small text, dark magenta `#761639` for rules
-and chevrons. The team's `pinkhat.css` uses `#ff0a78`; the JPG measures darker,
+and chevrons. The team's `pinkhat.css` uses `#ff0a78`; the event art measures darker,
 so swap `--ph-pink` if you want the two sites to match exactly.
 
 Content lives in `content/site.mdx` under `pinkHat`. The date and place come
@@ -90,3 +90,17 @@ names people.
 The photo of the on-screen TOP 10 ranking is deliberately not published: it
 shows participants' usernames and scores. Add it only with their consent.
 The podium names no winners for the same reason.
+
+## Talk pages
+
+`/eventos/ligolo-ng` and `/eventos/tunelamento-dns` share one template,
+`features/talks/TalkPage.jsx`, driven by `talks` in `content/site.mdx`. Each
+section renders only when its key exists (`chain`, `pivot`, `threat`,
+`signals`, `research`, `quote`), so a new talk picks the ones it
+needs. The accent comes from the talk's opening slide: `.talk.is-<theme>` in
+`features/talks/talks.css` sets `--talk-accent`, `--talk-glow` and `--talk-bar`.
+
+Facts come from the slides and from the posts by the group and the speakers.
+Blocks marked "Contexto" explain the topic in general terms and say so; do not
+attribute details to a speaker that the sources do not state. Covers live in
+`public/eventos/` because they double as the `og:image`.

@@ -179,12 +179,38 @@
   white-space: nowrap;
 }
 .event-accordion-text {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
   margin: 0 var(--space-6);
   padding: var(--space-4) 0 var(--space-6);
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
+}
+.event-accordion-text > div {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: var(--space-3);
+}
+.event-accordion-text p {
+  margin: 0;
+}
+/* Same column as the featured event's poster, so the cards line up. */
+.event-accordion-text.has-image {
+  grid-template-columns: minmax(0, 1fr) clamp(184px, 21vw, 230px);
+  gap: var(--space-6) 46px;
+  justify-items: stretch;
+}
+.event-accordion-image {
+  margin: 0;
+}
+.event-accordion-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
 }
 .event-accordion-text strong {
   color: var(--paper);
@@ -208,6 +234,12 @@
 @media (max-width: 600px) {
   .event-summary {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .event-accordion-text.has-image {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .event-accordion-image {
+    max-width: 230px;
   }
   .event-accordion .next-event {
     grid-template-areas:

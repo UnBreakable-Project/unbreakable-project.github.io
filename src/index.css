@@ -380,6 +380,12 @@ img {
 .footer-col a {
   overflow-wrap: anywhere;
 }
+.event-row h3 a {
+  transition: color 0.2s;
+}
+.event-row h3 a:hover {
+  color: var(--green);
+}
 .event-row p {
   color: var(--muted);
   font-size: 13px;

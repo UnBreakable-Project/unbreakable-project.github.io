@@ -84,11 +84,21 @@ export const siteContent = {
       type: "Palestra",
       title: "Movimentação Lateral utilizando Ligolo-ng",
       presenter: "Prof. Alan Tamer Vasques",
+      date: "2026-05-27",
+      href: "/eventos/ligolo-ng",
     },
     {
-      type: "Palestra",
+      type: "Palestra online",
       title: "Método de Detecção de Exfiltração por Tunelamento DNS",
       presenter: "Profa. Lorena Borges",
+      date: "2026-06-10",
+      href: "/eventos/tunelamento-dns",
+      image: {
+        src: "/eventos/tunelamento-dns.jpg",
+        alt: "Banner da palestra Método de Detecção de Exfiltração por Tunelamento DNS, com a Profa. Lorena Borges: 10 de junho, das 21:00 às 22:00, online.",
+        width: 800,
+        height: 1066,
+      },
     },
   ],
   nextEvent: {
@@ -183,6 +193,305 @@ export const siteContent = {
       title: "Acompanhe as próximas atividades.",
       description:
         "Siga os canais oficiais do UnBreakable para ficar por dentro das próximas atividades.",
+    },
+  },
+  // Talk pages (features/talks/). Facts come from the slides and from the
+  // posts by the group and the speakers (the .txt files beside the images in
+  // src/assets/eventos/). "Contexto" blocks explain the topic in general terms
+  // and say so; they do not attribute details to the speaker.
+  talks: {
+    "ligolo-ng": {
+      path: "/eventos/ligolo-ng",
+      theme: "ligolo",
+      kind: "Palestra",
+      series: "Ciclo de Palestras UnBreakable · 01",
+      title: "Movimentação Lateral utilizando o Ligolo-ng",
+      date: "2026-05-27",
+      speaker: {
+        name: "Prof. Alan Tamer Vasques",
+        note: "Voluntário do UnBreakable na formação de profissionais de segurança ofensiva.",
+      },
+      lead: "A primeira palestra oficial do UnBreakable percorreu um pentest completo, da enumeração inicial ao acesso root em uma máquina escondida na rede interna.",
+      cover: {
+        src: "/eventos/ligolo-ng.jpg",
+        alt: "Slide de abertura: Movimentação Lateral utilizando o Ligolo-ng. Ciclo de Palestras UnBreakable, apresentado por Alan Tamer, 27 de maio de 2026.",
+        width: 666,
+        height: 371,
+        caption: "Slide de abertura",
+      },
+      chain: {
+        eyebrow: "O que foi apresentado",
+        title: "Um pentest, do primeiro scan ao root.",
+        description:
+          "Em vez de slides soltos, a palestra seguiu a cadeia de um ataque real, passo a passo. Cada etapa abria caminho para a próxima, até comprometer uma segunda máquina que não era alcançável de fora.",
+        steps: [
+          {
+            phase: "Reconhecimento",
+            title: "Enumeração inicial",
+            description:
+              "Mapear o alvo exposto: serviços, versões e superfícies que valem ser testadas.",
+          },
+          {
+            phase: "Acesso inicial",
+            title: "Exploração da aplicação vulnerável",
+            description:
+              "Uma falha na aplicação vira execução de comandos e um shell reverso na primeira máquina.",
+          },
+          {
+            phase: "Credenciais",
+            title: "Coleta de hashes no banco de dados",
+            description:
+              "Já dentro do host, o banco de dados da aplicação entrega hashes de senha.",
+          },
+          {
+            phase: "Quebra",
+            title: "Quebra de um dos hashes",
+            description:
+              "Um dos hashes é quebrado com sucesso e revela uma senha em texto claro.",
+          },
+          {
+            phase: "Pivô",
+            title: "Movimentação lateral com o Ligolo-ng",
+            description:
+              "A primeira máquina vira ponte: pelo túnel do Ligolo-ng, a rede interna fica ao alcance e uma segunda máquina é comprometida.",
+            highlight: true,
+          },
+          {
+            phase: "Escalada",
+            title: "Escalada de privilégios até root",
+            description:
+              "Na máquina interna, a cadeia termina com o controle total do sistema.",
+          },
+        ],
+      },
+      pivot: {
+        eyebrow: "Contexto",
+        title: "Como o pivô funciona.",
+        description:
+          "Máquinas da rede interna não respondem a quem está do lado de fora. O pivô usa um host já comprometido como ponte, e o Ligolo-ng é a ferramenta que monta essa ponte.",
+        diagram: {
+          label: "Diagrama do pivô com o Ligolo-ng",
+          caption:
+            "Sem o pivô, o atacante não tem rota até a Máquina 2. Com o agente na Máquina 1, a rede interna passa a ser alcançável pela interface TUN.",
+          zone: { from: 1, to: 2, label: "rede interna" },
+          nodes: [
+            {
+              role: "attacker",
+              title: "Atacante",
+              lines: ["proxy do Ligolo-ng", "interface TUN"],
+            },
+            {
+              role: "pivot",
+              title: "Máquina 1",
+              lines: ["exposta, já comprometida", "agente do Ligolo-ng"],
+            },
+            {
+              role: "target",
+              title: "Máquina 2",
+              lines: ["só na rede interna", "alvo final: root"],
+            },
+          ],
+          links: [
+            { label: "túnel", note: "o agente conecta de volta", both: true },
+            { label: "tráfego roteado", note: "como se fosse local" },
+          ],
+        },
+        concepts: [
+          {
+            tag: "conceito",
+            title: "Movimentação lateral",
+            description:
+              "Depois do primeiro acesso, avançar de máquina em máquina dentro da rede em busca de sistemas mais valiosos ou de privilégios maiores. Em CTFs, é o que separa a primeira flag da última.",
+          },
+          {
+            tag: "conceito",
+            title: "Tunelamento",
+            description:
+              "Encapsular o tráfego do atacante dentro de uma conexão que a rede já permite, para que ele chegue a hosts que, de fora, estariam fora de alcance.",
+          },
+          {
+            tag: "ferramenta",
+            title: "Ligolo-ng",
+            description:
+              "Ferramenta de código aberto: um agente roda no host comprometido e se conecta ao proxy do atacante. Do lado do atacante, uma interface de rede virtual (TUN) faz a rede interna parecer local, sem SOCKS nem proxychains.",
+          },
+        ],
+      },
+      quote: {
+        text: "Foram quase 90 minutos de conteúdo prático, demonstrando passo a passo como um pentest acontece. A interação com os alunos foi excelente, tornando a troca extremamente produtiva.",
+        author: "Prof. Alan Tamer Vasques",
+        source: "em publicação sobre a palestra",
+      },
+      closing: {
+        title: "Esse foi só o começo.",
+        description:
+          "A palestra abriu o ciclo de encontros do UnBreakable. Que venham os próximos encontros, desafios e CTFs; acompanhe os canais oficiais para saber das próximas datas.",
+      },
+    },
+    "tunelamento-dns": {
+      path: "/eventos/tunelamento-dns",
+      theme: "dns",
+      kind: "Palestra online",
+      series: "Ciclo de Palestras UnBreakable",
+      title: "Método de Detecção de Exfiltração por Tunelamento DNS",
+      date: "2026-06-10",
+      time: "21:00 às 22:00",
+      speaker: {
+        name: "Profa. Msc. Lorena de Souza Bezerra Borges",
+        roles: [
+          "Analista de Segurança da Informação, Operações Cibernéticas — STF",
+          "Professora do Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa — IDP",
+          "Pesquisadora externa do Meninas.comp — UnB",
+          "Instrutora ESR/RNP — RJ",
+        ],
+      },
+      lead: "Um debate sobre segurança e proteção de dados em nuvem: como reconhecer a exfiltração por tunelamento DNS, uma ameaça silenciosa, altamente perigosa e capaz de comprometer dados sensíveis.",
+      cover: {
+        src: "/eventos/tunelamento-dns.jpg",
+        alt: "Banner: UnBreakable Project apresenta Método de Detecção de Exfiltração por Tunelamento DNS, com a Profa. Lorena Borges. 10 de junho, das 21:00 às 22:00, online.",
+        width: 800,
+        height: 1066,
+        caption: "Banner de divulgação",
+        portrait: true,
+      },
+      // Cropped from the meeting screenshot (only the slide area, no
+      // participants): sharper than the 581 px export.
+      slide: {
+        eyebrow: "Slide de abertura",
+        src: "/eventos/tunelamento-dns-slide.jpg",
+        alt: "Slide de abertura: Método de Detecção de Exfiltração por Tunelamento DNS, Profa. Msc. Lorena de Souza Bezerra Borges, com suas funções no STF, no IDP, no Meninas.comp e na ESR/RNP.",
+        width: 922,
+        height: 520,
+        caption:
+          "O slide que abriu a palestra, com o título do método e a trajetória da palestrante.",
+      },
+      threat: {
+        eyebrow: "A ameaça",
+        title: "Dados saindo disfarçados de consulta DNS.",
+        description:
+          "Quase toda rede precisa resolver nomes, então o DNS raramente é bloqueado e costuma ser pouco inspecionado. É exatamente essa confiança que o tunelamento explora.",
+        diagram: {
+          label: "Diagrama da exfiltração por tunelamento DNS",
+          caption:
+            "O host nunca fala diretamente com o atacante: é o próprio DNS da rede que entrega os pedaços.",
+          zone: { from: 0, to: 1, label: "nuvem da vítima" },
+          nodes: [
+            {
+              role: "pivot",
+              title: "Host comprometido",
+              lines: ["codifica e fatia os dados", "um pedaço por consulta"],
+            },
+            {
+              role: "neutral",
+              title: "Resolvedor DNS",
+              lines: ["confiável para a rede", "encaminha a consulta"],
+            },
+            {
+              role: "attacker",
+              title: "Servidor do atacante",
+              lines: ["autoritativo do domínio", "remonta os dados"],
+            },
+          ],
+          links: [
+            { label: "consulta", note: "dados no subdomínio" },
+            { label: "porta 53", note: "sai da rede sem alarde", both: true },
+          ],
+        },
+        steps: [
+          {
+            title: "Os dados viram nomes",
+            description:
+              "No host comprometido, o conteúdo é codificado e fatiado em pedaços que viram subdomínios de um domínio do atacante.",
+          },
+          {
+            title: "O DNS faz a entrega",
+            description:
+              "Cada consulta sai pelo resolvedor da própria rede, que a encaminha ao servidor autoritativo do domínio, controlado pelo atacante.",
+          },
+          {
+            title: "O atacante remonta",
+            description:
+              "O servidor junta os pedaços e reconstrói os dados. As respostas podem até levar comandos de volta, fechando um canal nos dois sentidos.",
+          },
+        ],
+        queries: {
+          caption:
+            "Ilustração: uma consulta comum e consultas de um túnel, lado a lado.",
+          normal: "www.unb.br",
+          tunnel: [
+            "mzxw6ytboi.nbswy3dp.t1.exfil.example",
+            "onxw2zjanfzsa43f.t2.exfil.example",
+            "mnzgk5dfom.t3.exfil.example",
+          ],
+        },
+      },
+      signals: {
+        eyebrow: "Contexto",
+        title: "O que um detector observa.",
+        description:
+          "Sinais que a literatura sobre o tema usa para separar o tráfego legítimo de um túnel. O método da palestrante está descrito nas publicações logo abaixo.",
+        items: [
+          {
+            tag: "forma",
+            title: "Tamanho e entropia",
+            description:
+              "Subdomínios longos, com caracteres de aparência aleatória, destoam de nomes escolhidos por pessoas.",
+          },
+          {
+            tag: "volume",
+            title: "Consultas por domínio",
+            description:
+              "Muitos nomes únicos para um mesmo domínio, em pouco tempo, indicam um canal de dados.",
+          },
+          {
+            tag: "registros",
+            title: "Tipos incomuns",
+            description:
+              "TXT, NULL e outros registros que carregam mais dados por resposta são sinais de alerta.",
+          },
+          {
+            tag: "nuvem",
+            title: "Comportamento do host",
+            description:
+              "Uma instância que passa a conversar muito com um único servidor DNS merece investigação.",
+          },
+        ],
+      },
+      research: {
+        eyebrow: "A pesquisa",
+        title: "Uma pesquisa premiada.",
+        description:
+          "Além de contextualizar os riscos, a Profa. Lorena apresentou a pesquisa por trás do método, premiada internacionalmente.",
+        publications: [
+          {
+            kind: "Artigo",
+            title:
+              "A security model for DNS tunnel detection on cloud platform",
+            venue: "WCNPS · IEEE Xplore",
+            // Published title; the second entry only describes its paper.
+            quoted: true,
+          },
+          {
+            kind: "Artigo",
+            title: "Artigo sobre a metodologia de detecção em nuvem",
+            venue: "ICITS · RISTI",
+          },
+        ],
+        award: {
+          title: "Menção Honrosa",
+          venue: "Conferência Ibero-Americana de Computação Aplicada",
+        },
+      },
+      quote: {
+        text: "Segurança de alto nível exige esse olhar atento à pesquisa acadêmica e à inovação.",
+        author: "UnBreakable",
+        source: "em publicação sobre a palestra",
+      },
+      closing: {
+        title: "Pesquisa que vira defesa.",
+        description:
+          "Agradecemos à Profa. Lorena Borges pela generosidade em compartilhar tanto conhecimento com a comunidade. Acompanhe os canais oficiais para saber dos próximos encontros.",
+      },
     },
   },
   faqs: [

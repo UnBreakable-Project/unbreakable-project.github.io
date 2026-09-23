@@ -1,6 +1,6 @@
 /*
  * CTF Pink Hat event page. Palette measured from the official event art
- * (public/eventos/ctf-pink-hat.jpg, same palette as banner_pink_hat.png): black, hot pink, white and a dark magenta
+ * (public/eventos/banner_pink_hat.png): black, hot pink, white and a dark magenta
  * for rules and chevrons. Scoped to .pinkhat so the site's green/violet
  * interface stays untouched everywhere else.
  */
@@ -8,7 +8,7 @@
 .site-header.is-pinkhat {
   --ph-bg: #050205;
   --ph-surface: #120a10;
-  --ph-pink: #e92974; /* measured from the JPG; the team's pinkhat.css uses #ff0a78 */
+  --ph-pink: #e92974; /* measured from the event art; the team's pinkhat.css uses #ff0a78 */
   --ph-pink-soft: #ff8fbe; /* pink for small text on black */
   --ph-magenta: #761639; /* rules and chevrons */
   --ph-white: #f8f8f8;

@@ -1,4 +1,5 @@
 import { siteContent } from "../content/site.mdx";
+import { routeHref } from "../lib/routes";
 const { events } = siteContent;
 
 export function ArrowIcon({ direction = "right" }) {
@@ -16,10 +17,10 @@ export function ArrowIcon({ direction = "right" }) {
 export function EventList({ compact = false }) {
   return (
     <div className={compact ? "event-list compact" : "event-list"}>
-      {events.map(({ type, title, presenter }) => (
+      {events.map(({ type, title, presenter, href }) => (
         <article key={title} className="event-row">
           <span>{type}</span>
-          <h3>{title}</h3>
+          <h3>{href ? <a href={routeHref(href)}>{title}</a> : title}</h3>
           <p>{presenter}</p>
         </article>
       ))}

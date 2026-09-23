@@ -335,6 +335,73 @@ describe("UnBreakable", () => {
       .forEach((accordion) => expect(accordion).not.toHaveAttribute("open"));
   });
 
+  it("renders the Ligolo-ng talk page with the attack chain", () => {
+    window.history.replaceState({}, "", "/eventos/ligolo-ng");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Movimentação Lateral utilizando o Ligolo-ng",
+      }),
+    ).toBeInTheDocument();
+    expect(document.title).toMatch(/^Movimentação Lateral/);
+    const steps = within(
+      screen.getByRole("region", { name: /do primeiro scan ao root/ }),
+    ).getAllByRole("listitem");
+    expect(steps).toHaveLength(6);
+    expect(steps[4]).toHaveClass("is-highlight");
+    expect(document.querySelector(".site-header")).toHaveClass(
+      "is-talk",
+      "is-ligolo",
+    );
+    expect(
+      screen.getByRole("figure", { name: "Diagrama do pivô com o Ligolo-ng" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Outra palestra: Método de Detecção/ }),
+    ).toHaveAttribute("href", "/eventos/tunelamento-dns");
+  });
+
+  it("renders the DNS tunnelling talk page with its research", () => {
+    window.history.replaceState({}, "", "/eventos/tunelamento-dns");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Método de Detecção de Exfiltração por Tunelamento DNS",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("10 de junho de 2026")).toHaveAttribute(
+      "datetime",
+      "2026-06-10",
+    );
+    expect(screen.getByText("21:00 às 22:00")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "A security model for DNS tunnel detection on cloud platform",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Menção Honrosa", { selector: "strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByAltText(/Captura da videochamada/),
+    ).not.toBeInTheDocument();
+  });
+
+  it("links each past talk from the events page", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+
+    expect(
+      screen
+        .getAllByRole("link", { name: /Ver página da palestra/ })
+        .map((link) => link.getAttribute("href")),
+    ).toEqual(["/eventos/ligolo-ng", "/eventos/tunelamento-dns"]);
+  });
+
   it("redirects the /pinkhat alias to the event page", () => {
     const replace = vi.fn();
     const original = window.location;

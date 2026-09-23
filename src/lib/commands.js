@@ -49,6 +49,22 @@ export function buildCommands({
       href: routeHref("/eventos/ctf-pink-hat"),
     },
     {
+      id: "talk-ligolo",
+      group: "Páginas",
+      label: "Palestra: Ligolo-ng",
+      hint: "cat ./eventos/ligolo-ng.md",
+      keywords: "movimentação lateral pivô tunelamento pentest alan tamer",
+      href: routeHref("/eventos/ligolo-ng"),
+    },
+    {
+      id: "talk-dns",
+      group: "Páginas",
+      label: "Palestra: Tunelamento DNS",
+      hint: "cat ./eventos/tunelamento-dns.md",
+      keywords: "exfiltração detecção dns nuvem lorena borges",
+      href: routeHref("/eventos/tunelamento-dns"),
+    },
+    {
       id: "team",
       group: "Páginas",
       label: "Equipe",

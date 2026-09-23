@@ -1,0 +1,5 @@
+Ontem tive a honra de abrir o ciclo de palestras do grupo de Segurança Ofensiva da UnB, o UnBreakable, falando sobre um tema essencial em pentests e em ambientes competitivos de CTF, que é a movimentação lateral.
+
+Foram quase 90 minutos de conteúdo prático, demonstrando passo a passo como um pentest acontece: da enumeração inicial à exploração de uma aplicação vulnerável para obtenção de um shell reverso; da coleta de hashes em um banco de dados à quebra bem-sucedida de um deles; e, por fim, a movimentação lateral para comprometer uma segunda máquina na rede interna, encerrando com uma escalada de privilégios até root.
+
+A interação com os alunos foi excelente, tornando a troca extremamente produtiva. Agradeço ao UnBreakable pelo convite e ao professor Roberto Rodrigues-Filho pela organização e condução do grupo, do qual faço parte como voluntário, contribuindo na formação de profissionais preparados para atuar em Segurança Ofensiva.

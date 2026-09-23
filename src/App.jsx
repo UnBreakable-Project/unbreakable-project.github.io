@@ -16,6 +16,8 @@ import { ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
 import PinkHatPage from "./features/pink-hat/PinkHatPage";
+import TalkPage from "./features/talks/TalkPage";
+import { findTalkSlug, talks } from "./features/talks/talks";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 
@@ -84,6 +86,7 @@ function Header({ onOpenPalette }) {
   const path = currentPath();
   const isContact = path === "/contato";
   const isIdentityVisual = path === "/identidade-visual";
+  const talkSlug = findTalkSlug(path);
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -160,7 +163,9 @@ function Header({ onOpenPalette }) {
       className={
         path === "/eventos/ctf-pink-hat"
           ? "site-header is-pinkhat"
-          : "site-header"
+          : talkSlug
+            ? `site-header is-talk is-${talks[talkSlug].theme}`
+            : "site-header"
       }
     >
       <div className="header-inner">
@@ -498,17 +503,50 @@ function Eventos() {
       </div>
     </Accordion>
   );
-  const history = events.map(({ type, title, presenter }) => (
-    <Accordion
-      key={title}
-      className="event-accordion"
-      title={<EventSummary label={type} title={title} />}
-    >
-      <p className="event-accordion-text">
-        Apresentação: <strong>{presenter}</strong>
-      </p>
-    </Accordion>
-  ));
+  const history = events.map(
+    ({ type, title, presenter, date, href, image }) => (
+      <Accordion
+        key={title}
+        className="event-accordion"
+        title={
+          <EventSummary
+            label={type}
+            title={title}
+            meta={date && formatEventDate(date)}
+          />
+        }
+      >
+        <div
+          className={
+            image ? "event-accordion-text has-image" : "event-accordion-text"
+          }
+        >
+          <div>
+            <p>
+              Apresentação: <strong>{presenter}</strong>
+            </p>
+            {href && (
+              <a className="text-link" href={routeHref(href)}>
+                Ver página da palestra <ArrowIcon />
+              </a>
+            )}
+          </div>
+          {image && (
+            <figure className="event-accordion-image">
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          )}
+        </div>
+      </Accordion>
+    ),
+  );
 
   return (
     <>
@@ -705,6 +743,8 @@ export default function App() {
     <Eventos />
   ) : path === "/eventos/ctf-pink-hat" ? (
     <PinkHatPage />
+  ) : findTalkSlug(path) ? (
+    <TalkPage slug={findTalkSlug(path)} />
   ) : path === "/equipe" ? (
     <Equipe />
   ) : path === "/contato" ? (

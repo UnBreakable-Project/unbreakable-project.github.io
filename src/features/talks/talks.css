@@ -1,0 +1,780 @@
+/*
+ * Talk pages (/eventos/ligolo-ng, /eventos/tunelamento-dns). One layout, one
+ * accent per talk, taken from its opening slide: cyan for Ligolo-ng, the
+ * violet-to-green bar for DNS. Everything else is the site's own palette.
+ */
+.talk,
+.site-header.is-talk {
+  --talk-accent: var(--violet-light);
+  --talk-accent-soft: #cfaaff;
+  --talk-glow: rgba(136, 69, 219, 0.2);
+  --talk-line: rgba(178, 124, 255, 0.32);
+  --talk-bar: linear-gradient(90deg, var(--violet), var(--green));
+  --talk-ink: #0a0614; /* header and menu background, from the slide */
+}
+.talk {
+  --talk-gutter: max(var(--edge), calc((100vw - var(--max)) / 2 + var(--edge)));
+  overflow: clip;
+}
+.talk.is-ligolo,
+.site-header.is-ligolo {
+  --talk-accent: #4fb1c1;
+  --talk-accent-soft: #8fd3df;
+  --talk-glow: rgba(79, 177, 193, 0.18);
+  --talk-line: rgba(79, 177, 193, 0.38);
+  --talk-bar: linear-gradient(90deg, #0c3b44, #4fb1c1);
+  --talk-ink: #010914;
+}
+.talk.is-dns,
+.site-header.is-dns {
+  --talk-bar: linear-gradient(90deg, #8954fc, #449099, #03c066);
+}
+
+/* ---------- Site header on talk pages ---------- */
+/* Same treatment as the Pink Hat header: the logo keeps its brand colours,
+ * everything around it takes the talk's accent. */
+.site-header.is-talk {
+  background: var(--talk-ink);
+  background: color-mix(in srgb, var(--talk-ink) 94%, transparent);
+  border-bottom-color: var(--talk-line);
+}
+.site-header.is-talk :focus-visible {
+  outline-color: var(--talk-accent-soft);
+}
+.site-header.is-talk .brand-name em {
+  color: var(--talk-accent);
+}
+.site-header.is-talk .brand-name::after {
+  background: var(--talk-accent);
+}
+.site-header.is-talk .nav a:hover,
+.site-header.is-talk .nav a.is-active {
+  color: var(--talk-accent-soft);
+}
+.site-header.is-talk .nav a.is-active::after {
+  background: var(--talk-bar);
+  box-shadow: 0 0 8px var(--talk-glow);
+}
+.site-header.is-talk .header-cta {
+  background: var(--talk-accent);
+  color: var(--talk-ink);
+}
+.site-header.is-talk .header-cta:hover {
+  background: var(--talk-accent-soft);
+}
+.site-header.is-talk .palette-trigger > span {
+  color: var(--talk-accent);
+}
+.site-header.is-talk .palette-trigger:hover {
+  border-color: var(--talk-accent);
+}
+.site-header.is-talk .menu-button {
+  border-color: var(--talk-line);
+}
+@media (max-width: 1100px) {
+  .site-header.is-talk .nav {
+    background: var(--talk-ink);
+    border-bottom-color: var(--talk-line);
+  }
+  .site-header.is-talk .nav a.is-active {
+    border-left-color: var(--talk-accent);
+  }
+  /* index.css forces this green with !important at <=850px. */
+  .site-header.is-talk .mobile-contact {
+    color: var(--talk-accent-soft) !important;
+  }
+}
+.talk :where(h1, h2, h3, p) {
+  margin: 0;
+}
+
+/* ---------- Hero ---------- */
+.talk-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--space-12);
+  align-items: center;
+  padding: var(--section-space) var(--talk-gutter);
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at 80% 45%, var(--talk-glow), transparent 55%),
+    var(--ink);
+}
+.talk-hero-copy {
+  min-width: 0;
+}
+.talk-hero .path-prompt {
+  margin-bottom: var(--space-6);
+  font: 500 12px/1.5 var(--font-mono);
+  color: var(--dim);
+  overflow-wrap: anywhere;
+}
+.talk-chip {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  color: var(--muted);
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.talk-chip span {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--talk-line);
+  border-radius: var(--radius-sm);
+  color: var(--talk-accent-soft);
+}
+.talk-hero h1 {
+  margin-top: var(--space-6);
+  font: 800 clamp(2.4rem, 5vw, 4.4rem) / 1.02 var(--font-display);
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.talk-speaker {
+  margin-top: var(--space-8);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--talk-accent);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.talk-speaker-name {
+  color: var(--paper);
+  font-size: 16px;
+  font-weight: 800;
+}
+.talk-speaker ul {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.talk-lead {
+  max-width: 56ch;
+  margin-top: var(--space-6);
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.talk-when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-6);
+  color: var(--talk-accent-soft);
+  font: 500 12px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.talk-when span::before {
+  content: "· ";
+  color: var(--dim);
+}
+.talk-cover {
+  margin: 0;
+}
+/* A portrait banner would tower over the copy at full column width. */
+.talk-cover.is-portrait {
+  justify-self: center;
+  width: min(400px, 100%);
+}
+.talk-cover img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--talk-line);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 0 0 6px var(--talk-glow),
+    0 30px 80px -30px var(--talk-accent);
+}
+.talk-cover figcaption {
+  margin-top: var(--space-3);
+  color: var(--dim);
+  font: 500 11px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Sections ---------- */
+.talk-section {
+  max-width: var(--max);
+  margin: auto;
+  padding: var(--section-space) var(--edge) 0;
+}
+.talk-eyebrow {
+  color: var(--talk-accent-soft);
+  font: 500 var(--text-label) / 1.6 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.talk-eyebrow::before {
+  content: "// ";
+  color: var(--talk-accent);
+}
+.talk-head h2,
+.talk-closing h2 {
+  margin-top: var(--space-4);
+  max-width: 20ch;
+  font: 800 var(--text-heading) / 1.05 var(--font-display);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  hyphens: auto;
+}
+.talk-head > p:last-child:not(.talk-eyebrow),
+.talk-closing p {
+  max-width: 60ch;
+  margin-top: var(--space-6);
+  color: var(--muted);
+  line-height: 1.75;
+}
+/* Heading on the left, content on the right; the heading follows the scroll. */
+.talk-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-12);
+  align-items: start;
+}
+.talk-split > .talk-head {
+  position: sticky;
+  top: calc(80px + var(--space-8));
+}
+/* The opening slide, shown big: framed like the cover, never upscaled much
+ * past its 922 px source. */
+.talk-slide {
+  max-width: 960px;
+  margin: var(--space-6) 0 0;
+}
+.talk-slide img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--talk-line);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 0 0 8px var(--talk-glow),
+    0 40px 100px -40px var(--talk-accent);
+}
+.talk-slide figcaption {
+  margin-top: var(--space-4);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- Attack chain ---------- */
+.talk-steps {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.talk-steps::before {
+  content: "";
+  position: absolute;
+  top: var(--space-8);
+  bottom: var(--space-8);
+  left: 27px;
+  width: 2px;
+  background: var(--talk-bar);
+  opacity: 0.6;
+}
+.talk-steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  padding: var(--space-6) var(--space-6) var(--space-6) 0;
+  border-radius: var(--radius-card);
+}
+.talk-step-number {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--talk-line);
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--talk-accent-soft);
+  font: 600 14px/1 var(--font-mono);
+}
+.talk-step-phase {
+  color: var(--dim);
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.talk-steps h3 {
+  margin-top: var(--space-2);
+  font: 700 clamp(1.15rem, 1.8vw, 1.4rem) / 1.25 var(--font-display);
+  letter-spacing: -0.01em;
+}
+.talk-steps li p:last-child {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.talk-steps li.is-highlight {
+  background: var(--ink-soft);
+  outline: 1px solid var(--talk-line);
+}
+.talk-steps li.is-highlight .talk-step-number {
+  border-color: var(--talk-accent);
+  background: var(--talk-accent);
+  color: var(--ink);
+  box-shadow: 0 0 0 6px var(--talk-glow);
+}
+.talk-steps li.is-highlight .talk-step-phase {
+  color: var(--talk-accent-soft);
+}
+
+/* ---------- Flow diagram ---------- */
+.talk-diagram {
+  margin: var(--space-12) 0 0;
+  padding: var(--space-8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--talk-glow), transparent 70%),
+    var(--ink-soft);
+}
+.talk-diagram > figcaption {
+  max-width: 70ch;
+  margin-top: var(--space-6);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.talk-flow,
+.talk-zone {
+  display: flex;
+  align-items: center;
+}
+.talk-zone {
+  position: relative;
+  flex: 2 1 0;
+  padding: var(--space-8) var(--space-4) var(--space-4);
+  border: 1px dashed var(--talk-line);
+  border-radius: var(--radius-card);
+}
+.talk-zone-label {
+  position: absolute;
+  top: calc(var(--space-2) * -1 - 1px);
+  left: var(--space-4);
+  padding: 0 var(--space-2);
+  background: var(--ink-soft);
+  color: var(--talk-accent-soft);
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.talk-node {
+  display: grid;
+  flex: 1 1 0;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--ink);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.talk-node strong {
+  color: var(--paper);
+  font: 700 16px/1.3 var(--font-display);
+}
+.talk-node.is-attacker {
+  border-color: var(--talk-accent);
+  box-shadow: 0 0 0 4px var(--talk-glow);
+}
+.talk-node.is-attacker strong {
+  color: var(--talk-accent-soft);
+}
+.talk-node.is-pivot {
+  border-color: var(--talk-line);
+}
+.talk-link {
+  position: relative;
+  flex: 0 0 132px;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2);
+  text-align: center;
+}
+.talk-link-line {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: var(--talk-bar);
+}
+.talk-link-line::after,
+.talk-link.is-both .talk-link-line::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  border: 5px solid transparent;
+}
+.talk-link-line::after {
+  right: -2px;
+  border-left-color: var(--talk-accent);
+  border-right-width: 0;
+}
+.talk-link.is-both .talk-link-line::before {
+  left: -2px;
+  border-right-color: var(--talk-accent);
+  border-left-width: 0;
+}
+.talk-link-label {
+  order: -1;
+  display: grid;
+  color: var(--dim);
+  font: 500 11px/1.35 var(--font-mono);
+}
+.talk-link-label b {
+  color: var(--talk-accent-soft);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Cards ---------- */
+.talk-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.talk-cards.is-four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: var(--space-12);
+}
+.talk-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--ink-soft);
+}
+.talk-card-tag {
+  justify-self: start;
+  color: var(--talk-accent-soft);
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.talk-card h3 {
+  font: 700 1.2rem/1.25 var(--font-display);
+}
+.talk-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ---------- DNS: steps and queries ---------- */
+.talk-mini-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: talk-step;
+}
+.talk-mini-steps li {
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--talk-line);
+  counter-increment: talk-step;
+}
+.talk-mini-steps h3 {
+  font: 700 1.15rem/1.3 var(--font-display);
+}
+.talk-mini-steps h3::before {
+  content: "0" counter(talk-step) " ";
+  color: var(--talk-accent-soft);
+  font: 600 12px var(--font-mono);
+}
+.talk-mini-steps p {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.talk-queries {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--space-4) var(--space-8);
+  margin: var(--space-8) 0 0;
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--ink);
+}
+.talk-queries > div {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.talk-queries-label {
+  color: var(--dim);
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.talk-queries code {
+  color: var(--paper);
+  font: 500 14px/1.6 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.talk-queries .is-data {
+  color: var(--talk-accent-soft);
+}
+.talk-queries .is-seq {
+  color: #03c066;
+}
+.talk-queries figcaption {
+  grid-column: 1 / -1;
+  color: var(--dim);
+  font-size: 13px;
+}
+
+/* ---------- DNS: research ---------- */
+.talk-research {
+  display: grid;
+  gap: var(--space-4);
+}
+.talk-publications {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.talk-publications li {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--ink-soft);
+}
+.talk-publications p {
+  font: 700 1.2rem/1.35 var(--font-display);
+}
+.talk-publications p.is-quoted {
+  font-style: italic;
+}
+.talk-publications p.is-quoted::before {
+  content: "“";
+}
+.talk-publications p.is-quoted::after {
+  content: "”";
+}
+.talk-publications small {
+  color: var(--muted);
+  font: 500 12px/1.4 var(--font-mono);
+}
+.talk-award {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(var(--ink-soft), var(--ink-soft)) padding-box,
+    var(--talk-bar) border-box;
+  border: 1px solid transparent;
+}
+.talk-award svg {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: var(--talk-accent-soft);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.talk-award div {
+  display: grid;
+  gap: var(--space-1);
+}
+.talk-award strong {
+  font: 800 1.35rem/1.2 var(--font-display);
+}
+.talk-award span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------- Quote, closing ---------- */
+.talk-quote {
+  position: relative;
+  margin: 0;
+  padding: var(--space-12);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(ellipse at 0% 0%, var(--talk-glow), transparent 60%),
+    var(--ink-soft);
+}
+.talk-quote::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: var(--talk-bar);
+}
+.talk-quote blockquote {
+  margin: 0;
+}
+.talk-quote blockquote p {
+  max-width: 34ch;
+  font: 700 clamp(1.5rem, 3vw, 2.4rem) / 1.25 var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.talk-quote blockquote p::before {
+  content: "“";
+  color: var(--talk-accent);
+}
+.talk-quote blockquote p::after {
+  content: "”";
+  color: var(--talk-accent);
+}
+.talk-quote figcaption {
+  margin-top: var(--space-6);
+  color: var(--muted);
+  font-size: 14px;
+}
+.talk-quote figcaption strong {
+  color: var(--paper);
+}
+.talk-closing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-8) var(--space-12);
+  align-items: end;
+  padding-bottom: var(--section-space);
+}
+.talk-closing-actions {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+.talk-closing .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 44ch;
+}
+.talk-closing .text-link:hover {
+  color: var(--talk-accent-soft);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .talk-hero,
+  .talk-split,
+  .talk-closing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .talk-split > .talk-head {
+    position: static;
+  }
+  .talk-cover {
+    max-width: 560px;
+  }
+  .talk-cards,
+  .talk-cards.is-four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  /* The diagram turns vertical: arrows point down, labels sit beside them. */
+  .talk-diagram {
+    padding: var(--space-6) var(--space-4);
+  }
+  .talk-flow,
+  .talk-zone {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .talk-node,
+  .talk-zone {
+    flex: none;
+  }
+  /* Keeps the label clear of the arrow that enters the zone from above. */
+  .talk-zone-label {
+    right: var(--space-4);
+    left: auto;
+  }
+  .talk-link {
+    flex: none;
+    grid-template-columns: 2px minmax(0, 1fr);
+    justify-items: start;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 72px;
+    padding: var(--space-2) 0 var(--space-2) var(--space-8);
+    text-align: left;
+  }
+  .talk-link-line {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(var(--talk-accent), var(--talk-accent));
+  }
+  .talk-link-line::after,
+  .talk-link.is-both .talk-link-line::before {
+    left: -4px;
+    right: auto;
+    border-width: 5px;
+  }
+  .talk-link-line::after {
+    top: auto;
+    bottom: -2px;
+    border-color: var(--talk-accent) transparent transparent;
+    border-bottom-width: 0;
+  }
+  .talk-link.is-both .talk-link-line::before {
+    top: -2px;
+    border-color: transparent transparent var(--talk-accent);
+    border-top-width: 0;
+  }
+  .talk-link-label {
+    order: 0;
+  }
+  .talk-mini-steps,
+  .talk-queries {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .talk-cards,
+  .talk-cards.is-four {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .talk-steps li {
+    grid-template-columns: 44px minmax(0, 1fr);
+    padding-right: var(--space-4);
+  }
+  .talk-step-number {
+    width: 44px;
+    height: 44px;
+  }
+  .talk-steps::before {
+    left: 21px;
+  }
+  .talk-quote {
+    padding: var(--space-8) var(--space-6);
+  }
+}
