@@ -11,11 +11,13 @@ import MatrixRain from "./components/MatrixRain";
 import { buildCommands } from "./lib/commands";
 import { useKonami } from "./lib/konami";
 import Home from "./features/home/Home";
-import { EventList, ArrowIcon } from "./components/SiteUI";
+import Accordion from "./components/Accordion";
+import { ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
-const circuit = "/identidade-visual/circuitos/circuitos_1.png";
 import PinkHatPage from "./features/pink-hat/PinkHatPage";
+import TalkPage from "./features/talks/TalkPage";
+import { findTalkSlug, talks } from "./features/talks/talks";
 import { siteContent } from "./content/site.mdx";
 import VisualIdentityPage from "./features/identidade-visual/VisualIdentityPage";
 
@@ -42,7 +44,13 @@ const resolveProfiles = (profiles) =>
     photo: resolvePhoto(profile),
   }));
 
-const { navigation: links, nextEvent, pages, socialLinks } = siteContent;
+const {
+  navigation: links,
+  events,
+  nextEvent,
+  pages,
+  socialLinks,
+} = siteContent;
 const members = resolveProfiles(siteContent.members);
 
 const siteBase = import.meta.env.BASE_URL;
@@ -78,6 +86,7 @@ function Header({ onOpenPalette }) {
   const path = currentPath();
   const isContact = path === "/contato";
   const isIdentityVisual = path === "/identidade-visual";
+  const talkSlug = findTalkSlug(path);
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -150,7 +159,15 @@ function Header({ onOpenPalette }) {
   const currentActiveSection = isHome ? activeSection : "";
 
   return (
-    <header className="site-header">
+    <header
+      className={
+        path === "/eventos/ctf-pink-hat"
+          ? "site-header is-pinkhat"
+          : talkSlug
+            ? `site-header is-talk is-${talks[talkSlug].theme}`
+            : "site-header"
+      }
+    >
       <div className="header-inner">
         <a className="brand" href={siteBase} onClick={() => setOpen(false)}>
           <img className="brand-mark" src={mark} alt="" />
@@ -433,7 +450,6 @@ function Footer() {
 function PageHead({ title, text, command }) {
   return (
     <section className="page-head">
-      <img src={circuit} alt="" />
       <div>
         {command && (
           <p className="path-prompt" aria-hidden="true">
@@ -446,8 +462,92 @@ function PageHead({ title, text, command }) {
     </section>
   );
 }
+function EventSummary({ label, title, meta }) {
+  return (
+    <span className="event-summary">
+      <span className="event-summary-label">{label}</span>
+      <span className="event-summary-title">{title}</span>
+      {meta && <span className="event-summary-meta">{meta}</span>}
+    </span>
+  );
+}
+
 function Eventos() {
   const upcoming = eventIsUpcoming(nextEvent.date);
+  // The featured event always leads its list and starts expanded.
+  const featured = (
+    <Accordion
+      className="event-accordion is-featured"
+      defaultOpen
+      title={
+        <EventSummary
+          label={upcoming ? "Próximo evento" : "Evento realizado"}
+          title={nextEvent.title}
+          meta={formatEventDate(nextEvent.date)}
+        />
+      }
+    >
+      <div className="next-event">
+        <div className="next-event-details">
+          <p>{nextEvent.description}</p>
+          <small>{nextEvent.location}</small>
+          {nextEvent.href && (
+            <a className="text-link" href={routeHref(nextEvent.href)}>
+              Ver página do evento <ArrowIcon />
+            </a>
+          )}
+        </div>
+        <figure className="next-event-image">
+          <img src={pinkHatPoster} alt={nextEvent.imageAlt} />
+        </figure>
+      </div>
+    </Accordion>
+  );
+  const history = events.map(
+    ({ type, title, presenter, date, href, image }) => (
+      <Accordion
+        key={title}
+        className="event-accordion"
+        title={
+          <EventSummary
+            label={type}
+            title={title}
+            meta={date && formatEventDate(date)}
+          />
+        }
+      >
+        <div
+          className={
+            image ? "event-accordion-text has-image" : "event-accordion-text"
+          }
+        >
+          <div>
+            <p>
+              Apresentação: <strong>{presenter}</strong>
+            </p>
+            {href && (
+              <a className="text-link" href={routeHref(href)}>
+                Ver página da palestra <ArrowIcon />
+              </a>
+            )}
+          </div>
+          {image && (
+            <figure className="event-accordion-image">
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          )}
+        </div>
+      </Accordion>
+    ),
+  );
+
   return (
     <>
       <PageHead
@@ -457,38 +557,19 @@ function Eventos() {
       />
       <main id="conteudo-principal" className="page-content">
         <h2 className="minor-heading">Próximos eventos</h2>
-        {!upcoming && (
+        {upcoming ? (
+          <div className="event-accordions">{featured}</div>
+        ) : (
           <p className="agenda-empty">
             Novas datas serão divulgadas nos{" "}
             <a href={routeHref("/contato")}>canais oficiais</a>.
           </p>
         )}
-        {!upcoming && (
-          <h2 className="minor-heading">Histórico de atividades</h2>
-        )}
-        <div className="next-event">
-          <span>{upcoming ? "PRÓXIMO EVENTO" : "EVENTO REALIZADO"}</span>
-          <div className="next-event-details">
-            <time dateTime={nextEvent.date}>
-              {formatEventDate(nextEvent.date)}
-            </time>
-            <div>
-              <h2>{nextEvent.title}</h2>
-              <p>{nextEvent.description}</p>
-              <small>{nextEvent.location}</small>
-              {nextEvent.href && (
-                <a className="text-link" href={routeHref(nextEvent.href)}>
-                  Ver página do evento <ArrowIcon />
-                </a>
-              )}
-            </div>
-          </div>
-          <figure className="next-event-image">
-            <img src={pinkHatPoster} alt={nextEvent.imageAlt} />
-          </figure>
+        <h2 className="minor-heading">Histórico de atividades</h2>
+        <div className="event-accordions">
+          {!upcoming && featured}
+          {history}
         </div>
-        {upcoming && <h2 className="minor-heading">Histórico de atividades</h2>}
-        <EventList />
       </main>
     </>
   );
@@ -662,6 +743,8 @@ export default function App() {
     <Eventos />
   ) : path === "/eventos/ctf-pink-hat" ? (
     <PinkHatPage />
+  ) : findTalkSlug(path) ? (
+    <TalkPage slug={findTalkSlug(path)} />
   ) : path === "/equipe" ? (
     <Equipe />
   ) : path === "/contato" ? (

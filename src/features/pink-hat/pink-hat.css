@@ -1,18 +1,21 @@
 /*
  * CTF Pink Hat event page. Palette measured from the official event art
- * (public/eventos/ctf-pink-hat.jpg): black, hot pink, white and a dark magenta
+ * (public/eventos/banner_pink_hat.png): black, hot pink, white and a dark magenta
  * for rules and chevrons. Scoped to .pinkhat so the site's green/violet
  * interface stays untouched everywhere else.
  */
-.pinkhat {
+.pinkhat,
+.site-header.is-pinkhat {
   --ph-bg: #050205;
   --ph-surface: #120a10;
-  --ph-pink: #e92974; /* measured from the JPG; the team's pinkhat.css uses #ff0a78 */
+  --ph-pink: #e92974; /* measured from the event art; the team's pinkhat.css uses #ff0a78 */
   --ph-pink-soft: #ff8fbe; /* pink for small text on black */
   --ph-magenta: #761639; /* rules and chevrons */
   --ph-white: #f8f8f8;
   --ph-muted: #cbb7c1;
   --ph-line: rgba(233, 41, 116, 0.55);
+}
+.pinkhat {
   overflow: clip;
   background: var(--ph-bg);
   color: var(--ph-white);
@@ -30,6 +33,71 @@
 }
 .ph-pink {
   color: var(--ph-pink);
+}
+
+/* ---------- Site header on this page ---------- */
+/* The logo mark keeps its brand colours; everything around it turns pink. */
+.site-header.is-pinkhat {
+  background: rgba(5, 2, 5, 0.94);
+  border-bottom-color: var(--ph-magenta);
+}
+.site-header.is-pinkhat :focus-visible {
+  outline-color: var(--ph-pink-soft);
+}
+.site-header.is-pinkhat .brand-name em {
+  color: var(--ph-pink);
+}
+.site-header.is-pinkhat .brand-name::after {
+  background: var(--ph-pink);
+}
+.site-header.is-pinkhat .nav {
+  color: var(--ph-muted);
+}
+.site-header.is-pinkhat .nav a:hover,
+.site-header.is-pinkhat .nav a.is-active {
+  color: var(--ph-pink-soft);
+}
+.site-header.is-pinkhat .nav a.is-active::after {
+  background: var(--ph-pink);
+  box-shadow: 0 0 8px rgba(233, 41, 116, 0.5);
+}
+.site-header.is-pinkhat .header-cta {
+  background: var(--ph-pink);
+  color: var(--ph-bg);
+}
+.site-header.is-pinkhat .header-cta:hover {
+  background: var(--ph-pink-soft);
+}
+.site-header.is-pinkhat .palette-trigger {
+  border-color: rgba(203, 183, 193, 0.22);
+  color: var(--ph-muted);
+}
+.site-header.is-pinkhat .palette-trigger > span {
+  color: var(--ph-pink);
+}
+.site-header.is-pinkhat .palette-trigger:hover {
+  border-color: var(--ph-pink);
+  color: var(--ph-white);
+}
+.site-header.is-pinkhat .menu-button {
+  border-color: var(--ph-line);
+  color: var(--ph-white);
+}
+@media (max-width: 1100px) {
+  .site-header.is-pinkhat .nav {
+    background: var(--ph-surface);
+    border-bottom-color: var(--ph-magenta);
+  }
+  .site-header.is-pinkhat .nav a {
+    border-bottom-color: rgba(233, 41, 116, 0.18);
+  }
+  .site-header.is-pinkhat .nav a.is-active {
+    border-left-color: var(--ph-pink);
+  }
+  /* index.css forces this green with !important at <=850px. */
+  .site-header.is-pinkhat .mobile-contact {
+    color: var(--ph-pink-soft) !important;
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -175,7 +243,7 @@
   overflow: hidden;
   border: 1px solid var(--ph-line);
   border-radius: 16px;
-  aspect-ratio: 1080 / 1350;
+  aspect-ratio: 646 / 803;
   background: #000;
   box-shadow:
     0 0 0 6px rgba(233, 41, 116, 0.08),
@@ -289,45 +357,18 @@
   line-height: 1.7;
 }
 
-/* ---------- Realização e apoio: the poster's pink panel ---------- */
+/* ---------- Realização e apoio: the organizers' logo strip ---------- */
 .ph-panel {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
   max-width: calc(var(--max) - 2 * var(--edge));
   margin: 0 auto;
-  padding: var(--space-12);
+  padding: var(--space-6) var(--space-8);
   border-radius: 28px;
+  /* Same pink as the strip's own background, so the padding is seamless. */
   background: var(--ph-pink);
-  color: #050205;
 }
-.ph-panel > div {
-  padding-inline: var(--space-6);
-}
-.ph-panel > div + div {
-  border-left: 2px solid rgba(248, 248, 248, 0.85);
-}
-.ph-panel h2 {
-  margin-bottom: var(--space-6);
-  color: var(--ph-white);
-  /* 19px bold counts as large text: white on this pink is 4.2:1, above the 3:1 bar */
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: 0.4em;
-  text-align: center;
-}
-.ph-panel ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3) var(--space-8);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.ph-panel li {
-  font: 800 clamp(1rem, 1.8vw, 1.35rem) / 1.2 var(--font-display);
-  font-stretch: 85%;
-  text-align: center;
+.ph-panel img {
+  width: 100%;
+  height: auto;
 }
 
 /* ---------- Closing ---------- */
@@ -358,15 +399,9 @@
     grid-template-columns: 1fr;
   }
   .ph-panel {
-    grid-template-columns: 1fr;
     margin-inline: var(--edge);
-    padding: var(--space-8) var(--space-4);
-  }
-  .ph-panel > div + div {
-    margin-top: var(--space-6);
-    padding-top: var(--space-6);
-    border-top: 2px solid rgba(248, 248, 248, 0.85);
-    border-left: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: 16px;
   }
 }
 

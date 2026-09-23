@@ -380,6 +380,12 @@ img {
 .footer-col a {
   overflow-wrap: anywhere;
 }
+.event-row h3 a {
+  transition: color 0.2s;
+}
+.event-row h3 a:hover {
+  color: var(--green);
+}
 .event-row p {
   color: var(--muted);
   font-size: 13px;
@@ -455,14 +461,6 @@ img {
   align-items: end;
   padding: 70px var(--edge) 60px;
   background: linear-gradient(115deg, #10071d, #21113d);
-}
-.page-head > img {
-  position: absolute;
-  right: -5%;
-  top: -70%;
-  width: 650px;
-  opacity: 0.19;
-  transform: rotate(-10deg);
 }
 .page-head > div {
   position: relative;
@@ -542,10 +540,15 @@ img {
   color: var(--violet-light);
   font-size: 12px;
 }
+.next-event .text-link {
+  display: flex;
+  width: fit-content;
+  margin-top: var(--space-4);
+}
 .next-event-image {
   grid-area: poster;
   width: 100%;
-  aspect-ratio: 649 / 816;
+  aspect-ratio: 646 / 803;
   margin: 0;
   overflow: hidden;
   border-radius: 14px;
@@ -733,6 +736,7 @@ img {
   background: linear-gradient(118deg, var(--ink) 0%, var(--panel) 100%);
 }
 .identity-head > img {
+  position: absolute;
   right: var(--edge);
   top: 50%;
   width: min(300px, 22vw);

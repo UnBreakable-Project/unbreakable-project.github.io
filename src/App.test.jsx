@@ -147,18 +147,18 @@ describe("UnBreakable", () => {
     window.history.replaceState({}, "", "/identidade-visual");
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Ícones" }));
-
     expect(
-      screen.getByRole("heading", { level: 2, name: "Ícones" }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "Exibindo a categoria Ícones.",
-    );
-    expect(screen.getAllByRole("link", { name: "Baixar SVG" })).toHaveLength(8);
-    expect(screen.getAllByRole("link", { name: "Baixar PNG" })).toHaveLength(8);
+      screen.queryByRole("button", { name: "Ícones" }),
+    ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Cores" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Cores" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Exibindo a categoria Cores.",
+    );
     fireEvent.click(
       screen.getByRole("button", {
         name: "Copiar código #FFFFFF de Branco",
@@ -294,8 +294,10 @@ describe("UnBreakable", () => {
     expect(screen.getByText("Evento realizado")).toBeInTheDocument();
     expect(screen.getByText("Desafios")).toBeInTheDocument();
     const panel = screen.getByRole("region", { name: "Realização e apoio" });
-    expect(within(panel).getByText("UnBreakable")).toBeInTheDocument();
-    expect(within(panel).getByText("Neospace")).toBeInTheDocument();
+    expect(within(panel).getByRole("img")).toHaveAttribute(
+      "alt",
+      expect.stringMatching(/UnBreakable.*Neospace/),
+    );
     expect(
       screen.getByRole("link", { name: /Todos os eventos/ }),
     ).toHaveAttribute("href", "/eventos");
@@ -318,6 +320,86 @@ describe("UnBreakable", () => {
     expect(within(nav).getByRole("link", { name: "Eventos" })).toHaveClass(
       "is-active",
     );
+  });
+
+  it("lists events as accordions with Pink Hat first and open", () => {
+    window.history.replaceState({}, "", "/eventos");
+    const { container } = renderApp();
+    const accordions = container.querySelectorAll(".event-accordion");
+
+    expect(accordions.length).toBeGreaterThan(1);
+    expect(accordions[0]).toHaveTextContent("CTF Pink Hat");
+    expect(accordions[0]).toHaveAttribute("open");
+    [...accordions]
+      .slice(1)
+      .forEach((accordion) => expect(accordion).not.toHaveAttribute("open"));
+  });
+
+  it("renders the Ligolo-ng talk page with the attack chain", () => {
+    window.history.replaceState({}, "", "/eventos/ligolo-ng");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Movimentação Lateral utilizando o Ligolo-ng",
+      }),
+    ).toBeInTheDocument();
+    expect(document.title).toMatch(/^Movimentação Lateral/);
+    const steps = within(
+      screen.getByRole("region", { name: /do primeiro scan ao root/ }),
+    ).getAllByRole("listitem");
+    expect(steps).toHaveLength(6);
+    expect(steps[4]).toHaveClass("is-highlight");
+    expect(document.querySelector(".site-header")).toHaveClass(
+      "is-talk",
+      "is-ligolo",
+    );
+    expect(
+      screen.getByRole("figure", { name: "Diagrama do pivô com o Ligolo-ng" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Outra palestra: Método de Detecção/ }),
+    ).toHaveAttribute("href", "/eventos/tunelamento-dns");
+  });
+
+  it("renders the DNS tunnelling talk page with its research", () => {
+    window.history.replaceState({}, "", "/eventos/tunelamento-dns");
+    renderApp();
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Método de Detecção de Exfiltração por Tunelamento DNS",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("10 de junho de 2026")).toHaveAttribute(
+      "datetime",
+      "2026-06-10",
+    );
+    expect(screen.getByText("21:00 às 22:00")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "A security model for DNS tunnel detection on cloud platform",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Menção Honrosa", { selector: "strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByAltText(/Captura da videochamada/),
+    ).not.toBeInTheDocument();
+  });
+
+  it("links each past talk from the events page", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+
+    expect(
+      screen
+        .getAllByRole("link", { name: /Ver página da palestra/ })
+        .map((link) => link.getAttribute("href")),
+    ).toEqual(["/eventos/ligolo-ng", "/eventos/tunelamento-dns"]);
   });
 
   it("redirects the /pinkhat alias to the event page", () => {
@@ -436,7 +518,10 @@ describe("UnBreakable", () => {
       screen.getByRole("heading", { level: 2, name: "O evento em fotos." }),
     ).toBeInTheDocument();
     const panel = screen.getByRole("region", { name: "Realização e apoio" });
-    expect(within(panel).getByText("IDEA LAB")).toBeInTheDocument();
+    expect(within(panel).getByRole("img")).toHaveAttribute(
+      "src",
+      "/eventos/realizacao_apoio.png",
+    );
   });
 
   it("renders the team page with gestão atual and no fundação references", () => {

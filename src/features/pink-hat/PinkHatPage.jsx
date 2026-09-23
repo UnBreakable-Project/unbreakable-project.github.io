@@ -241,8 +241,8 @@ export default function PinkHatPage() {
           <img
             src={pinkHatPoster}
             alt={nextEvent.imageAlt}
-            width="1080"
-            height="1350"
+            width="646"
+            height="803"
           />
         </figure>
       </section>
@@ -298,22 +298,14 @@ export default function PinkHatPage() {
       <Podium {...pinkHat.podium} />
 
       <section className="ph-panel" aria-label="Realização e apoio">
-        <div>
-          <h2>Realização</h2>
-          <ul>
-            {pinkHat.organizers.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>Apoio</h2>
-          <ul>
-            {pinkHat.supporters.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
+        <img
+          src={pinkHat.partners.image}
+          alt={pinkHat.partners.alt}
+          width="1283"
+          height="319"
+          loading="lazy"
+          decoding="async"
+        />
       </section>
 
       <section className="ph-closing">

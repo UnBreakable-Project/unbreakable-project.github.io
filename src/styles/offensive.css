@@ -178,8 +178,9 @@ body::after {
   max-width: none;
   padding: var(--space-6);
 }
+/* Scales with the hero heading: about the height of the h1 plus the lede. */
 .home .hero-side .hero-object > img {
-  max-height: 220px;
+  max-height: calc(var(--text-display) * 3.5);
   margin: auto;
 }
 
@@ -469,6 +470,9 @@ kbd {
   }
   .home .hero-side .hero-object {
     width: 100%;
+  }
+  .home .hero-side .hero-object > img {
+    max-height: 260px;
   }
 }
 @media (max-width: 700px) {

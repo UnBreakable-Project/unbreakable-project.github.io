@@ -127,6 +127,127 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* ---------- Events page accordions ---------- */
+.event-accordions {
+  display: grid;
+  gap: var(--space-4);
+}
+.event-accordion {
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+.event-accordion.is-featured {
+  border-color: var(--violet-line);
+}
+.event-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+}
+.event-accordion summary:hover .event-summary-title,
+.event-accordion[open] .event-summary-title {
+  color: var(--green);
+}
+.event-summary {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  flex: 1;
+  min-width: 0;
+}
+.event-summary-label {
+  color: var(--violet-light);
+  font: 500 10px/1.2 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.event-summary-title {
+  font: 600 19px/1.35 var(--font-display);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  transition: color var(--motion-fast);
+}
+.event-summary-meta {
+  color: var(--muted);
+  font: 500 12px/1.4 var(--font-mono);
+  white-space: nowrap;
+}
+.event-accordion-text {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  margin: 0 var(--space-6);
+  padding: var(--space-4) 0 var(--space-6);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.event-accordion-text > div {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: var(--space-3);
+}
+.event-accordion-text p {
+  margin: 0;
+}
+/* Same column as the featured event's poster, so the cards line up. */
+.event-accordion-text.has-image {
+  grid-template-columns: minmax(0, 1fr) clamp(184px, 21vw, 230px);
+  gap: var(--space-6) 46px;
+  justify-items: stretch;
+}
+.event-accordion-image {
+  margin: 0;
+}
+.event-accordion-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+.event-accordion-text strong {
+  color: var(--paper);
+}
+/* The featured card's frame now comes from the accordion itself. */
+.event-accordion .next-event {
+  grid-template-areas: "details poster";
+  margin: 0 var(--space-6);
+  padding: var(--space-6) 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+}
+.event-accordion .next-event-details {
+  display: block;
+}
+.event-accordion .next-event-details p {
+  margin-top: 0;
+}
+@media (max-width: 600px) {
+  .event-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .event-accordion-text.has-image {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .event-accordion-image {
+    max-width: 230px;
+  }
+  .event-accordion .next-event {
+    grid-template-areas:
+      "details"
+      "poster";
+    padding: var(--space-6) 0;
+  }
+}
 .not-found {
   min-height: 55vh;
 }
