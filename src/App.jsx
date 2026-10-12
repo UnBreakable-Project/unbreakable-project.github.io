@@ -380,7 +380,7 @@ function ProfileCard({ name, role, photo, photoClass, linkedin }) {
           {role && <span className="profile-card-role">{role}</span>}
           <h3>{name}</h3>
         </div>
-        <LinkedInProfile name={name} href={linkedin} />
+        {linkedin !== false && <LinkedInProfile name={name} href={linkedin} />}
       </div>
     </article>
   );
