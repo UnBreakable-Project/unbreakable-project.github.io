@@ -40,7 +40,7 @@ jobs:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/backup'
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/backup'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
