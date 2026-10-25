@@ -322,17 +322,32 @@ describe("UnBreakable", () => {
     );
   });
 
-  it("lists events as accordions with Pink Hat first and open", () => {
-    window.history.replaceState({}, "", "/eventos");
-    const { container } = renderApp();
-    const accordions = container.querySelectorAll(".event-accordion");
+  it("lists upcoming events first, soonest open, then the history", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-25T12:00:00-03:00"));
+    try {
+      window.history.replaceState({}, "", "/eventos");
+      const { container } = renderApp();
+      const titles = [...container.querySelectorAll(".event-accordion")].map(
+        (accordion) => [
+          accordion.querySelector(".event-summary-title").textContent,
+          accordion.hasAttribute("open"),
+        ],
+      );
 
-    expect(accordions.length).toBeGreaterThan(1);
-    expect(accordions[0]).toHaveTextContent("CTF Pink Hat");
-    expect(accordions[0]).toHaveAttribute("open");
-    [...accordions]
-      .slice(1)
-      .forEach((accordion) => expect(accordion).not.toHaveAttribute("open"));
+      expect(titles.slice(0, 4)).toEqual([
+        ["Como Ganhar a Vida Hackeando", true],
+        [
+          "O que é Cyber Threat Intelligence e como a IA está mudando a área",
+          false,
+        ],
+        ["CTF do UnBreakable no WPOS-26", false],
+        ["CTF Pink Hat — Pwning Like a Girl", true],
+      ]);
+      titles.slice(4).forEach(([, open]) => expect(open).toBe(false));
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("renders the Ligolo-ng talk page with the attack chain", () => {

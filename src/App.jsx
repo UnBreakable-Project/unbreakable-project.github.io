@@ -503,50 +503,71 @@ function Eventos() {
       </div>
     </Accordion>
   );
-  const history = events.map(
-    ({ type, title, presenter, date, href, image }) => (
-      <Accordion
-        key={title}
-        className="event-accordion"
-        title={
-          <EventSummary
-            label={type}
-            title={title}
-            meta={date && formatEventDate(date)}
-          />
+  const renderEvent = (
+    { type, title, presenter, date, href, description, details, image },
+    index,
+    open = false,
+  ) => (
+    <Accordion
+      key={title}
+      className="event-accordion"
+      defaultOpen={open && index === 0}
+      title={
+        <EventSummary
+          label={type}
+          title={title}
+          meta={date && formatEventDate(date)}
+        />
+      }
+    >
+      <div
+        className={
+          image ? "event-accordion-text has-image" : "event-accordion-text"
         }
       >
-        <div
-          className={
-            image ? "event-accordion-text has-image" : "event-accordion-text"
-          }
-        >
-          <div>
+        <div>
+          {description && <p>{description}</p>}
+          {presenter && (
             <p>
               Apresentação: <strong>{presenter}</strong>
             </p>
-            {href && (
-              <a className="text-link" href={routeHref(href)}>
-                Ver página da palestra <ArrowIcon />
-              </a>
-            )}
-          </div>
-          {image && (
-            <figure className="event-accordion-image">
-              <img
-                src={image.src}
-                alt={image.alt}
-                width={image.width}
-                height={image.height}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
+          )}
+          {details && (
+            <ul className="event-accordion-details">
+              {details.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+          )}
+          {href && (
+            <a className="text-link" href={routeHref(href)}>
+              Ver página da palestra <ArrowIcon />
+            </a>
           )}
         </div>
-      </Accordion>
-    ),
+        {image && (
+          <figure className="event-accordion-image">
+            <img
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        )}
+      </div>
+    </Accordion>
   );
+  // Upcoming events lead the page, soonest first, with the next one open.
+  const upcomingEvents = events
+    .filter(({ date }) => eventIsUpcoming(date))
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((event, index) => renderEvent(event, index, !upcoming));
+  const history = events
+    .filter(({ date }) => !eventIsUpcoming(date))
+    .map((event, index) => renderEvent(event, index));
 
   return (
     <>
@@ -557,8 +578,11 @@ function Eventos() {
       />
       <main id="conteudo-principal" className="page-content">
         <h2 className="minor-heading">Próximos eventos</h2>
-        {upcoming ? (
-          <div className="event-accordions">{featured}</div>
+        {upcoming || upcomingEvents.length > 0 ? (
+          <div className="event-accordions">
+            {upcoming && featured}
+            {upcomingEvents}
+          </div>
         ) : (
           <p className="agenda-empty">
             Novas datas serão divulgadas nos{" "}
