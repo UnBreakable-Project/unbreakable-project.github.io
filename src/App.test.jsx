@@ -350,6 +350,85 @@ describe("UnBreakable", () => {
     }
   });
 
+  it("filters the events page by talks and CTFs", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+
+    const categoryFilter = screen.getByRole("group", {
+      name: "Filtrar eventos por categoria",
+    });
+    const talksButton = within(categoryFilter).getByRole("button", {
+      name: "Palestras",
+    });
+    const ctfsButton = within(categoryFilter).getByRole("button", {
+      name: "CTFs",
+    });
+
+    fireEvent.click(talksButton);
+    expect(talksButton).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByText("Movimentação Lateral utilizando Ligolo-ng"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("CTF do UnBreakable no WPOS-26"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("CTF Pink Hat — Pwning Like a Girl"),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(ctfsButton);
+    expect(ctfsButton).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByText("CTF do UnBreakable no WPOS-26"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("CTF Pink Hat — Pwning Like a Girl"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Movimentação Lateral utilizando Ligolo-ng"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("orders each category most recent first, with the latest open", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-12-01T12:00:00-03:00"));
+    try {
+      window.history.replaceState({}, "", "/eventos");
+      const { container } = renderApp();
+      const readAccordions = () =>
+        [...container.querySelectorAll(".event-accordion")].map((accordion) => [
+          accordion.querySelector(".event-summary-title").textContent,
+          accordion.hasAttribute("open"),
+        ]);
+      const categoryFilter = screen.getByRole("group", {
+        name: "Filtrar eventos por categoria",
+      });
+
+      fireEvent.click(
+        within(categoryFilter).getByRole("button", { name: "CTFs" }),
+      );
+      expect(readAccordions()).toEqual([
+        ["CTF do UnBreakable no WPOS-26", true],
+        ["CTF Pink Hat — Pwning Like a Girl", false],
+      ]);
+
+      fireEvent.click(
+        within(categoryFilter).getByRole("button", { name: "Palestras" }),
+      );
+      expect(readAccordions()).toEqual([
+        [
+          "O que é Cyber Threat Intelligence e como a IA está mudando a área",
+          true,
+        ],
+        ["Como Ganhar a Vida Hackeando", false],
+        ["Método de Detecção de Exfiltração por Tunelamento DNS", false],
+        ["Movimentação Lateral utilizando Ligolo-ng", false],
+      ]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("renders the Ligolo-ng talk page with the attack chain", () => {
     window.history.replaceState({}, "", "/eventos/ligolo-ng");
     renderApp();
@@ -414,7 +493,7 @@ describe("UnBreakable", () => {
       screen
         .getAllByRole("link", { name: /Ver página da palestra/ })
         .map((link) => link.getAttribute("href")),
-    ).toEqual(["/eventos/ligolo-ng", "/eventos/tunelamento-dns"]);
+    ).toEqual(["/eventos/tunelamento-dns", "/eventos/ligolo-ng"]);
   });
 
   it("redirects the /pinkhat alias to the event page", () => {

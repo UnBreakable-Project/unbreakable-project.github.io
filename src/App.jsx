@@ -473,15 +473,26 @@ function EventSummary({ label, title, meta }) {
 }
 
 function Eventos() {
-  const upcoming = eventIsUpcoming(nextEvent.date);
-  // The featured event always leads its list and starts expanded.
-  const featured = (
+  const [category, setCategory] = useState("todos");
+  const matchesCategory = (event) =>
+    category === "todos" ||
+    (category === "palestras" && event.type.startsWith("Palestra")) ||
+    (category === "ctfs" && event.type === "CTF");
+  // The highlighted event lives apart from the events array; fold it in as a
+  // CTF so the ordering and open-most-recent rules apply to it too.
+  const featuredEvent = { ...nextEvent, type: "CTF", featured: true };
+  const renderFeatured = (open) => (
     <Accordion
+      key={nextEvent.title}
       className="event-accordion is-featured"
-      defaultOpen
+      defaultOpen={open}
       title={
         <EventSummary
-          label={upcoming ? "Próximo evento" : "Evento realizado"}
+          label={
+            eventIsUpcoming(nextEvent.date)
+              ? "Próximo evento"
+              : "Evento realizado"
+          }
           title={nextEvent.title}
           meta={formatEventDate(nextEvent.date)}
         />
@@ -503,71 +514,75 @@ function Eventos() {
       </div>
     </Accordion>
   );
-  const renderEvent = (
-    { type, title, presenter, date, href, description, details, image },
-    index,
-    open = false,
-  ) => (
-    <Accordion
-      key={title}
-      className="event-accordion"
-      defaultOpen={open && index === 0}
-      title={
-        <EventSummary
-          label={type}
-          title={title}
-          meta={date && formatEventDate(date)}
-        />
-      }
-    >
-      <div
-        className={
-          image ? "event-accordion-text has-image" : "event-accordion-text"
+  const renderEvent = (event, open) => {
+    if (event.featured) return renderFeatured(open);
+    const { type, title, presenter, date, href, description, details, image } =
+      event;
+    return (
+      <Accordion
+        key={title}
+        className="event-accordion"
+        defaultOpen={open}
+        title={
+          <EventSummary
+            label={type}
+            title={title}
+            meta={date && formatEventDate(date)}
+          />
         }
       >
-        <div>
-          {description && <p>{description}</p>}
-          {presenter && (
-            <p>
-              Apresentação: <strong>{presenter}</strong>
-            </p>
-          )}
-          {details && (
-            <ul className="event-accordion-details">
-              {details.map((detail) => (
-                <li key={detail}>{detail}</li>
-              ))}
-            </ul>
-          )}
-          {href && (
-            <a className="text-link" href={routeHref(href)}>
-              Ver página da palestra <ArrowIcon />
-            </a>
+        <div
+          className={
+            image ? "event-accordion-text has-image" : "event-accordion-text"
+          }
+        >
+          <div>
+            {description && <p>{description}</p>}
+            {presenter && (
+              <p>
+                Apresentação: <strong>{presenter}</strong>
+              </p>
+            )}
+            {details && (
+              <ul className="event-accordion-details">
+                {details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            )}
+            {href && (
+              <a className="text-link" href={routeHref(href)}>
+                Ver página da palestra <ArrowIcon />
+              </a>
+            )}
+          </div>
+          {image && (
+            <figure className="event-accordion-image">
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           )}
         </div>
-        {image && (
-          <figure className="event-accordion-image">
-            <img
-              src={image.src}
-              alt={image.alt}
-              width={image.width}
-              height={image.height}
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        )}
-      </div>
-    </Accordion>
-  );
-  // Upcoming events lead the page, soonest first, with the next one open.
-  const upcomingEvents = events
+      </Accordion>
+    );
+  };
+  const filtered = [featuredEvent, ...events].filter(matchesCategory);
+  // Upcoming events lead the page, soonest first, with the soonest open.
+  const upcomingEvents = filtered
     .filter(({ date }) => eventIsUpcoming(date))
     .sort((a, b) => a.date.localeCompare(b.date))
-    .map((event, index) => renderEvent(event, index, !upcoming));
-  const history = events
+    .map((event, index) => renderEvent(event, index === 0));
+  // History runs most recent first, with the most recent one open.
+  const history = filtered
     .filter(({ date }) => !eventIsUpcoming(date))
-    .map((event, index) => renderEvent(event, index));
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((event, index) => renderEvent(event, index === 0));
 
   return (
     <>
@@ -577,12 +592,29 @@ function Eventos() {
         command="ls ./eventos"
       />
       <main id="conteudo-principal" className="page-content">
+        <div
+          className="event-category-filter"
+          role="group"
+          aria-label="Filtrar eventos por categoria"
+        >
+          {[
+            ["todos", "Todos"],
+            ["palestras", "Palestras"],
+            ["ctfs", "CTFs"],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={category === value}
+              onClick={() => setCategory(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <h2 className="minor-heading">Próximos eventos</h2>
-        {upcoming || upcomingEvents.length > 0 ? (
-          <div className="event-accordions">
-            {upcoming && featured}
-            {upcomingEvents}
-          </div>
+        {upcomingEvents.length > 0 ? (
+          <div className="event-accordions">{upcomingEvents}</div>
         ) : (
           <p className="agenda-empty">
             Novas datas serão divulgadas nos{" "}
@@ -590,10 +622,7 @@ function Eventos() {
           </p>
         )}
         <h2 className="minor-heading">Histórico de atividades</h2>
-        <div className="event-accordions">
-          {!upcoming && featured}
-          {history}
-        </div>
+        <div className="event-accordions">{history}</div>
       </main>
     </>
   );
