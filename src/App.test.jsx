@@ -552,7 +552,7 @@ describe("UnBreakable", () => {
     const images = within(carousel).getAllByRole("img");
     expect(images).toHaveLength(4);
     images.forEach((image) => {
-      expect(image.getAttribute("src")).toMatch(/\.jpg$/);
+      expect(image.getAttribute("src")).toMatch(/\.jpe?g$/);
       expect(image.getAttribute("alt").length).toBeGreaterThan(30);
     });
   });

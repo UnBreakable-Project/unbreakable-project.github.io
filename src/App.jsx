@@ -524,8 +524,17 @@ function Eventos() {
   );
   const renderEvent = (event, open) => {
     if (event.featured) return renderFeatured(open);
-    const { type, title, presenter, date, href, description, details, image } =
-      event;
+    const {
+      type,
+      title,
+      presenter,
+      date,
+      href,
+      description,
+      details,
+      recording,
+      image,
+    } = event;
     return (
       <Accordion
         key={title}
@@ -564,6 +573,16 @@ function Eventos() {
                   ? "Ver página do evento"
                   : "Ver página da palestra"}{" "}
                 <ArrowIcon />
+              </a>
+            )}
+            {recording && (
+              <a
+                className="text-link"
+                href={recording}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Assistir à transmissão no YouTube <ArrowIcon />
               </a>
             )}
           </div>
