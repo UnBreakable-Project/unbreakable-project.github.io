@@ -308,8 +308,10 @@ describe("UnBreakable", () => {
     window.history.replaceState({}, "", "/eventos");
     renderApp();
     expect(
-      screen.getByRole("link", { name: /Ver página do evento/ }),
-    ).toHaveAttribute("href", "/eventos/ctf-pink-hat");
+      screen
+        .getAllByRole("link", { name: /Ver página do evento/ })
+        .map((link) => link.getAttribute("href")),
+    ).toContain("/eventos/ctf-pink-hat");
 
     cleanup();
     window.history.replaceState({}, "", "/eventos/ctf-pink-hat");
@@ -516,6 +518,43 @@ describe("UnBreakable", () => {
         value: original,
       });
     }
+  });
+
+  it("links the events page to the WPOS CTF page", () => {
+    window.history.replaceState({}, "", "/eventos");
+    renderApp();
+    expect(
+      screen
+        .getAllByRole("link", { name: /Ver página do evento/ })
+        .map((link) => link.getAttribute("href")),
+    ).toContain("/eventos/ctf-wpos");
+  });
+
+  it("renders the WPOS CTF page with its own theme, mark and gallery", () => {
+    window.history.replaceState({}, "", "/eventos/ctf-wpos");
+    const { container } = renderApp();
+
+    const main = container.querySelector("main.wpos");
+    expect(main).toBeTruthy();
+    expect(within(main).getByText("WPOS")).toBeInTheDocument();
+    expect(within(main).getByText("Evento realizado")).toBeInTheDocument();
+
+    // Header switches to the WPOS theme and the recoloured wolf mark.
+    expect(container.querySelector(".site-header")).toHaveClass("is-wpos");
+    expect(container.querySelector(".brand-mark").getAttribute("src")).toMatch(
+      /wpos/i,
+    );
+
+    // Four event photos, each with a real description.
+    const carousel = screen.getByRole("region", {
+      name: "Fotos do CTF no WPOS-26",
+    });
+    const images = within(carousel).getAllByRole("img");
+    expect(images).toHaveLength(4);
+    images.forEach((image) => {
+      expect(image.getAttribute("src")).toMatch(/\.jpg$/);
+      expect(image.getAttribute("alt").length).toBeGreaterThan(30);
+    });
   });
 
   it("shows every event photo in an accessible carousel", () => {

@@ -15,7 +15,9 @@ import Accordion from "./components/Accordion";
 import { ArrowIcon } from "./components/SiteUI";
 import { routeHref } from "./lib/routes";
 import mark from "./assets/unbreakable-mark.svg";
+import markWpos from "./assets/unbreakable-mark-wpos.svg";
 import PinkHatPage from "./features/pink-hat/PinkHatPage";
+import WposPage from "./features/wpos/WposPage";
 import TalkPage from "./features/talks/TalkPage";
 import { findTalkSlug, talks } from "./features/talks/talks";
 import { siteContent } from "./content/site.mdx";
@@ -163,14 +165,20 @@ function Header({ onOpenPalette }) {
       className={
         path === "/eventos/ctf-pink-hat"
           ? "site-header is-pinkhat"
-          : talkSlug
-            ? `site-header is-talk is-${talks[talkSlug].theme}`
-            : "site-header"
+          : path === "/eventos/ctf-wpos"
+            ? "site-header is-wpos"
+            : talkSlug
+              ? `site-header is-talk is-${talks[talkSlug].theme}`
+              : "site-header"
       }
     >
       <div className="header-inner">
         <a className="brand" href={siteBase} onClick={() => setOpen(false)}>
-          <img className="brand-mark" src={mark} alt="" />
+          <img
+            className="brand-mark"
+            src={path === "/eventos/ctf-wpos" ? markWpos : mark}
+            alt=""
+          />
           <span className="brand-name">
             UnBreakable<em>UnB</em>
           </span>
@@ -552,7 +560,10 @@ function Eventos() {
             )}
             {href && (
               <a className="text-link" href={routeHref(href)}>
-                Ver página da palestra <ArrowIcon />
+                {type === "CTF"
+                  ? "Ver página do evento"
+                  : "Ver página da palestra"}{" "}
+                <ArrowIcon />
               </a>
             )}
           </div>
@@ -796,6 +807,8 @@ export default function App() {
     <Eventos />
   ) : path === "/eventos/ctf-pink-hat" ? (
     <PinkHatPage />
+  ) : path === "/eventos/ctf-wpos" ? (
+    <WposPage />
   ) : findTalkSlug(path) ? (
     <TalkPage slug={findTalkSlug(path)} />
   ) : path === "/equipe" ? (

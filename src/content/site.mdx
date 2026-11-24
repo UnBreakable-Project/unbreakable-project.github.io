@@ -143,6 +143,7 @@ export const siteContent = {
       type: "CTF",
       title: "CTF do UnBreakable no WPOS-26",
       date: "2026-11-14",
+      href: "/eventos/ctf-wpos",
       description:
         "Competição do UnBreakable no Workshop de Graduação e Pós-graduação do Departamento de Ciência da Computação da UnB.",
       details: [
@@ -250,6 +251,75 @@ export const siteContent = {
       title: "Acompanhe as próximas atividades.",
       description:
         "Siga os canais oficiais do UnBreakable para ficar por dentro das próximas atividades.",
+    },
+  },
+  // CTF do UnBreakable no WPOS-26 (features/wpos/). Facts come from the event
+  // poster (public/eventos/wpos-ctf.jpg) and the photos in src/assets/eventos/wpos/.
+  wpos: {
+    date: "2026-11-14",
+    place: "LINF",
+    location: "Laboratório de Informática (LINF) · ICC, UnB",
+    intro:
+      "O UnBreakable levou seu CTF ao WPOS-26 — o Workshop de Graduação e Pós-graduação do Departamento de Ciência da Computação da UnB —, com desafios de segurança ofensiva no formato Capture the Flag, resolvidos ao vivo no laboratório.",
+    activities: [
+      {
+        tag: "ctf",
+        title: "Capture the Flag",
+        description:
+          "Desafios de segurança ofensiva no formato Capture the Flag, disputados ao vivo durante o Security Day do workshop.",
+      },
+      {
+        tag: "vagas",
+        title: "Vagas limitadas",
+        description:
+          "Edição presencial com apenas 40 participantes disputando as flags no laboratório.",
+      },
+      {
+        tag: "setup",
+        title: "Kali Linux",
+        description:
+          "Cada participante trouxe seu próprio laptop com o Kali Linux pronto para a competição.",
+      },
+    ],
+    gallery: {
+      label: "Fotos do CTF no WPOS-26",
+      photos: [
+        {
+          file: "1794869610289.jpg",
+          caption: "Participantes do CTF",
+          alt: "Grupo de participantes do CTF reunidos em uma sala de aula de paredes de tijolo, diante de um quadro-verde onde se lê “Security Day”.",
+        },
+        {
+          file: "1794869610244.jpg",
+          caption: "Laboratório montado",
+          alt: "Laboratório de Informática do ICC com fileiras de computadores ligados, preparado para a competição de CTF.",
+        },
+        {
+          file: "trofeus.jpeg",
+          caption: "Troféus do CTF",
+          alt: "Os três troféus da competição enfileirados, cada um com o selo do WPOS-26 “Capture the Flag — UnBreakable · UnB” indicando 1º, 2º e 3º lugar.",
+        },
+        {
+          file: "1794869610185.jpg",
+          caption: "Sala do CTF",
+          alt: "Placa colada na porta de vidro indicando “CTF — Capture the Flag — Aqui”, com o logotipo do WPOS-26.",
+        },
+      ],
+    },
+    podium: {
+      eyebrow: "Premiação",
+      title: "Pódio do CTF.",
+      description: "Troféus para as três primeiras colocações da competição.",
+      places: [
+        { place: 1, label: "Primeiro lugar", medal: "gold" },
+        { place: 2, label: "Segundo lugar", medal: "silver" },
+        { place: 3, label: "Terceiro lugar", medal: "bronze" },
+      ],
+    },
+    closing: {
+      title: "Acompanhe as próximas atividades.",
+      description:
+        "Siga os canais oficiais do UnBreakable para não perder os próximos CTFs e encontros do grupo.",
     },
   },
   // Talk pages (features/talks/). Facts come from the slides and from the

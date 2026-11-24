@@ -2,6 +2,7 @@ export const siteUrl = "https://unbreakable-project.github.io";
 export const shareImage = `${siteUrl}/identidade-visual/logos/unbreakableLogo_9.png`;
 // Served from public/ so the event page can use it as its sharing image.
 export const pinkHatPoster = "/eventos/banner_pink_hat.png";
+export const wposPoster = "/eventos/wpos-ctf.jpg";
 // Short aliases. The build writes a static redirect page for each one, since
 // GitHub Pages has no server-side rules.
 export const redirects = {
@@ -26,6 +27,15 @@ export const pageMeta = {
     imageAlt: "Arte do CTF Pink Hat — Pwning Like a Girl",
     imageWidth: 646,
     imageHeight: 803,
+  },
+  "/eventos/ctf-wpos": {
+    title: "CTF do UnBreakable no WPOS-26 | UnBreakable",
+    description:
+      "O CTF do UnBreakable no WPOS-26, o Workshop de Graduação e Pós-graduação do Departamento de Ciência da Computação da UnB: desafios de segurança ofensiva no formato Capture the Flag.",
+    image: `${siteUrl}${wposPoster}`,
+    imageAlt: "Cartaz do CTF do UnBreakable no WPOS-26",
+    imageWidth: 1080,
+    imageHeight: 1080,
   },
   "/eventos/ligolo-ng": {
     title: "Movimentação Lateral utilizando o Ligolo-ng | UnBreakable",

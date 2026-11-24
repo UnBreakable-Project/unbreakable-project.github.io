@@ -1,0 +1,156 @@
+/*
+ * CTF do UnBreakable no WPOS-26. The event-page kit (pink-hat.css + gallery.css)
+ * is driven by --ph-* tokens; here we re-theme them for WPOS and scope the base
+ * rules to .wpos so the site's green/violet interface stays untouched elsewhere.
+ * Palette measured from the official WPOS art (public/eventos/wpos-ctf.jpg and
+ * the wolf logo in src/assets/eventos/wpos/): deep navy, vivid green and a
+ * mid blue for rules and chevrons.
+ */
+.wpos,
+.site-header.is-wpos {
+  --ph-bg: #061527;
+  --ph-surface: #0f2545;
+  --ph-pink: #22bf66; /* primary accent: the WPOS green, brightened for navy */
+  --ph-pink-soft: #78e4a4; /* green for small text on navy */
+  --ph-magenta: #2f6aa8; /* rules, chevrons and idle dots: WPOS blue */
+  --ph-white: #eef4fb;
+  --ph-muted: #a6b9d4;
+  --ph-line: rgba(79, 140, 205, 0.45);
+}
+.wpos {
+  overflow: clip;
+  background: var(--ph-bg);
+  color: var(--ph-white);
+}
+.wpos :focus-visible {
+  outline-color: var(--ph-pink-soft);
+}
+/* :where() keeps the reset at zero specificity so component margins win. */
+.wpos :where(h1, h2, h3, p) {
+  margin: 0;
+}
+.wpos :where(h1, h2, h3) {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+.wpos h1 {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.9;
+}
+
+/* ---------- Site header on this page ---------- */
+/* The wolf mark is swapped for a WPOS-coloured variant in the header markup;
+ * everything around it turns navy, green and blue. */
+.site-header.is-wpos {
+  background: rgba(6, 21, 39, 0.94);
+  border-bottom-color: var(--ph-magenta);
+}
+.site-header.is-wpos :focus-visible {
+  outline-color: var(--ph-pink-soft);
+}
+.site-header.is-wpos .brand-name em {
+  color: var(--ph-pink);
+}
+.site-header.is-wpos .brand-name::after {
+  background: var(--ph-pink);
+}
+.site-header.is-wpos .nav {
+  color: var(--ph-muted);
+}
+.site-header.is-wpos .nav a:hover,
+.site-header.is-wpos .nav a.is-active {
+  color: var(--ph-pink-soft);
+}
+.site-header.is-wpos .nav a.is-active::after {
+  background: var(--ph-pink);
+  box-shadow: 0 0 8px rgba(34, 191, 102, 0.5);
+}
+.site-header.is-wpos .header-cta {
+  background: var(--ph-pink);
+  color: var(--ph-bg);
+}
+.site-header.is-wpos .header-cta:hover {
+  background: var(--ph-pink-soft);
+}
+.site-header.is-wpos .palette-trigger {
+  border-color: rgba(166, 185, 212, 0.22);
+  color: var(--ph-muted);
+}
+.site-header.is-wpos .palette-trigger > span {
+  color: var(--ph-pink);
+}
+.site-header.is-wpos .palette-trigger:hover {
+  border-color: var(--ph-pink);
+  color: var(--ph-white);
+}
+.site-header.is-wpos .menu-button {
+  border-color: var(--ph-line);
+  color: var(--ph-white);
+}
+@media (max-width: 1100px) {
+  .site-header.is-wpos .nav {
+    background: var(--ph-surface);
+    border-bottom-color: var(--ph-magenta);
+  }
+  .site-header.is-wpos .nav a {
+    border-bottom-color: rgba(79, 140, 205, 0.18);
+  }
+  .site-header.is-wpos .nav a.is-active {
+    border-left-color: var(--ph-pink);
+  }
+  /* index.css forces this green with !important at <=850px. */
+  .site-header.is-wpos .mobile-contact {
+    color: var(--ph-pink-soft) !important;
+  }
+}
+
+/* ---------- Overrides for the kit's hard-coded pink accents ---------- */
+.wpos .ph-hero {
+  background:
+    radial-gradient(
+      ellipse at 82% 40%,
+      rgba(34, 191, 102, 0.18),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 10% 90%,
+      rgba(47, 106, 168, 0.22),
+      transparent 60%
+    ),
+    var(--ph-bg);
+}
+.wpos .ph-poster {
+  /* The WPOS poster is square, unlike the portrait Pink Hat art. */
+  aspect-ratio: 1 / 1;
+  box-shadow:
+    0 0 0 6px rgba(34, 191, 102, 0.08),
+    0 30px 80px -30px rgba(21, 57, 123, 0.75);
+}
+.wpos .ph-button {
+  color: var(--ph-bg);
+}
+.wpos .ph-gallery-frame {
+  box-shadow:
+    0 0 0 6px rgba(34, 191, 102, 0.08),
+    0 30px 80px -40px rgba(21, 57, 123, 0.7);
+}
+.wpos .ph-nav {
+  background: rgba(6, 21, 39, 0.72);
+}
+.wpos .ph-nav:hover {
+  color: var(--ph-bg);
+}
+.wpos .ph-step {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 191, 102, 0.26),
+    rgba(34, 191, 102, 0.04)
+  );
+}
+.wpos .ph-trophy text {
+  fill: var(--ph-bg);
+}
